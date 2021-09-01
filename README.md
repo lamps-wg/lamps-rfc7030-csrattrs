@@ -1,12 +1,10 @@
-# ANIMA operational considerations for BRSKI Registrar
+# LAMPS - RFC7030 CSR Attributes Clarification
 
-The ANIMA WG Bootstrapping Remote Secure Key Infrastructure (BRSKI)
-protocol involves three parties: Pledge (device), Registrar and
-Manufacturer Authorized Signing Authority (MASA).
+This repository contains an https://www.ietf.org internet-draft relating to clarifications
+to https://www.rfc-editor.org/info/rfc7030/
 
-This repository contains operational considerations for the Registrar
-function.  It is a candidate document for the ANIMA WG
-http://datatracker.ietf.org/wg/anima 
+It is a candidate document for the LAMPS WG
+http://datatracker.ietf.org/wg/lamps
 
 
 

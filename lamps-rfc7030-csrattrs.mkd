@@ -1,0 +1,77 @@
+---
+title: Clarification of RFC7030 CSR Attributes definition
+abbrev: CSRAttrs
+docname: draft-richardson-lamps-rfc7030-csrattrs-00
+
+stand_alone: true
+
+ipr: trust200902
+area: Internet
+wg: LAMPS Working Group
+kw: Internet-Draft
+cat: std
+
+pi:    # can use array (if all yes) or hash here
+  toc: yes
+  sortrefs:   # defaults to yes
+  symrefs: yes
+
+author:
+- ins: M. Richardson
+  name: Michael Richardson
+  org: Sandelman Software Works
+  email: mcr+ietf@sandelman.ca
+
+normative:
+  BCP14: RFC8174
+  RFC7030:
+  RFC8994:
+  RFC8995:
+
+informative:
+  RFC8368:
+
+--- abstract
+
+WRITE better Abstract about why RFC7030 section 2.6 is being updated
+
+--- middle
+
+# Introduction
+
+Enrollment over Secure Transport {{RFC7030}} has been used in a wide variety of applications.
+In particular, {{RFC8994}} and {{RFC8995}} describe a way to use in order to build out an autonomic control plane (ACP) {{RFC8368}}.
+
+The ACP requires that each node be given a very specific SubjectAltName.
+Section 2.6 of {{RFC7030}} is used to convey the actual SubjectAltName that is to be used.
+
+As a result of some implementation challenges, it came to light that this particular way of using the CSRattributes was not universally agreed upon.
+This document takes the view that the usage was correct in spirit, but that the detailed ASN.1 did not support the spirit.
+
+This document updates section 2.6 to include revised ASN.1 that covers all uses.
+
+At the time of this writing, it is unclear if the new ASN.1 will be upward compatible with the existing definition.
+It is a goal to make it so, however.
+
+Additional examples are provided in an appendix.
+
+
+# Privacy Considerations
+
+YYY
+
+# Security Considerations
+
+ZZZ
+
+# IANA Considerations
+
+# Acknowledgements
+
+Hello.
+
+# Changelog
+
+
+--- back
+
