@@ -49,6 +49,7 @@ The ACP requires that each node be given a very specific SubjectAltName.
 Section 2.6 of {{RFC7030}} is used to convey the actual SubjectAltName that is to be used.
 
 As a result of some implementation challenges, it came to light that this particular way of using the CSRattributes was not universally agreed upon.
+In particular, it is not universally agreed that a CSR Attributes response can be used by an EST server to specify both attribute OIDs, and attribute values.
 This document takes the view that the usage was correct in spirit, but that the detailed ASN.1 did not support the spirit.
 
 This document updates section 2.6 to include revised ASN.1 that covers all uses.
@@ -57,6 +58,55 @@ At the time of this writing, it is unclear if the new ASN.1 will be upward compa
 It is a goal to make it so, however.
 
 Additional examples are provided in an appendix.
+
+# CSR Attributes Handling
+
+## Current EST Specification
+
+The ASN.1 for CSR Attributes as defined in EST section 4.5.2 is:
+
+~~~
+   CsrAttrs ::= SEQUENCE SIZE (0..MAX) OF AttrOrOID
+
+   AttrOrOID ::= CHOICE (oid OBJECT IDENTIFIER, attribute Attribute }
+
+   Attribute { ATTRIBUTE:IOSet } ::= SEQUENCE {
+        type   ATTRIBUTE.&id({IOSet}),
+        values SET SIZE(1..MAX) OF ATTRIBUTE.&Type({IOSet}{@type}) }
+~~~
+
+That section also states the following:
+
+~~~
+   the values indicating the particular
+   attributes desired to be included in the resulting certificate's
+   extensions
+~~~
+
+This has been interpreted by some implementations as meaning that the CSR Attributes response can only include values for the attribute OIDs that the client should include in its CSR, and cannot include the actual values of those attributes.
+This is further reinforced by the example:
+
+~~~
+   Attribute:  type = extensionRequest (1.2.840.113549.1.9.14)
+                      value = macAddress (1.3.6.1.1.1.1.22)
+~~~
+
+This example illustrates that the 'value' specified is an attribute OID, for example the macAddress OID, and not the value of the attribute itself. 
+
+There is no clearly documented mechanism with supporting examples that specify how a CSR Attributes response can include a value for a given attribute such as SubjectAltName.
+
+EST section 4.5 2 also states the following:
+
+~~~
+   The structure of the CSR Attributes Response SHOULD, to the greatest extent possible, reflect the structure of the CSR it is requesting.
+~~~
+
+This statement aligns closely with the goal of this document.
+Additionally, EST Extensions {{RFC8295}} Appendix A has an informative appendix that outlines how a full CSR can be included in the CSR Attributes response.
+
+## Updated CSR Attributes Handling
+
+This document defines how a CSR Attributes response is aligned with the 'attributes' part of a PKCS#10 'CertificationRequestInfo' structure.
 
 
 # Privacy Considerations
