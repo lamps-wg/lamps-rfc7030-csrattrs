@@ -21,6 +21,10 @@ author:
   name: Michael Richardson
   org: Sandelman Software Works
   email: mcr+ietf@sandelman.ca
+- ins: D. Harkins
+  name: Dan Harkins
+  org: The Industrial Lounge
+  email: dharkins@lounge.org
 - ins: D. von Oheimb
   name: Dr. David von Oheimb
   email: dev@ddvo.net
@@ -33,29 +37,27 @@ normative:
 
 informative:
   RFC8368:
+  RFC8295:
 
 --- abstract
 
-WRITE better Abstract about why RFC7030 section 2.6 is being updated
+WRITE better Abstract about why RFC7030 section 2.6 is being updated.
 
 --- middle
 
 # Introduction
 
 Enrollment over Secure Transport {{RFC7030}} has been used in a wide variety of applications.
-In particular, {{RFC8994}} and {{RFC8995}} describe a way to use in order to build out an autonomic control plane (ACP) {{RFC8368}}.
+In particular, {{RFC8994}} and {{RFC8995}} describe a way to use it in order to build out an autonomic control plane (ACP) {{RFC8368}}.
 
-The ACP requires that each node be given a very specific SubjectAltName.
-Section 2.6 of {{RFC7030}} is used to convey the actual SubjectAltName that is to be used.
+The ACP requires that each node be given a very specific SubjectAltName. 
+So, the solution was for the EST server to use section 2.6 of {{RFC7030}} to convey to the EST client the actual SubjectAltName that will end up in its certificate. 
 
-As a result of some implementation challenges, it came to light that this particular way of using the CSRattributes was not universally agreed upon.
-In particular, it is not universally agreed that a CSR Attributes response can be used by an EST server to specify both attribute OIDs, and attribute values.
-This document takes the view that the usage was correct in spirit, but that the detailed ASN.1 did not support the spirit.
+As a result of some implementation challenges, it came to light that this particular way of using the CSR attributes was not universally agreed upon, and in fact runs contrary to section 2.6 which says that the CSR attributes "provide additional descriptive information that the EST server cannot access itself" (when, in this case, it is the EST server and not the EST client that has access to this information). 
 
-This document updates section 2.6 to include revised ASN.1 that covers all uses.
+In particular, it is not universally agreed that a CSR Attributes response can be used by an EST server to specify both attribute OIDs, and attribute values. This document, therefore, updates section 2.6 to define this behavior. 
 
-At the time of this writing, it is unclear if the new ASN.1 will be upward compatible with the existing definition.
-It is a goal to make it so, however.
+This document also updates section 4.5 to include revised ASN.1 that covers all uses and is backwards-compatible with the existing use. 
 
 Additional examples are provided in an appendix.
 
@@ -95,10 +97,12 @@ This example illustrates that the 'value' specified is an attribute OID, for exa
 
 There is no clearly documented mechanism with supporting examples that specify how a CSR Attributes response can include a value for a given attribute such as SubjectAltName.
 
-EST section 4.5 2 also states the following:
+EST section 4.5.2 also states the following:
 
 ~~~
-   The structure of the CSR Attributes Response SHOULD, to the greatest extent possible, reflect the structure of the CSR it is requesting.
+   The structure of the CSR Attributes Response SHOULD, to the
+   greatest extent possible, reflect the structure of the CSR
+   it is requesting.
 ~~~
 
 This statement aligns closely with the goal of this document.
