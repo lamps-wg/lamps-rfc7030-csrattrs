@@ -28,7 +28,11 @@ author:
 - ins: D. von Oheimb
   name: Dr. David von Oheimb
   email: dev@ddvo.net
-
+- ins: O. Friel
+  name: Owen Friel
+  org: Cisco
+  email: ofriel@cisco.com
+  
 normative:
   BCP14: RFC8174
   RFC7030:
@@ -41,7 +45,9 @@ informative:
 
 --- abstract
 
-WRITE better Abstract about why RFC7030 section 2.6 is being updated.
+Enrollment over Secure Transport is ambiguous in specification of the CSR Attributes Response.
+This has resulted in implementation challenges and implementor confusion.
+This document updates Enrollment over Secure Transport and clarifies how the CSR Attributes Response can be used by an EST server to specify both CSR attribute OIDs and also CSR attribute values that the server expects the client to include in its CSR request.
 
 --- middle
 
@@ -112,16 +118,21 @@ Additionally, EST Extensions {{RFC8295}} Appendix A has an informative appendix 
 
 This document defines how a CSR Attributes response is aligned with the 'attributes' part of a PKCS#10 'CertificationRequestInfo' structure.
 
-
-# Privacy Considerations
-
-YYY
-
 # Security Considerations
 
-ZZZ
+All security considertions from EST {{?RFC7030}} section 6 are applicable.
+
+## Identity and Privacy Considerations
+
+An EST server may use this mechanism to instruct the EST client about the identities it should include in the CSR request it sends as part of enrollment.
+The client may only be aware of its IDevID Subject which includes a manufacturer serial number.
+The EST server can use this mechanism to tell the client to include a specific fully qualified domain name in the CSR in order to complete domain ownership proofs required by the CA.
+Additionally, the EST server may deem the manufacturer serial number in an IDevID as personally identifiable information, and may want to specify a new random opaque identifier that the pledge should use in its CSR.
+This may be desirable if the CA and EST server have different operators.
 
 # IANA Considerations
+
+None.
 
 # Acknowledgements
 
