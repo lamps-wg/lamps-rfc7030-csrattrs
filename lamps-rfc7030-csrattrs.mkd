@@ -116,7 +116,32 @@ Additionally, EST Extensions {{RFC8295}} Appendix A has an informative appendix 
 
 ## Updated CSR Attributes Handling
 
-This document defines how a CSR Attributes response is aligned with the 'attributes' part of a PKCS#10 'CertificationRequestInfo' structure.
+This document defines how a CSR Attributes response is aligned with the PKCS#10 'CertificationRequestInfo' structure. The CSR Attributes response includes a PKCS#10 CSR structure that optionally includes any required values for included attributes. The following formatting rules apply to the CSR Attributes PKCSC#10 'CertificationRequestInfo' structure included in a CSR Attributes response:
+
+- Concrete attribute values may be ommitted. If an attribute OID is included but the attribute value is not included, this indicates to client that the client should include and specify that attribute value.
+- Additional attribute OIDs may be included. For example, for requesting the use of challengePassword, or for specifying public key algorithms
+
+[[TODO]] Rule for multiple attributes.
+RFC 2986 and 5967 do not describe how handle conflicting attributes.
+There was a suggestion to not allow more than one instance of an attribute.
+However, you can have multiple SubjectAltNames...
+
+### Subject Handling
+
+There is no defined OID for the 'subject' field. An EST server can specify 'subject' field values in a CSR Attributes response by including all required relative distinguished names as a sequence of OIDs, for example:
+
+~~~
+             SEQUENCE {
+               OBJECT IDENTIFIER commonName (2 5 4 3)
+               UTF8String "example.com"
+               }
+ 
+             SEQUENCE {
+               OBJECT IDENTIFIER serialNumber (2 5 4 5)
+               PrintableString "EXAMPLE123'
+               }
+
+~~~
 
 # Security Considerations
 
