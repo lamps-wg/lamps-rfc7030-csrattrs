@@ -145,7 +145,7 @@ There is no defined OID for the 'subject' field. An EST server can specify 'subj
 
 # Security Considerations
 
-All security considertions from EST {{?RFC7030}} section 6 are applicable.
+All security considertions from EST {{RFC7030}} section 6 are applicable.
 
 ## Identity and Privacy Considerations
 
