@@ -27,6 +27,7 @@ author:
   email: dharkins@lounge.org
 - ins: D. von Oheimb
   name: Dr. David von Oheimb
+  org: Siemens
   email: dev@ddvo.net
 - ins: O. Friel
   name: Owen Friel
