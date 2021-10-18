@@ -33,7 +33,7 @@ author:
   name: Owen Friel
   org: Cisco
   email: ofriel@cisco.com
-  
+
 normative:
   BCP14: RFC8174
   RFC7030:
@@ -46,25 +46,25 @@ informative:
 
 --- abstract
 
-Enrollment over Secure Transport is ambiguous in specification of the CSR Attributes Response.
+Enrollment over Secure Transport (EST) is ambiguous in specification of the CSR Attributes Response.
 This has resulted in implementation challenges and implementor confusion.
-This document updates Enrollment over Secure Transport and clarifies how the CSR Attributes Response can be used by an EST server to specify both CSR attribute OIDs and also CSR attribute values that the server expects the client to include in its CSR request.
+This document updates EST and clarifies how the CSR Attributes Response can be used by an EST server to specify both CSR attribute OIDs and also CSR attribute values that the server expects the client to include in its CSR request.
 
 --- middle
 
 # Introduction
 
-Enrollment over Secure Transport {{RFC7030}} has been used in a wide variety of applications.
+Enrollment over Secure Transport {{RFC7030}} (EST) has been used in a wide variety of applications.
 In particular, {{RFC8994}} and {{RFC8995}} describe a way to use it in order to build out an autonomic control plane (ACP) {{RFC8368}}.
 
-The ACP requires that each node be given a very specific SubjectAltName. 
-So, the solution was for the EST server to use section 2.6 of {{RFC7030}} to convey to the EST client the actual SubjectAltName that will end up in its certificate. 
+The ACP requires that each node be given a very specific SubjectAltName.
+So, the solution was for the EST server to use section 2.6 of {{RFC7030}} to convey to the EST client the actual SubjectAltName that will end up in its certificate.
 
-As a result of some implementation challenges, it came to light that this particular way of using the CSR attributes was not universally agreed upon, and in fact runs contrary to section 2.6 which says that the CSR attributes "provide additional descriptive information that the EST server cannot access itself" (when, in this case, it is the EST server and not the EST client that has access to this information). 
+As a result of some implementation challenges, it came to light that this particular way of using the CSR attributes was not universally agreed upon, and in fact runs contrary to section 2.6, which says that the CSR attributes "provide additional descriptive information that the EST server cannot access itself" (when, in this case, it is the EST server and not the EST client that has access to this information).
 
-In particular, it is not universally agreed that a CSR Attributes response can be used by an EST server to specify both attribute OIDs, and attribute values. This document, therefore, updates section 2.6 to define this behavior. 
+In particular, it is not universally agreed that a CSR Attributes response can be used by an EST server to specify both attribute OIDs and attribute values. This document, therefore, updates section 2.6 to define this behavior.
 
-This document also updates section 4.5 to include revised ASN.1 that covers all uses and is backwards-compatible with the existing use. 
+This document also updates section 4.5 to include revised ASN.1 that covers all uses and is backward compatible with the existing use.
 
 Additional examples are provided in an appendix.
 
@@ -100,9 +100,9 @@ This is further reinforced by the example:
                       value = macAddress (1.3.6.1.1.1.1.22)
 ~~~
 
-This example illustrates that the 'value' specified is an attribute OID, for example the macAddress OID, and not the value of the attribute itself. 
+This example illustrates that the 'value' specified is an attribute OID, for example the macAddress OID, and not the value of the attribute itself.
 
-There is no clearly documented mechanism with supporting examples that specify how a CSR Attributes response can include a value for a given attribute such as SubjectAltName.
+There is no clearly documented mechanism with supporting examples that specifies how a CSR Attributes response can include a value for a given attribute such as SubjectAltName.
 
 EST section 4.5.2 also states the following:
 
@@ -119,10 +119,10 @@ Additionally, EST Extensions {{RFC8295}} Appendix A has an informative appendix 
 
 This document defines how a CSR Attributes response is aligned with the PKCS#10 'CertificationRequestInfo' structure. The CSR Attributes response includes a PKCS#10 CSR structure that optionally includes any required values for included attributes. The following formatting rules apply to the CSR Attributes PKCSC#10 'CertificationRequestInfo' structure included in a CSR Attributes response:
 
-- Concrete attribute values may be ommitted. If an attribute OID is included but the attribute value is not included, this indicates to client that the client should include and specify that attribute value.
-- Additional attribute OIDs may be included. For example, for requesting the use of challengePassword, or for specifying public key algorithms
+- Concrete attribute values may be ommitted. If an attribute OID is included but the attribute value is not included, this indicates to the client that it should include and specify that attribute value.
+- Additional attribute OIDs may be included. For example, for requesting the use of challengePassword, or for specifying public-key algorithms.
 
-[[TODO]] Rule for multiple attributes.
+TODO Rule for multiple attributes.
 RFC 2986 and 5967 do not describe how handle conflicting attributes.
 There was a suggestion to not allow more than one instance of an attribute.
 However, you can have multiple SubjectAltNames...
@@ -136,7 +136,7 @@ There is no defined OID for the 'subject' field. An EST server can specify 'subj
                OBJECT IDENTIFIER commonName (2 5 4 3)
                UTF8String "example.com"
                }
- 
+
              SEQUENCE {
                OBJECT IDENTIFIER serialNumber (2 5 4 5)
                PrintableString "EXAMPLE123'
@@ -150,8 +150,8 @@ All security considertions from EST {{RFC7030}} section 6 are applicable.
 
 ## Identity and Privacy Considerations
 
-An EST server may use this mechanism to instruct the EST client about the identities it should include in the CSR request it sends as part of enrollment.
-The client may only be aware of its IDevID Subject which includes a manufacturer serial number.
+An EST server may use this mechanism to instruct the EST client about the identities it should include in the CSR it sends as part of enrollment.
+The client may only be aware of its IDevID Subject, which includes a manufacturer serial number.
 The EST server can use this mechanism to tell the client to include a specific fully qualified domain name in the CSR in order to complete domain ownership proofs required by the CA.
 Additionally, the EST server may deem the manufacturer serial number in an IDevID as personally identifiable information, and may want to specify a new random opaque identifier that the pledge should use in its CSR.
 This may be desirable if the CA and EST server have different operators.
@@ -162,7 +162,7 @@ None.
 
 # Acknowledgements
 
-Hello.
+TODO
 
 # Changelog
 
