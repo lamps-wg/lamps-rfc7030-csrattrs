@@ -117,6 +117,8 @@ Additionally, EST Extensions {{RFC8295}} Appendix A has an informative appendix 
 
 ## Updated CSR Attributes Handling
 
+This is option one.
+
 This document defines how a CSR Attributes response is aligned with the PKCS#10 'CertificationRequestInfo' structure. The CSR Attributes response includes a PKCS#10 CSR structure that optionally includes any required values for included attributes. The following formatting rules apply to the CSR Attributes PKCSC#10 'CertificationRequestInfo' structure included in a CSR Attributes response:
 
 - Concrete attribute values may be ommitted. If an attribute OID is included but the attribute value is not included, this indicates to the client that it should include and specify that attribute value.
@@ -143,6 +145,41 @@ There is no defined OID for the 'subject' field. An EST server can specify 'subj
                }
 
 ~~~
+
+## Extend CSR structure to allow values:
+
+This is option two.
+
+This would just add a value to the SEQUENCE:
+
+~~~~
+          OBJECT challengePassword
+          SEQUENCE
+            OBJECT subjectAltName
+            SET
+              OBJECT someACPgoo
+          SEQUENCE
+            OBJECT id-ecPublicKey
+            SET
+              OBJECT secp384r1
+          OBJECT ecdsa-with-SHA384
+~~~~
+
+For example:
+
+~~~~
+  0  30: SEQUENCE {
+  2  28:   SEQUENCE {
+  4   3:     OBJECT IDENTIFIER subjectAltName (2 5 29 17)
+  9  21:     SET {
+ 11  19:       [1] {
+ 13  17:         UTF8String 'hello@example.com'
+       :         }
+       :       }
+       :     }
+       :   }
+~~~~
+
 
 # Security Considerations
 
