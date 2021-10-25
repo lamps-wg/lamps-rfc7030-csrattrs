@@ -153,16 +153,16 @@ This is option two.
 This would just add a value to the SEQUENCE:
 
 ~~~~
-          OBJECT challengePassword
-          SEQUENCE
-            OBJECT subjectAltName
-            SET
-              OBJECT someACPgoo
-          SEQUENCE
-            OBJECT id-ecPublicKey
-            SET
-              OBJECT secp384r1
-          OBJECT ecdsa-with-SHA384
+     OBJECT challengePassword
+     SEQUENCE
+       OBJECT subjectAltName
+       SET
+         OBJECT someACPgoo
+     SEQUENCE
+       OBJECT id-ecPublicKey
+       SET
+         OBJECT secp384r1
+         OBJECT ecdsa-with-SHA384
 ~~~~
 
 For example:
