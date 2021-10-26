@@ -181,6 +181,94 @@ For example:
 ~~~~
 
 
+## Alternative solutions
+
+The following options support complete and unambiguous specification of
+
+* CSR ingredients optionally including values to use,
+* the type of the public key, which is given in the form of a public-key algorithm,
+* and the hash algorithm to use for the self-signature.
+
+CSR ingredients may be the subject DN, any X.509 extensions,
+and special attributes like a challenge password.
+
+For specifying the type of keys allowed in CSRs,
+they use a to-the-point `KeySpec` type.
+It can be defined for instance as
+
+~~~~
+   KeySpec ::= CHOICE {
+                   keyAlg AlgorithmIdentifier,
+                   rsaKeyLen INTEGER
+   }
+~~~~
+
+The `keyAlg` type use used to specify public-key alorithms
+and can include parameters, such as the name of an elliptic curve.
+The `rsaKeyLen` choice allows specifying the size of RSA keys,
+which it is not possible using values of type `AlgorithmIdentifier`.
+
+The `keySpec` could also be sequence of such specs,
+such that the server can give several key types from which the client can choose,
+e.g., EC keys on certain curves and/or RSA keys of certain sizes.
+
+
+### Option three:
+
+Stick for syntactic backward compatibility with
+
+~~~~
+    CsrAttrs ::= SEQUENCE SIZE (0..MAX) OF AttrOrOID
+~~~~
+
+Each OID given in AttrOrOID must occur only once.<br>
+Plain OIDs are used mostly for challengePassword.<br>
+Attributes are used mostly for any X.509 extensions, subject DN, key spec, and hash alg,
+while defining new generally usable OIDs for
+
+* a subject DN    of type `Name`
+* a key spec      of type `KeySpec`
+* a hash alg spec of type `AlgorithmIdentifier`
+
+to be given on demand as attribute IDs of type `ATTRIBUTE.&id({IOSet})`.
+
+### Option four:
+
+Define a new and more to-the-point type, which does not require new OIDs:
+
+~~~~
+   CsrAttrs ::= SEQUENCE {
+        oids      SEQUENCE OF OBJECT IDENTIFIER,
+        attrs     SEQUENCE OF Attribute,
+        subject   [0] Name OPTIONAL,
+        keySpec   [1] KeySpec OPTIONAL,
+        hashAlg   [2] AlgorithmIdentifier OPTIONAL
+
+   }
+~~~~
+
+Each OID given in oids or attrs must occur only once.<br>
+The oids are used mostly for requiring a challenge password.<br>
+The atttrs are used mostly for requiring certain X.509 extensions.<br>
+This is, typically just challengePassword and extensionRequest are used.
+
+### Option five:
+
+Define a new fully to-the-point type, which does not require any (direct) OIDs:
+
+~~~~
+   CsrAttrs ::= SEQUENCE {
+        subject               Name OPTIONAL,
+        extensions            SEQUENCE OF Extension,
+        challengePassword     BOOLEAN,
+        keySpec           [0] KeySpec OPTIONAL,
+        hashAlg           [1] AlgorithmIdentifier OPTIONAL
+
+   }
+~~~~
+
+
+
 # Security Considerations
 
 All security considertions from EST {{RFC7030}} section 6 are applicable.
