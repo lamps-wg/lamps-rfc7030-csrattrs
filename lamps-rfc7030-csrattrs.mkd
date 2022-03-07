@@ -265,7 +265,7 @@ Define a new fully to-the-point type, which does not require any (direct) OIDs:
         hashAlg           [1] AlgorithmIdentifier OPTIONAL
 
    }
-   ~~~~
+~~~~
 
 # Co-existence with existing implementations
 
