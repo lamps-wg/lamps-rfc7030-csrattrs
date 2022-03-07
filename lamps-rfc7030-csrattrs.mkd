@@ -156,10 +156,14 @@ There is no defined OID for the 'subject' field. An EST server can specify 'subj
 
 ## Option two: Extend CSR structure to allow values:
 
+This ASN.1 needs fixing.
+
 ~~~
    CsrAttrs ::= SEQUENCE SIZE (0..MAX) OF AttrOrOID
 
-   AttrOrOID ::= CHOICE (oid OBJECT IDENTIFIER, attribute Attribute, value Value }
+   AttrOrOID ::= CHOICE (oid OBJECT IDENTIFIER,
+                         attribute Attribute,
+                         value Value }
 
    Attribute { ATTRIBUTE:IOSet } ::= SEQUENCE {
         extType  ATTRIBUTE.&id({IOSet}),
