@@ -229,7 +229,7 @@ while defining new generally usable OIDs for
 
 to be given on demand as attribute IDs of type `ATTRIBUTE.&id({IOSet})`.
 
-### Option four: explicit members for structure
+## Option four: explicit members for unique attributes
 
 Define a new and more to-the-point type, which does not require new OIDs:
 
@@ -252,7 +252,7 @@ The atttrs are used mostly for requiring certain X.509 extensions.
 
 This is, typically just challengePassword and extensionRequest are used.
 
-### Option five:
+## Option five: more specific structure, simpler extensions
 
 Define a new fully to-the-point type, which does not require any (direct) OIDs:
 
