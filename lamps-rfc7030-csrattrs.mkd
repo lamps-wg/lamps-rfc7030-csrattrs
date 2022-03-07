@@ -38,8 +38,8 @@ author:
 normative:
   BCP14: RFC8174
   RFC7030:
-  RFC8994:
-  RFC8995:
+  RFC8994: ACP
+  RFC8995: BRSKI
 
 informative:
   RFC8368:
