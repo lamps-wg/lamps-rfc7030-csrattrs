@@ -179,7 +179,7 @@ For example:
 ~~~~
 
 
-## Option three: explicit content for the subjectAltName
+## Option three: explicit content for the key specification
 
 The following options support complete and unambiguous specification of
 
@@ -209,9 +209,6 @@ which it is not possible using values of type `AlgorithmIdentifier`.
 The `keySpec` could also be sequence of such specs,
 such that the server can give several key types from which the client can choose,
 e.g., EC keys on certain curves and/or RSA keys of certain sizes.
-
-
-### Option three:
 
 Stick for syntactic backward compatibility with
 
