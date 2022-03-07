@@ -21,18 +21,19 @@ author:
   name: Michael Richardson
   org: Sandelman Software Works
   email: mcr+ietf@sandelman.ca
-- ins: D. Harkins
-  name: Dan Harkins
-  org: The Industrial Lounge
-  email: dharkins@lounge.org
-- ins: D. von Oheimb
-  name: Dr. David von Oheimb
-  org: Siemens
-  email: dev@ddvo.net
+  role: editor
 - ins: O. Friel
   name: Owen Friel
   org: Cisco
   email: ofriel@cisco.com
+- ins: D. von Oheimb
+  name: Dr. David von Oheimb
+  org: Siemens
+  email: dev@ddvo.net
+- ins: D. Harkins
+  name: Dan Harkins
+  org: The Industrial Lounge
+  email: dharkins@lounge.org
 
 normative:
   BCP14: RFC8174
@@ -58,11 +59,14 @@ Enrollment over Secure Transport {{RFC7030}} (EST) has been used in a wide varie
 In particular, {{RFC8994}} and {{RFC8995}} describe a way to use it in order to build out an autonomic control plane (ACP) {{RFC8368}}.
 
 The ACP requires that each node be given a very specific SubjectAltName.
-So, the solution was for the EST server to use section 2.6 of {{RFC7030}} to convey to the EST client the actual SubjectAltName that will end up in its certificate.
+In the ACP specification, the solution was for the EST server to use section 2.6 of {{RFC7030}} to convey to the EST client the actual SubjectAltName that will end up in its certificate.
 
-As a result of some implementation challenges, it came to light that this particular way of using the CSR attributes was not universally agreed upon, and in fact runs contrary to section 2.6, which says that the CSR attributes "provide additional descriptive information that the EST server cannot access itself" (when, in this case, it is the EST server and not the EST client that has access to this information).
+As a result of some implementation challenges, it came to light that this particular way of using the CSR attributes was not universally agreed upon, and in fact runs contrary to section 2.6.
+Section 2.6 says that the CSR attributes "provide additional descriptive information that the EST server cannot access itself".
+This extends to specifying that a particular attribute should exist, but not to the point of having the EST server actually specify the value.
 
-In particular, it is not universally agreed that a CSR Attributes response can be used by an EST server to specify both attribute OIDs and attribute values. This document, therefore, updates section 2.6 to define this behavior.
+The way in which the CSRattributes were understood by {{RFC8994}} turns out to be invalid.
+This document, therefore, updates section 2.6 to define this behavior.
 
 This document also updates section 4.5 to include revised ASN.1 that covers all uses and is backward compatible with the existing use.
 
@@ -100,7 +104,7 @@ This is further reinforced by the example:
                       value = macAddress (1.3.6.1.1.1.1.22)
 ~~~
 
-This example illustrates that the 'value' specified is an attribute OID, for example the macAddress OID, and not the value of the attribute itself.
+This example illustrates that the 'value' specified is an attribute OID, for example the macAddress OID, and not the value (such as "10-00-00-12-23-45") of the attribute itself.
 
 There is no clearly documented mechanism with supporting examples that specifies how a CSR Attributes response can include a value for a given attribute such as SubjectAltName.
 
@@ -115,11 +119,15 @@ EST section 4.5.2 also states the following:
 This statement aligns closely with the goal of this document.
 Additionally, EST Extensions {{RFC8295}} Appendix A has an informative appendix that outlines how a full CSR can be included in the CSR Attributes response.
 
-## Updated CSR Attributes Handling
+# Updated CSR Attributes Handling
 
-This is option one.
+The WG will pick one option as part of the adoption call.
 
-This document defines how a CSR Attributes response is aligned with the PKCS#10 'CertificationRequestInfo' structure. The CSR Attributes response includes a PKCS#10 CSR structure that optionally includes any required values for included attributes. The following formatting rules apply to the CSR Attributes PKCSC#10 'CertificationRequestInfo' structure included in a CSR Attributes response:
+## Option One: add value to sequence
+
+This document defines how a CSR Attributes response is aligned with the PKCS#10 'CertificationRequestInfo' structure.
+The CSR Attributes response includes a PKCS#10 CSR structure that optionally includes any required values for included attributes.
+The following formatting rules apply to the CSR Attributes PKCSC#10 'CertificationRequestInfo' structure included in a CSR Attributes response:
 
 - Concrete attribute values may be ommitted. If an attribute OID is included but the attribute value is not included, this indicates to the client that it should include and specify that attribute value.
 - Additional attribute OIDs may be included. For example, for requesting the use of challengePassword, or for specifying public-key algorithms.
@@ -146,9 +154,25 @@ There is no defined OID for the 'subject' field. An EST server can specify 'subj
 
 ~~~
 
-## Extend CSR structure to allow values:
+## Option two: Extend CSR structure to allow values:
 
-This is option two.
+~~~
+   CsrAttrs ::= SEQUENCE SIZE (0..MAX) OF AttrOrOID
+
+   AttrOrOID ::= CHOICE (oid OBJECT IDENTIFIER, attribute Attribute, value Value }
+
+   Attribute { ATTRIBUTE:IOSet } ::= SEQUENCE {
+        extType  ATTRIBUTE.&id({IOSet}),
+        extAttr  SET SIZE(1..MAX) OF ATTRIBUTE.&Type({IOSet}{@type})
+   }
+
+   Value { ATTRIBUTE:IOSet } ::= SEQUENCE {
+        extType  ATTRIBUTE.&id({IOSet}),
+        type     ATTRIBUTE.&Type({IOSet}{@type}),
+        value    OCTET STRING
+   }
+~~~
+
 
 This would just add a value to the SEQUENCE:
 
@@ -181,7 +205,7 @@ For example:
 ~~~~
 
 
-## Alternative solutions
+## Option three: explicit content for the subjectAltName
 
 The following options support complete and unambiguous specification of
 
@@ -221,8 +245,10 @@ Stick for syntactic backward compatibility with
     CsrAttrs ::= SEQUENCE SIZE (0..MAX) OF AttrOrOID
 ~~~~
 
-Each OID given in AttrOrOID must occur only once.<br>
-Plain OIDs are used mostly for challengePassword.<br>
+Each OID given in AttrOrOID must occur only once.
+
+Plain OIDs are used mostly for challengePassword.
+
 Attributes are used mostly for any X.509 extensions, subject DN, key spec, and hash alg,
 while defining new generally usable OIDs for
 
@@ -232,7 +258,7 @@ while defining new generally usable OIDs for
 
 to be given on demand as attribute IDs of type `ATTRIBUTE.&id({IOSet})`.
 
-### Option four:
+### Option four: explicit members for structure
 
 Define a new and more to-the-point type, which does not require new OIDs:
 
@@ -247,9 +273,12 @@ Define a new and more to-the-point type, which does not require new OIDs:
    }
 ~~~~
 
-Each OID given in oids or attrs must occur only once.<br>
-The oids are used mostly for requiring a challenge password.<br>
-The atttrs are used mostly for requiring certain X.509 extensions.<br>
+Each OID given in oids or attrs must occur only once.
+
+The oids are used mostly for requiring a challenge password.
+
+The atttrs are used mostly for requiring certain X.509 extensions.
+
 This is, typically just challengePassword and extensionRequest are used.
 
 ### Option five:
@@ -265,8 +294,57 @@ Define a new fully to-the-point type, which does not require any (direct) OIDs:
         hashAlg           [1] AlgorithmIdentifier OPTIONAL
 
    }
-~~~~
+   ~~~~
 
+# Co-existence with existing implementations
+
+There are some ways in which the new CSRattributes could co-exist with RFC7030.
+
+## Use a new MIME type
+
+The client can signal that it supports the new attribute format by using an Accept: header in the transaction.
+This acts as a signal to a server that it can/should return the attributes in the new format.
+
+## Use a new end point of the new format
+
+Clients that want to use the new format would use a new end point, such as "csrvalues"
+which would only support the new format.
+A client which supported both would have to try both "csrvalues" and then fall back "csrattrs" if the EST server did not support the new format.
+Some uses (such as {{RFC8994}}) require the new format, so if it was not suppored, that would be a protocol error.
+
+## Insist new format is upwardly compatible with old format
+
+ASN.1 encoding is self-describing, and some formats proposed above could possibly be parsed by legacy clients without a problem.
+
+## Return new format to new clients only
+
+The Registrar may know which clients are which by the kind of authentication that they do.
+An {{RFC8994}} client which has just performed a {{-BRSKI}} enrollment would be assumed to require the new format only.
+A client which authenticates with an LDevID for a renewal would be strongly identified, and the Registrar could be programmed whether to return new format, or legacy CSR attributes.
+
+# Whether or not to Base64 encoding of results
+
+{{?RFC8951}} clarified that the csrattrs end point was to be Base64 encoded even though the HTTP transport was 8-bit clean.
+
+If this document establishes a new end point, then the new end point will not be base64 encoded according to current HTTP usage.
+
+# Examples
+
+## RFC8994/ACP subjectAltName with specific otherName included
+
+TBD
+
+## EST server requires public keys of a specific size
+
+TBD
+
+## EST server requires a public key of a specific algorithm/curve
+
+TBD
+
+## EST server requires a specific extension to be present
+
+TBD
 
 
 # Security Considerations
