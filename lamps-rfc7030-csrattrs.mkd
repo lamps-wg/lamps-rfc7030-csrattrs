@@ -1,7 +1,7 @@
 ---
 title: Clarification of RFC7030 CSR Attributes definition
 abbrev: CSRAttrs
-docname: draft-richardson-lamps-rfc7030-csrattrs-02
+docname: draft-richardson-lamps-rfc7030-csrattrs-03
 
 stand_alone: true
 
@@ -47,9 +47,9 @@ informative:
 
 --- abstract
 
-Enrollment over Secure Transport (EST) is ambiguous in specification of the CSR Attributes Response.
-This has resulted in implementation challenges and implementor confusion.
-This document updates EST and clarifies how the CSR Attributes Response can be used by an EST server to specify both CSR attribute OIDs and also CSR attribute values that the server expects the client to include in its CSR request.
+The Enrollment over Secure Transport (EST, RFC7030) is ambiguous in its specification of the CSR Attributes Response. This has resulted in implementation challenges and implementor confusion.
+
+This document updates RFC7030 (EST) and clarifies how the CSR Attributes Response can be used by an EST server to specify both CSR attribute OIDs and also CSR attribute values that the server expects the client to include in subsequent CSR request.
 
 --- middle
 
@@ -61,20 +61,19 @@ In particular, {{RFC8994}} and {{RFC8995}} describe a way to use it in order to 
 The ACP requires that each node be given a very specific SubjectAltName.
 In the ACP specification, the solution was for the EST server to use section 2.6 of {{RFC7030}} to convey to the EST client the actual SubjectAltName that will end up in its certificate.
 
-As a result of some implementation challenges, it came to light that this particular way of using the CSR attributes was not universally agreed upon, and in fact runs contrary to section 2.6.
-Section 2.6 says that the CSR attributes "provide additional descriptive information that the EST server cannot access itself".
-This extends to specifying that a particular attribute should exist, but not to the point of having the EST server actually specify the value.
+As a result of some implementation challenges, it came to light that this particular way of using the CSR attributes was not universally agreed upon, and it was suggested that it went contrary to section 2.6.
 
-The way in which the CSRattributes were understood by {{RFC8994}} turns out to be invalid.
-This document, therefore, updates section 2.6 to define this behavior.
+Section 2.6 says that the CSR attributes "provide additional descriptive information that the EST server cannot access itself".
+
+After significant discussion, it has been determined that the {{RFC7030, section 4.5}} specification is sufficiently difficult to read that clarification is needed.
+
+This document motivates the different use cases, and provides additional worked out examples.
 
 This document also updates section 4.5 to include revised ASN.1 that covers all uses and is backward compatible with the existing use.
 
-Additional examples are provided in an appendix.
-
 # CSR Attributes Handling
 
-## Current EST Specification
+## Current EST CSR Attributes Specification
 
 The ASN.1 for CSR Attributes as defined in EST section 4.5.2 is:
 
@@ -88,45 +87,7 @@ The ASN.1 for CSR Attributes as defined in EST section 4.5.2 is:
         values SET SIZE(1..MAX) OF ATTRIBUTE.&Type({IOSet}{@type}) }
 ~~~
 
-That section also states the following:
-
-~~~
-   the values indicating the particular
-   attributes desired to be included in the resulting certificate's
-   extensions
-~~~
-
-This has been interpreted by some implementations as meaning that the CSR Attributes response can only include values for the attribute OIDs that the client should include in its CSR, and cannot include the actual values of those attributes.
-This is further reinforced by the example:
-
-~~~
-   Attribute:  type = extensionRequest (1.2.840.113549.1.9.14)
-                      value = macAddress (1.3.6.1.1.1.1.22)
-~~~
-
-This example illustrates that the 'value' specified is an attribute OID, for example the macAddress OID, and not the value (such as "10-00-00-12-23-45") of the attribute itself.
-
-There is no clearly documented mechanism with supporting examples that specifies how a CSR Attributes response can include a value for a given attribute such as SubjectAltName.
-
-EST section 4.5.2 also states the following:
-
-~~~
-   The structure of the CSR Attributes Response SHOULD, to the
-   greatest extent possible, reflect the structure of the CSR
-   it is requesting.
-~~~
-
-This statement aligns closely with the goal of this document.
-Additionally, EST Extensions {{RFC8295}} Appendix A has an informative appendix that outlines how a full CSR can be included in the CSR Attributes response.
-
-# Updated CSR Attributes Handling
-
-The WG will pick one option as part of the adoption call.
-
-## Option two: Extend CSR structure to allow values:
-
-This ASN.1 needs fixing.
-
+## Revised/Simplified EST CSR Attributes Specification
 
 ~~~
    CsrAttrs ::= SEQUENCE SIZE (0..MAX) OF AttrOrOID
@@ -269,36 +230,6 @@ Define a new fully to-the-point type, which does not require any (direct) OIDs:
 
 # Co-existence with existing implementations
 
-There are some ways in which the new CSRattributes could co-exist with RFC7030.
-
-## Use a new MIME type
-
-The client can signal that it supports the new attribute format by using an Accept: header in the transaction.
-This acts as a signal to a server that it can/should return the attributes in the new format.
-
-## Use a new end point of the new format
-
-Clients that want to use the new format would use a new end point, such as "csrvalues"
-which would only support the new format.
-A client which supported both would have to try both "csrvalues" and then fall back "csrattrs" if the EST server did not support the new format.
-Some uses (such as {{RFC8994}}) require the new format, so if it was not suppored, that would be a protocol error.
-
-## Insist new format is upwardly compatible with old format
-
-ASN.1 encoding is self-describing, and some formats proposed above could possibly be parsed by legacy clients without a problem.
-
-## Return new format to new clients only
-
-The Registrar may know which clients are which by the kind of authentication that they do.
-An {{RFC8994}} client which has just performed a {{-BRSKI}} enrollment would be assumed to require the new format only.
-A client which authenticates with an LDevID for a renewal would be strongly identified, and the Registrar could be programmed whether to return new format, or legacy CSR attributes.
-
-# Whether or not to Base64 encoding of results
-
-{{?RFC8951}} clarified that the csrattrs end point was to be Base64 encoded even though the HTTP transport was 8-bit clean.
-
-If this document establishes a new end point, then the new end point will not be base64 encoded according to current HTTP usage.
-
 # Examples
 
 ## RFC8994/ACP subjectAltName with specific otherName included
@@ -332,7 +263,7 @@ This may be desirable if the CA and EST server have different operators.
 
 # IANA Considerations
 
-None.
+No requests are made to IANA.
 
 # Acknowledgements
 
