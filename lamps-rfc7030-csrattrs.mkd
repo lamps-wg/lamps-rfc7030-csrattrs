@@ -36,14 +36,12 @@ author:
   email: dharkins@lounge.org
 
 normative:
-  BCP14: RFC8174
   RFC7030:
   RFC8994: ACP
   RFC8995: BRSKI
 
 informative:
   RFC8368:
-  RFC8295:
 
 --- abstract
 
@@ -65,11 +63,15 @@ As a result of some implementation challenges, it came to light that this partic
 
 Section 2.6 says that the CSR attributes "provide additional descriptive information that the EST server cannot access itself".
 
-After significant discussion, it has been determined that the {{RFC7030, section 4.5}} specification is sufficiently difficult to read that clarification is needed.
+After significant discussion, it has been determined that {{Section 4.5 of RFC7030}} specification is sufficiently difficult to read that clarification is needed.
 
 This document motivates the different use cases, and provides additional worked out examples.
 
 This document also updates section 4.5 to include revised ASN.1 that covers all uses and is backward compatible with the existing use.
+
+# Terminology
+
+{::boilerplate bcp14}
 
 # CSR Attributes Handling
 
@@ -108,125 +110,11 @@ The ASN.1 for CSR Attributes as defined in EST section 4.5.2 is:
    }
 ~~~
 
+A key part that was unclear is that extAttr above could be an entire
+Extension, as per {{Section 4.2 of RFC5280}}.
+This structure naturally includes both the extention ID, a critical bit, and the extension value.
 
-This would just add a value to the SEQUENCE:
-
-~~~~
-     OBJECT challengePassword
-     SEQUENCE
-       OBJECT subjectAltName
-       SET
-         OBJECT someACPgoo
-     SEQUENCE
-       OBJECT id-ecPublicKey
-       SET
-         OBJECT secp384r1
-         OBJECT ecdsa-with-SHA384
-~~~~
-
-For example:
-
-~~~~
-  0  30: SEQUENCE {
-  2  28:   SEQUENCE {
-  4   3:     OBJECT IDENTIFIER subjectAltName (2 5 29 17)
-  9  21:     SET {
- 11  19:       [1] {
- 13  17:         UTF8String 'hello@example.com'
-       :         }
-       :       }
-       :     }
-       :   }
-~~~~
-
-
-## Option three: explicit content for the key specification
-
-The following options support complete and unambiguous specification of
-
-* CSR ingredients optionally including values to use,
-* the type of the public key, which is given in the form of a public-key algorithm,
-* and the hash algorithm to use for the self-signature.
-
-CSR ingredients may be the subject DN, any X.509 extensions,
-and special attributes like a challenge password.
-
-For specifying the type of keys allowed in CSRs,
-they use a to-the-point `KeySpec` type.
-It can be defined for instance as
-
-~~~~
-   KeySpec ::= CHOICE {
-                   keyAlg AlgorithmIdentifier,
-                   rsaKeyLen INTEGER
-   }
-~~~~
-
-The `keyAlg` type use used to specify public-key alorithms
-and can include parameters, such as the name of an elliptic curve.
-The `rsaKeyLen` choice allows specifying the size of RSA keys,
-which it is not possible using values of type `AlgorithmIdentifier`.
-
-The `keySpec` could also be sequence of such specs,
-such that the server can give several key types from which the client can choose,
-e.g., EC keys on certain curves and/or RSA keys of certain sizes.
-
-Stick for syntactic backward compatibility with
-
-~~~~
-    CsrAttrs ::= SEQUENCE SIZE (0..MAX) OF AttrOrOID
-~~~~
-
-Each OID given in AttrOrOID must occur only once.
-
-Plain OIDs are used mostly for challengePassword.
-
-Attributes are used mostly for any X.509 extensions, subject DN, key spec, and hash alg,
-while defining new generally usable OIDs for
-
-* a subject DN    of type `Name`
-* a key spec      of type `KeySpec`
-* a hash alg spec of type `AlgorithmIdentifier`
-
-to be given on demand as attribute IDs of type `ATTRIBUTE.&id({IOSet})`.
-
-## Option four: explicit members for unique attributes
-
-Define a new and more to-the-point type, which does not require new OIDs:
-
-~~~~
-   CsrAttrs ::= SEQUENCE {
-        oids      SEQUENCE OF OBJECT IDENTIFIER,
-        attrs     SEQUENCE OF Attribute,
-        subject   [0] Name OPTIONAL,
-        keySpec   [1] KeySpec OPTIONAL,
-        hashAlg   [2] AlgorithmIdentifier OPTIONAL
-
-   }
-~~~~
-
-Each OID given in oids or attrs must occur only once.
-
-The oids are used mostly for requiring a challenge password.
-
-The atttrs are used mostly for requiring certain X.509 extensions.
-
-This is, typically just challengePassword and extensionRequest are used.
-
-## Option five: more specific structure, simpler extensions
-
-Define a new fully to-the-point type, which does not require any (direct) OIDs:
-
-~~~~
-   CsrAttrs ::= SEQUENCE {
-        subject               Name OPTIONAL,
-        extensions            SEQUENCE OF Extension,
-        challengePassword     BOOLEAN,
-        keySpec           [0] KeySpec OPTIONAL,
-        hashAlg           [1] AlgorithmIdentifier OPTIONAL
-
-   }
-~~~~
+With this understand, the needs of {{RFC8994}} and {{RFC8995}} are satisfied, however with a change to the bits on the wire.
 
 # Co-existence with existing implementations
 
