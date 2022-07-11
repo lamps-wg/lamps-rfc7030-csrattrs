@@ -1,4 +1,6 @@
 ---
+v: 3
+
 title: Clarification of RFC7030 CSR Attributes definition
 abbrev: CSRAttrs
 docname: draft-richardson-lamps-rfc7030-csrattrs-03
@@ -36,6 +38,7 @@ author:
   email: dharkins@lounge.org
 
 normative:
+  RFC5280:
   RFC7030:
   RFC8994: ACP
   RFC8995: BRSKI
@@ -91,28 +94,36 @@ The ASN.1 for CSR Attributes as defined in EST section 4.5.2 is:
 
 ## Revised/Simplified EST CSR Attributes Specification
 
+(XXX: This isn't really simpler, is it?)
+
 ~~~
    CsrAttrs ::= SEQUENCE SIZE (0..MAX) OF AttrOrOID
 
    AttrOrOID ::= CHOICE (oid OBJECT IDENTIFIER,
-                         attribute Attribute,
-                         value Value }
+                         attribute Attribute }
 
    Attribute { ATTRIBUTE:IOSet } ::= SEQUENCE {
         extType  ATTRIBUTE.&id({IOSet}),
         extAttr  SET SIZE(1..MAX) OF ATTRIBUTE.&Type({IOSet}{@type})
-   }
-
-   Value { ATTRIBUTE:IOSet } ::= SEQUENCE {
-        extType  ATTRIBUTE.&id({IOSet}),
-        type     ATTRIBUTE.&Type({IOSet}{@type}),
-        value    OCTET STRING
    }
 ~~~
 
 A key part that was unclear is that extAttr above could be an entire
 Extension, as per {{Section 4.2 of RFC5280}}.
 This structure naturally includes both the extention ID, a critical bit, and the extension value.
+
+~~~
+   Extensions  ::=  SEQUENCE SIZE (1..MAX) OF Extension
+
+   Extension  ::=  SEQUENCE  {
+        extnID      OBJECT IDENTIFIER,
+        critical    BOOLEAN DEFAULT FALSE,
+        extnValue   OCTET STRING
+                    -- contains the DER encoding of an ASN.1 value
+                    -- corresponding to the extension type identified
+                    -- by extnID
+        }
+~~~
 
 With this understand, the needs of {{RFC8994}} and {{RFC8995}} are satisfied, however with a change to the bits on the wire.
 
