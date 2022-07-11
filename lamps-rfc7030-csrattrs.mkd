@@ -133,7 +133,31 @@ With this understand, the needs of {{RFC8994}} and {{RFC8995}} are satisfied, ho
 
 ## RFC8994/ACP subjectAltName with specific otherName included
 
-TBD
+This is a dump in "dumpasn1" format of a CSR Attributes object which a specific otherName included.
+
+~~~
+  0  84: SEQUENCE {
+  2  82:   SEQUENCE {
+  4   3:     OBJECT IDENTIFIER TBD?
+  9  75:     SET {
+ 11  73:       SEQUENCE {
+ 13   3:         OBJECT IDENTIFIER subjectAltName (2 5 29 17)
+ 18   3:         [0] {
+ 20   1:           BOOLEAN TRUE
+       :           }
+ 23  61:         SEQUENCE {
+ 25  59:           [0] {
+ 27  57:             UTF8String
+       :               'rfc8994+fd739fc23c3440112233445500000000+@acp.ex'
+       :               'ample.com'
+       :             }
+       :           }
+       :         }
+       :       }
+       :     }
+       :   }
+
+~~~
 
 ## EST server requires public keys of a specific size
 
