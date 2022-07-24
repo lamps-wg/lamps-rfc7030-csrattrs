@@ -3,7 +3,7 @@ v: 3
 
 title: Clarification of RFC7030 CSR Attributes definition
 abbrev: CSRAttrs
-docname: draft-richardson-lamps-rfc7030-csrattrs-03
+docname: draft-richardson-lamps-rfc7030-csrattrs-04
 
 stand_alone: true
 
@@ -112,6 +112,8 @@ A key part that was unclear is that extAttr above could be an entire
 Extension, as per {{Section 4.2 of RFC5280}}.
 This structure naturally includes both the extention ID, a critical bit, and the extension value.
 
+The extType for such an extension would be "ExtensionRequest" (extReq), which is OID 1.2.840.113549.1.9.14.
+
 ~~~
    Extensions  ::=  SEQUENCE SIZE (1..MAX) OF Extension
 
@@ -136,18 +138,18 @@ With this understand, the needs of {{RFC8994}} and {{RFC8995}} are satisfied, ho
 This is a dump in "dumpasn1" format of a CSR Attributes object which a specific otherName included.
 
 ~~~
-  0  84: SEQUENCE {
-  2  82:   SEQUENCE {
-  4   3:     OBJECT IDENTIFIER TBD?
-  9  75:     SET {
- 11  73:       SEQUENCE {
- 13   3:         OBJECT IDENTIFIER subjectAltName (2 5 29 17)
- 18   3:         [0] {
- 20   1:           BOOLEAN TRUE
+  0  90: SEQUENCE {
+  2  88:   SEQUENCE {
+  4   9:     OBJECT IDENTIFIER extensionRequest (1 2 840 113549 1 9 14)
+ 15  75:     SET {
+ 17  73:       SEQUENCE {
+ 19   3:         OBJECT IDENTIFIER subjectAltName (2 5 29 17)
+ 24   3:         [0] {
+ 26   1:           BOOLEAN TRUE
        :           }
- 23  61:         SEQUENCE {
- 25  59:           [0] {
- 27  57:             UTF8String
+ 29  61:         SEQUENCE {
+ 31  59:           [0] {
+ 33  57:             UTF8String
        :               'rfc8994+fd739fc23c3440112233445500000000+@acp.ex'
        :               'ample.com'
        :             }
@@ -156,7 +158,6 @@ This is a dump in "dumpasn1" format of a CSR Attributes object which a specific 
        :       }
        :     }
        :   }
-
 ~~~
 
 ## EST server requires public keys of a specific size
