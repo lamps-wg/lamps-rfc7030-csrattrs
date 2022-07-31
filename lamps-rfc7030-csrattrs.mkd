@@ -50,7 +50,11 @@ informative:
 
 The Enrollment over Secure Transport (EST, RFC7030) is ambiguous in its specification of the CSR Attributes Response. This has resulted in implementation challenges and implementor confusion.
 
-This document updates RFC7030 (EST) and clarifies how the CSR Attributes Response can be used by an EST server to specify both CSR attribute OIDs and also CSR attribute values that the server expects the client to include in subsequent CSR request.
+This document updates RFC7030 (EST) and clarifies
+how the CSR Attributes Response can be used by an EST server to specify
+both CSR attribute OIDs and also CSR attribute values,
+in particular X.509 extension values,
+that the server expects the client to include in subsequent CSR request.
 
 --- middle
 
@@ -59,18 +63,25 @@ This document updates RFC7030 (EST) and clarifies how the CSR Attributes Respons
 Enrollment over Secure Transport {{RFC7030}} (EST) has been used in a wide variety of applications.
 In particular, {{RFC8994}} and {{RFC8995}} describe a way to use it in order to build out an autonomic control plane (ACP) {{RFC8368}}.
 
-The ACP requires that each node be given a very specific SubjectAltName.
-In the ACP specification, the solution was for the EST server to use section 2.6 of {{RFC7030}} to convey to the EST client the actual SubjectAltName that will end up in its certificate.
+The ACP requires that each node be given a very specific subjectAltName.
+In the ACP specification, the solution was for the EST server to use
+section 2.6 of {{RFC7030}} to convey to the EST client
+the actual subjectAltName that will end up in its certificate.
 
 As a result of some implementation challenges, it came to light that this particular way of using the CSR attributes was not universally agreed upon, and it was suggested that it went contrary to section 2.6.
 
-Section 2.6 says that the CSR attributes "provide additional descriptive information that the EST server cannot access itself".
+Section 2.6 says that the CSR attributes "can provide additional
+descriptive information that the EST server cannot access itself".
+This is extened to mention also values that the EST server demands to use.
 
-After significant discussion, it has been determined that {{Section 4.5 of RFC7030}} specification is sufficiently difficult to read that clarification is needed.
+After significant discussion, it has been determined that
+{{Section 4.5 of RFC7030}} specification is sufficiently difficult
+to read and ambiguous to interpret that clarification is needed.
 
 This document motivates the different use cases, and provides additional worked out examples.
 
-This document also updates section 4.5 to include revised ASN.1 that covers all uses and is backward compatible with the existing use.
+Also section 4.5.2 is extended to clarify the use of the existing ASN.1 syntax.
+This covers all uses and is fully backward compatible with the existing use.
 
 # Terminology
 
@@ -78,7 +89,20 @@ This document also updates section 4.5 to include revised ASN.1 that covers all 
 
 # CSR Attributes Handling
 
-## Current EST CSR Attributes Specification
+## Extensions to RFC 7030 section 2.6.
+
+Replace the second paragraph with the following text.
+
+   These attributes can provide additional descriptive information that
+   the EST server cannot access itself, such as the Media Access Control
+   (MAC) address of an interface of the EST client. The EST server can also
+   provide concrete values that it tells the client to include in the CSR,
+   such as a specific X.509 Subject Alternative Name extension. Moreover,
+   these attributes can indicate the kind of enrollment request, such as
+   a specific elliptic curve or a specific hash function that the client
+   is expected to use when generating the CSR.
+
+## Extensions to RFC 7030 section 4.5.2.
 
 The ASN.1 for CSR Attributes as defined in EST section 4.5.2 is:
 
@@ -92,27 +116,10 @@ The ASN.1 for CSR Attributes as defined in EST section 4.5.2 is:
         values SET SIZE(1..MAX) OF ATTRIBUTE.&Type({IOSet}{@type}) }
 ~~~
 
-## Revised/Simplified EST CSR Attributes Specification
+This remains unchanged, such that bits-on-the-wire compatibility is maintained.
 
-(XXX: This isn't really simpler, is it?)
-
-~~~
-   CsrAttrs ::= SEQUENCE SIZE (0..MAX) OF AttrOrOID
-
-   AttrOrOID ::= CHOICE (oid OBJECT IDENTIFIER,
-                         attribute Attribute }
-
-   Attribute { ATTRIBUTE:IOSet } ::= SEQUENCE {
-        extType  ATTRIBUTE.&id({IOSet}),
-        extAttr  SET SIZE(1..MAX) OF ATTRIBUTE.&Type({IOSet}{@type})
-   }
-~~~
-
-A key part that was unclear is that extAttr above could be an entire
-Extension, as per {{Section 4.2 of RFC5280}}.
-This structure naturally includes both the extention ID, a critical bit, and the extension value.
-
-The extType for such an extension would be "ExtensionRequest" (extReq), which is OID 1.2.840.113549.1.9.14.
+A key part that was unclear is that the 'values' field above can be an entire
+X.509 extension, as per {{Section 4.2 of RFC5280}}:
 
 ~~~
    Extensions  ::=  SEQUENCE SIZE (1..MAX) OF Extension
@@ -127,7 +134,24 @@ The extType for such an extension would be "ExtensionRequest" (extReq), which is
         }
 ~~~
 
-With this understand, the needs of {{RFC8994}} and {{RFC8995}} are satisfied, however with a change to the bits on the wire.
+
+This structure comprises of the OID of the specific X.509 extension (extnID),
+optionally the 'critical' bit, and the extension value (extnValue).
+
+(TODO: Do we want to allow an empty extnValue (which is of type OCTET STRING),
+which would mean that the client is told to include an X.509 extension
+of the given type and fill in the concrete value itself?)
+
+The OID to use for any such extension in the 'type' field above
+is extensionRequest, which has the numerical value 1.2.840.113549.1.9.14.
+
+With this understanding, the needs of {{RFC8994}} and {{RFC8995}} are satisfied
+with no change to the bits on the wire.
+
+(TODO: Note that this mechanism does not support telling the client to include
+in the CSR a specific subject DN, simply because there is no OID for this.
+I think we should better make this clear,
+or we have to define such an OID if setting a subject name should be supported.)
 
 # Co-existence with existing implementations
 
@@ -135,29 +159,25 @@ With this understand, the needs of {{RFC8994}} and {{RFC8995}} are satisfied, ho
 
 ## RFC8994/ACP subjectAltName with specific otherName included
 
-This is a dump in "dumpasn1" format of a CSR Attributes object which a specific otherName included.
+This is a CSR Attributes object with an X.509 subjectAltName extension
+that includes an example string value of type dNSName.
 
 ~~~
-  0  90: SEQUENCE {
-  2  88:   SEQUENCE {
-  4   9:     OBJECT IDENTIFIER extensionRequest (1 2 840 113549 1 9 14)
- 15  75:     SET {
- 17  73:       SEQUENCE {
- 19   3:         OBJECT IDENTIFIER subjectAltName (2 5 29 17)
- 24   3:         [0] {
- 26   1:           BOOLEAN TRUE
-       :           }
- 29  61:         SEQUENCE {
- 31  59:           [0] {
- 33  57:             UTF8String
-       :               'rfc8994+fd739fc23c3440112233445500000000+@acp.ex'
-       :               'ample.com'
-       :             }
-       :           }
-       :         }
-       :       }
-       :     }
-       :   }
+SEQUENCE {
+  SEQUENCE {
+    OBJECT IDENTIFIER extensionRequest (1 2 840 113549 1 9 14)
+    SET {
+      SEQUENCE {
+        OBJECT IDENTIFIER subjectAltName (2 5 29 17)
+        OCTET STRING, encapsulates {
+          SEQUENCE {
+            [2] 'domain.example'
+            }
+          }
+        }
+      }
+    }
+  }
 ~~~
 
 ## EST server requires public keys of a specific size
@@ -175,7 +195,7 @@ TBD
 
 # Security Considerations
 
-All security considertions from EST {{RFC7030}} section 6 are applicable.
+The security considerations from EST {{RFC7030}} section 6 are unchanged.
 
 ## Identity and Privacy Considerations
 
