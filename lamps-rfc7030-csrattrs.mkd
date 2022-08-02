@@ -147,6 +147,7 @@ There MUST be only one such attribute.
 
 The 'values' field of this attribute MUST contain a set with exactly one element,
 and this element MUST by of type Extensions.
+In each such Extensions sequence, an extnID OID MUST appear at most once.
 
 With this understanding, the needs of {{RFC8994}} and {{RFC8995}} are satisfied
 with no change to the bits on the wire.
@@ -191,9 +192,7 @@ SEQUENCE {
           }
         SEQUENCE {
           OBJECT IDENTIFIER subjectAltName (2 5 29 17)
-          [0] {
-            BOOLEAN TRUE
-            }
+          BOOLEAN TRUE
           OCTET STRING, encapsulates {
             SEQUENCE {
               [2] 'domain.example'
