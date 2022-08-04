@@ -118,8 +118,15 @@ The ASN.1 for CSR Attributes as defined in EST section 4.5.2 is:
 
 This remains unchanged, such that bits-on-the-wire compatibility is maintained.
 
-A key part that was unclear is that the 'values' field above can contain
-an entire sequence of X.509 extensions, as per {{Section 4.1 of RFC5280}}:
+Key parts that were unclear were which OID to use in the 'type' field and
+that the 'values' field can contain an entire sequence of X.509 extensions.
+
+The OID to use for such extensions in the 'type' field MUST be extensionRequest,
+which has the numerical value 1.2.840.113549.1.9.14.
+There MUST be only one such attribute.
+
+The 'values' field of this attribute MUST contain a set with exactly one element,
+and this element MUST by of type Extensions, as per {{Section 4.1 of RFC5280}}:
 
 ~~~
    Extensions  ::=  SEQUENCE SIZE (1..MAX) OF Extension
@@ -134,20 +141,14 @@ an entire sequence of X.509 extensions, as per {{Section 4.1 of RFC5280}}:
         }
 ~~~
 
-This structure comprises of the OID of the specific X.509 extension (extnID),
+In each such Extensions sequence, an extnID OID MUST appear at most once.
+
+An Extension comprises of the OID of the specific X.509 extension (extnID),
 optionally the 'critical' bit, and the extension value (extnValue).
 
 (TODO: Do we want to allow an empty extnValue (which is of type OCTET STRING),
 which would mean that the client is told to include an X.509 extension
 of the given type and fill in the concrete value itself?)
-
-The OID to use for any such extension in the 'type' field above
-MUST be extensionRequest, which has the numerical value 1.2.840.113549.1.9.14.
-There MUST be only one such attribute.
-
-The 'values' field of this attribute MUST contain a set with exactly one element,
-and this element MUST by of type Extensions.
-In each such Extensions sequence, an extnID OID MUST appear at most once.
 
 With this understanding, the needs of {{RFC8994}} and {{RFC8995}} are satisfied
 with no change to the bits on the wire.
