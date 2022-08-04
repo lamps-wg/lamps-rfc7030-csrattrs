@@ -165,11 +165,13 @@ or we have to define such an OID if setting a subject name should be supported.)
 
 # Examples
 
-## RFC8994/ACP subjectAltName with specific dNSName included
+## RFC8994/ACP subjectAltName with specific dNSName and other extensions included
 
-This is a CSR Attributes object with a critical X.509 subjectAltName
-extension that includes an example string value of type dNSName,
-as well as two non-critical basicConstraints and extKeyUsage extensions.
+This is a CSR Attributes object
+with two non-critical basicConstraints and extKeyUsage extensions
+and a critical X.509 subjectAltName extension that contains both
+an RFC8994/ACP Subject Alternative Name with a specific otherName
+and an example Subject Alternative Name value of type dNSName.
 
 ~~~
 SEQUENCE {
@@ -186,9 +188,9 @@ SEQUENCE {
         SEQUENCE {
           OBJECT IDENTIFIER extKeyUsage (2 5 29 37)
           OCTET STRING, encapsulates {
-           SEQUENCE {
+            SEQUENCE {
               OBJECT IDENTIFIER serverAuth (1 3 6 1 5 5 7 3 1)
-             }
+              }
             }
           }
         SEQUENCE {
@@ -196,6 +198,13 @@ SEQUENCE {
           BOOLEAN TRUE
           OCTET STRING, encapsulates {
             SEQUENCE {
+              [0] {
+                OBJECT IDENTIFIER '??? TODO'
+                [0] {
+                  UTF8String 'fd89b714f3db00000200000064000000'
+                             '+area51.research@acp.example.com'
+                  }
+                }
               [2] 'domain.example'
               }
             }
