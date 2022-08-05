@@ -25,5 +25,6 @@ version:
 
 clean:
 	-rm -f ${DRAFT}.xml
+	-rm csr.der csr.pem
 
 .PRECIOUS: ${DRAFT}.xml
