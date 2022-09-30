@@ -3,7 +3,7 @@ v: 3
 
 title: Clarification of RFC7030 CSR Attributes definition
 abbrev: CSRAttrs
-docname: draft-ietf-lamps-rfc7030-csrattrs-02
+docname: draft-ietf-lamps-rfc7030-csrattrs-03
 
 stand_alone: true
 
@@ -93,6 +93,7 @@ This covers all uses and is fully backward compatible with the existing use.
 
 Replace the second paragraph with the following text:
 
+~~~~
    These attributes can provide additional descriptive information that
    the EST server cannot access itself, such as the Media Access Control
    (MAC) address of an interface of the EST client. The EST server can also
@@ -101,6 +102,7 @@ Replace the second paragraph with the following text:
    these attributes can indicate the kind of enrollment request, such as
    a specific elliptic curve or a specific hash function that the client
    is expected to use when generating the CSR.
+~~~~
 
 ## Extensions to RFC 7030 section 4.5.2.
 
@@ -146,20 +148,8 @@ In each such Extensions sequence, an extnID OID MUST appear at most once.
 An Extension comprises of the OID of the specific X.509 extension (extnID),
 optionally the 'critical' bit, and the extension value (extnValue).
 
-(TODO: Do we want to allow an empty extnValue (which is of type OCTET STRING),
-which would mean that the client is told to include an X.509 extension
-of the given type and fill in the concrete value itself?)
-
 With this understanding, the needs of {{RFC8994}} and {{RFC8995}} are satisfied
 with no change to the bits on the wire.
-
-(TODO: Do we want to give the empty list of Extensions a specific meaning,
-such as, no X.509 extensions should be included in the CSR?)
-
-(TODO: Note that this mechanism does not support telling the client to include
-in the CSR a specific subject DN, simply because there is no OID for this.
-I think we should better make this clear,
-or we have to define such an OID if setting a subject name should be supported.)
 
 # Co-existence with existing implementations
 
