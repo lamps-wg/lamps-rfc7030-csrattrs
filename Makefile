@@ -31,7 +31,7 @@ clean:
 # this data is from ANIMAgus-Minerva's Fountain implementation, dumped by tests as
 #    tmp/csr_bulb1.csrattr.der
 example01.acp.csrattr.dump: example01.acp.csrattr.der
-	dumpasn1 -il example01.acp.csrattr.der >example01.acp.csrattr.dump
+	dumpasn1 -htl example01.acp.csrattr.der | sed -e's/ *$$//' >example01.acp.csrattr.dump
 
 example01.acp.csrattr.base64: example01.acp.csrattr.der
 	base64 example01.acp.csrattr.der >example01.acp.csrattr.b64
