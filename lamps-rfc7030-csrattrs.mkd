@@ -165,7 +165,15 @@ or we have to define such an OID if setting a subject name should be supported.)
 
 # Examples
 
-## RFC8994/ACP subjectAltName with specific otherName and other extensions included
+## RFC8994/ACP subjectAltName with specific otherName {#acpNodeName}
+
+This is a CSR Attributes object that might be created by an {{RFC8995}} Registrar that is asking for {{RFC8994}} AcpNodeName format otherNames.
+
+~~~~
+{::include example01.acp.csrattr.dump}
+~~~~
+
+## Specific SubjectAltName example with other extensions
 
 This is a CSR Attributes object
 with two non-critical basicConstraints and extKeyUsage extensions
@@ -254,3 +262,14 @@ TODO
 
 --- back
 
+# Raw DER for examples
+
+This section contains Base64 versions of all examples that were decoded.
+
+## Raw RFC8994/ACP subjectAltName with specific otherName
+
+example in {{acpNodeName}}
+
+~~~~
+{::include example01.acp.csrattr.b64}
+~~~~

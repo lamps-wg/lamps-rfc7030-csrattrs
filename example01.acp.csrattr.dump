@@ -1,0 +1,19 @@
+  0 100: SEQUENCE {
+  2  98:  SEQUENCE {
+  4   9:   OBJECT IDENTIFIER extensionRequest (1 2 840 113549 1 9 14)
+       :    (PKCS #9 via CRMF)
+ 15  85:   SET {
+ 17  83:    SEQUENCE {
+ 19   3:     OBJECT IDENTIFIER subjectAltName (2 5 29 17)
+       :      (X.509 extension)
+ 24   1:     BOOLEAN TRUE
+ 27  73:     OCTET STRING
+       :      A0 47 30 45 06 08 2B 06 01 05 05 07 08 0A 0C 39
+       :      72 66 63 38 39 39 34 2B 66 64 37 33 39 66 63 32
+       :      33 63 33 34 34 30 31 31 32 32 33 33 34 34 35 35
+       :      30 30 30 30 30 30 30 30 2B 40 61 63 70 2E 65 78
+       :      61 6D 70 6C 65 2E 63 6F 6D
+       :      }
+       :     }
+       :    }
+       :   }
