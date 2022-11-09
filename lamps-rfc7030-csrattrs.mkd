@@ -72,7 +72,7 @@ As a result of some implementation challenges, it came to light that this partic
 
 Section 2.6 says that the CSR attributes "can provide additional
 descriptive information that the EST server cannot access itself".
-This is extened to mention also values that the EST server demands to use.
+This is extended to mention also values that the EST server demands to use.
 
 After significant discussion, it has been determined that
 {{Section 4.5 of RFC7030}} specification is sufficiently difficult
@@ -80,7 +80,7 @@ to read and ambiguous to interpret that clarification is needed.
 
 This document motivates the different use cases, and provides additional worked out examples.
 
-Also section 4.5.2 is extended to clarify the use of the existing ASN.1 syntax.
+Also, section 4.5.2 is extended to clarify the use of the existing ASN.1 syntax.
 This covers all uses and is fully backward compatible with the existing use.
 
 # Terminology
@@ -91,7 +91,7 @@ This covers all uses and is fully backward compatible with the existing use.
 
 ## Extensions to RFC 7030 section 2.6.
 
-Replace the second paragraph with the following text.
+Replace the second paragraph with the following text:
 
    These attributes can provide additional descriptive information that
    the EST server cannot access itself, such as the Media Access Control
@@ -104,7 +104,7 @@ Replace the second paragraph with the following text.
 
 ## Extensions to RFC 7030 section 4.5.2.
 
-The ASN.1 for CSR Attributes as defined in EST section 4.5.2 is:
+The ASN.1 for CSR Attributes as defined in EST section 4.5.2 is as follows:
 
 ~~~
    CsrAttrs ::= SEQUENCE SIZE (0..MAX) OF AttrOrOID
