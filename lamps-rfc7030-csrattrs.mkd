@@ -256,14 +256,3 @@ TODO
 
 --- back
 
-# Raw DER for examples
-
-This section contains Base64 versions of all examples that were decoded.
-
-## Raw RFC8994/ACP subjectAltName with specific otherName
-
-example in {{acpNodeName}}
-
-~~~~
-{::include example01.acp.csrattr.b64}
-~~~~
