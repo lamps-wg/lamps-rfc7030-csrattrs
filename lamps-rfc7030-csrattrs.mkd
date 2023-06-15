@@ -123,9 +123,9 @@ This remains unchanged, such that bits-on-the-wire compatibility is maintained.
 Key parts that were unclear were which OID to use in the 'type' field and
 that the 'values' field can contain an entire sequence of X.509 extensions.
 
-The OID to use for such extensions in the 'type' field MUST be extensionRequest,
+The OID to use for such attributes in the 'type' field MUST be extensionRequest,
 which has the numerical value 1.2.840.113549.1.9.14.
-There MUST be only one such attribute.
+There MUST be only one such
 
 The 'values' field of this attribute MUST contain a set with exactly one element,
 and this element MUST by of type Extensions, as per {{Section 4.1 of RFC5280}}:
@@ -155,12 +155,29 @@ with no change to the bits on the wire.
 
 # Examples
 
+Each example has a high-level (english) explanation of what is expected.
+Some mapping back to the Attribute and Extension definitions above are included.
+The base64 encode DER is then shown.
+The output of "dumpasn1" is then provided to detail what the contents are.
+
 ## RFC8994/ACP subjectAltName with specific otherName {#acpNodeName}
 
-This is a CSR Attributes object that might be created by an {{RFC8995}} Registrar that is asking for {{RFC8994}} AcpNodeName format otherNames.
+A single subjectAltName extension is specified in a single Extension attribute.
+This is what might be created by an {{RFC8995}} Registrar that is asking for {{RFC8994}} AcpNodeName format otherNames.
+
+### Base64 encoded example
+
+~~~~ base64
+{::include examples/realistic-acp.csrattr.b64}
+~~~~
+{: sourcecode-markers="true" sourcecode-name="realistic-acp.csrattr”}
+
+### ASN.1 DUMP output
+
+There is a single subjectAltName Extension with an Attribute with Extension type.
 
 ~~~~
-{::include example01.acp.csrattr.dump}
+{::include examples/realistic-acp.csrattr.dump}
 ~~~~
 
 ## Specific SubjectAltName example with other extensions

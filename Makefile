@@ -1,7 +1,8 @@
 DRAFT:=lamps-rfc7030-csrattrs
 VERSION:=$(shell ./getver ${DRAFT}.mkd )
-EXAMPLES=example01.acp.csrattr.dump
-EXAMPLES+=example01.acp.csrattr.base64
+EXAMPLES=
+EXAMPLES+=examples/realistic-acp.csrattr.b64
+EXAMPLES+=examples/realistic-acp.csrattr.dump
 
 ${DRAFT}-${VERSION}.txt: ${DRAFT}.txt
 	cp ${DRAFT}.txt ${DRAFT}-${VERSION}.txt
@@ -26,14 +27,20 @@ version:
 
 clean:
 	-rm -f ${DRAFT}.xml
-	-rm csr.der csr.pem
+
+examples: ${EXAMPLES}
 
 # this data is from ANIMAgus-Minerva's Fountain implementation, dumped by tests as
 #    tmp/csr_bulb1.csrattr.der
-example01.acp.csrattr.dump: example01.acp.csrattr.der
-	dumpasn1 -htl example01.acp.csrattr.der | sed -e's/ *$$//' >example01.acp.csrattr.dump
+examples/%.csrattr.dump: examples/%.csrattr.der
+	dumpasn1 -htl $< | sed -e's/ *$$//' >$@
 
-example01.acp.csrattr.base64: example01.acp.csrattr.der
-	base64 example01.acp.csrattr.der >example01.acp.csrattr.b64
+examples/%.csrattr.b64:  examples/%.csrattr.der
+	base64 --wrap=48 $< > $@
+
+update:
+	mkdir -p examples
+	cp /corp/projects/pandora/fountain/tmp/realisticACP.der examples/realistic-acp.csrattr.der
 
 .PRECIOUS: ${DRAFT}.xml
+
