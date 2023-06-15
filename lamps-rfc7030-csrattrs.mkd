@@ -125,7 +125,7 @@ that the 'values' field can contain an entire sequence of X.509 extensions.
 
 The OID to use for such attributes in the 'type' field MUST be extensionRequest,
 which has the numerical value 1.2.840.113549.1.9.14.
-There MUST be only one such
+There MUST be only one such Attribute.
 
 The 'values' field of this attribute MUST contain a set with exactly one element,
 and this element MUST by of type Extensions, as per {{Section 4.1 of RFC5280}}:
@@ -230,6 +230,25 @@ A single subjectAltName extension is specified in a single Extension attribute.
 {::include examples/potato-example.csrattr.dump}
 ~~~~
 
+## A second example of EST server requires a specific subjectAltName extension
+
+A single subjectAltName extension is specified in a single Extension attribute.
+
+### Base64 encoded example
+
+~~~~ base64
+{::include examples/corey-example.csrattr.b64}
+~~~~
+{: sourcecode-markers="true" sourcecode-name="corey-example.csrattr”}
+
+### ASN.1 DUMP output
+
+1. An extensionRequest container with a subjectAltName value containing the name
+
+~~~~
+{::include examples/corey-example.csrattr.dump}
+~~~~
+
 
 # Security Considerations
 
@@ -249,7 +268,7 @@ No requests are made to IANA.
 
 # Acknowledgements
 
-TODO
+Corey Bonnell crafted example02 using a different tool, and this helped debug other running code.
 
 # Changelog
 
