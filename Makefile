@@ -3,6 +3,8 @@ VERSION:=$(shell ./getver ${DRAFT}.mkd )
 EXAMPLES=
 EXAMPLES+=examples/realistic-acp.csrattr.b64
 EXAMPLES+=examples/realistic-acp.csrattr.dump
+EXAMPLES+=examples/rfc7030-example01.csrattr.b64
+EXAMPLES+=examples/rfc7030-example01.csrattr.dump
 
 ${DRAFT}-${VERSION}.txt: ${DRAFT}.txt
 	cp ${DRAFT}.txt ${DRAFT}-${VERSION}.txt
