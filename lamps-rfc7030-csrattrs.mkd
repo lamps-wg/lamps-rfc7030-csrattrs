@@ -205,17 +205,30 @@ In this example, taken from {{RFC7030}}, a few different attributes are included
 {::include examples/rfc7030-example01.csrattr.dump}
 ~~~~
 
-## EST server requires public keys of a specific size
+## EST server requires a specific subjectAltName extension
 
-TBD
+A single subjectAltName extension is specified in a single Extension attribute.
 
-## EST server requires a public key of a specific algorithm/curve
+### Base64 encoded example
 
-TBD
+~~~~ base64
+{::include examples/potato-example.csrattr.b64}
+~~~~
+{: sourcecode-markers="true" sourcecode-name="rfc7030-example01.csrattr”}
 
-## EST server requires a specific extension to be present
+### ASN.1 DUMP output
 
-TBD
+1. The challengePassword attribute is included to indicate that the CSR should included this value.
+
+2. An ecPublicKey attribute is provided with the value secp384r1 to indicate what kind of key should be submitted.
+
+3. An extensionRequest container with a subjectAltName value containing the name potato@example.com
+
+4. The ecdsaWithSHA384 OID is included to indicate what kind of hash is expected to be used with the ecPublicKey provided.
+
+~~~~
+{::include examples/potato-example.csrattr.dump}
+~~~~
 
 
 # Security Considerations

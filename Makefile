@@ -5,6 +5,8 @@ EXAMPLES+=examples/realistic-acp.csrattr.b64
 EXAMPLES+=examples/realistic-acp.csrattr.dump
 EXAMPLES+=examples/rfc7030-example01.csrattr.b64
 EXAMPLES+=examples/rfc7030-example01.csrattr.dump
+EXAMPLES+=examples/potato-example.csrattr.b64
+EXAMPLES+=examples/potato-example.csrattr.dump
 
 ${DRAFT}-${VERSION}.txt: ${DRAFT}.txt
 	cp ${DRAFT}.txt ${DRAFT}-${VERSION}.txt
@@ -43,6 +45,7 @@ examples/%.csrattr.b64:  examples/%.csrattr.der
 update:
 	mkdir -p examples
 	cp /corp/projects/pandora/fountain/tmp/realisticACP.der examples/realistic-acp.csrattr.der
+	cp /corp/projects/pandora/fountain/tmp/potato-csr.der   examples/potato-example.csrattr.der
 
 .PRECIOUS: ${DRAFT}.xml
 
