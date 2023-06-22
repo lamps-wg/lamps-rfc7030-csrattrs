@@ -72,7 +72,7 @@ As a result of some implementation challenges, it came to light that this partic
 
 Section 2.6 says that the CSR attributes "can provide additional
 descriptive information that the EST server cannot access itself".
-This is extended to mention also values that the EST server demands to use.
+This is extended to describe how the EST server can provide values that it demands to use.
 
 After significant discussion, it has been determined that
 {{Section 4.5 of RFC7030}} specification is sufficiently difficult
@@ -81,7 +81,7 @@ to read and ambiguous to interpret that clarification is needed.
 This document motivates the different use cases, and provides additional worked out examples.
 
 Also, section 4.5.2 is extended to clarify the use of the existing ASN.1 syntax.
-This covers all uses and is fully backward compatible with the existing use.
+This covers all uses and is fully backward compatible with existing use.
 
 # Terminology
 
@@ -99,14 +99,15 @@ Replace the second paragraph with the following text:
    (MAC) address of an interface of the EST client. The EST server can also
    provide concrete values that it tells the client to include in the CSR,
    such as a specific X.509 Subject Alternative Name extension. Moreover,
-   these attributes can indicate the kind of enrollment request, such as
-   a specific elliptic curve or a specific hash function that the client
+   these attributes can indicate the type of the included public key
+   or which crypto algorithms to use for the self-signature,
+   such as a specific elliptic curve or a specific hash function that the client
    is expected to use when generating the CSR.
 ~~~~
 
 ## Extensions to RFC 7030 section 4.5.2.
 
-The ASN.1 for CSR Attributes as defined in EST section 4.5.2 is as follows:
+The ASN.1 syntax for CSR Attributes as defined in EST section 4.5.2 is as follows:
 
 ~~~
    CsrAttrs ::= SEQUENCE SIZE (0..MAX) OF AttrOrOID
@@ -143,10 +144,11 @@ and this element MUST by of type Extensions, as per {{Section 4.1 of RFC5280}}:
         }
 ~~~
 
-In each such Extensions sequence, an extnID OID MUST appear at most once.
-
-An Extension comprises of the OID of the specific X.509 extension (extnID),
+An Extension comprises the OID of the specific X.509 extension (extnID),
 optionally the 'critical' bit, and the extension value (extnValue).
+
+An Extensions structure, which is a sequence of elements of type Extension,
+MUST NOT include more than one element with a particiular extnID.
 
 With this understanding, the needs of {{RFC8994}} and {{RFC8995}} are satisfied
 with no change to the bits on the wire.
@@ -155,9 +157,9 @@ with no change to the bits on the wire.
 
 # Examples
 
-Each example has a high-level (english) explanation of what is expected.
+Each example has a high-level (English) explanation of what is expected.
 Some mapping back to the Attribute and Extension definitions above are included.
-The base64 encode DER is then shown.
+The base64 DER encoding is then shown.
 The output of "dumpasn1" is then provided to detail what the contents are.
 
 ## RFC8994/ACP subjectAltName with specific otherName {#acpNodeName}
@@ -193,13 +195,13 @@ In this example, taken from {{RFC7030}}, a few different attributes are included
 
 ### ASN.1 DUMP output
 
-1. The challengePassword attribute is included to indicate that the CSR should included this value.
+1. The challengePassword attribute is included to indicate that the CSR should include this value.
 
 2. An ecPublicKey attribute is provided with the value secp384r1 to indicate what kind of key should be submitted.
 
-3. An extensionRequest container with an OID 1.3.6.1.1.1.1.22 (macAddress), but without a value, to indicate that the CSR should include an extensionRequest with this value.
+3. An extensionRequest container with an OID 1.3.6.1.1.1.1.22 (macAddress), but without a value, to indicate that the CSR should include an X.509v3 extension with this value.
 
-4. The ecdsaWithSHA384 OID is included to indicate what kind of hash is expected to be used with the ecPublicKey provided.
+4. The ecdsaWithSHA384 OID is included to indicate what kind of hash is expected to be used for the self-signature of the PCKS#10 CSR structure.
 
 ~~~~
 {::include examples/rfc7030-example01.csrattr.dump}
@@ -207,7 +209,8 @@ In this example, taken from {{RFC7030}}, a few different attributes are included
 
 ## EST server requires a specific subjectAltName extension
 
-A single subjectAltName extension is specified in a single Extension attribute.
+This example is the same as the previous one except that instead of the OID
+for a macAddress, a subjectAltName is specified as the only Extension element.
 
 ### Base64 encoded example
 
@@ -218,13 +221,13 @@ A single subjectAltName extension is specified in a single Extension attribute.
 
 ### ASN.1 DUMP output
 
-1. The challengePassword attribute is included to indicate that the CSR should included this value.
+1. The challengePassword attribute is included to indicate that the CSR should include this value.
 
 2. An ecPublicKey attribute is provided with the value secp384r1 to indicate what kind of key should be submitted.
 
 3. An extensionRequest container with a subjectAltName value containing the name potato@example.com
 
-4. The ecdsaWithSHA384 OID is included to indicate what kind of hash is expected to be used with the ecPublicKey provided.
+4. The ecdsaWithSHA384 OID is included to indicate what kind of hash is expected to be used for the self-signature of the PCKS#10 CSR structure.
 
 ~~~~
 {::include examples/potato-example.csrattr.dump}
