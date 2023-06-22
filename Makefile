@@ -7,8 +7,8 @@ EXAMPLES+=examples/rfc7030-example01.csrattr.b64
 EXAMPLES+=examples/rfc7030-example01.csrattr.dump
 EXAMPLES+=examples/potato-example.csrattr.b64
 EXAMPLES+=examples/potato-example.csrattr.dump
-EXAMPLES+=examples/corey-example.csrattr.b64
-EXAMPLES+=examples/corey-example.csrattr.dump
+# EXAMPLES+=examples/corey-example.csrattr.b64
+# EXAMPLES+=examples/corey-example.csrattr.dump
 
 ${DRAFT}-${VERSION}.txt: ${DRAFT}.txt
 	cp ${DRAFT}.txt ${DRAFT}-${VERSION}.txt

@@ -233,6 +233,8 @@ for a macAddress, a subjectAltName is specified as the only Extension element.
 {::include examples/potato-example.csrattr.dump}
 ~~~~
 
+<!--
+commented out as it equals the first example:
 ## A second example of EST server requires a specific subjectAltName extension
 
 A single subjectAltName extension is specified in a single Extension attribute.
@@ -240,7 +242,7 @@ A single subjectAltName extension is specified in a single Extension attribute.
 ### Base64 encoded example
 
 ~~~~ base64
-{::include examples/corey-example.csrattr.b64}
+{:: include examples/corey-example.csrattr.b64}
 ~~~~
 {: sourcecode-markers="true" sourcecode-name="corey-example.csrattr”}
 
@@ -249,9 +251,9 @@ A single subjectAltName extension is specified in a single Extension attribute.
 1. An extensionRequest container with a subjectAltName value containing the name
 
 ~~~~
-{::include examples/corey-example.csrattr.dump}
+{:: include examples/corey-example.csrattr.dump}
 ~~~~
-
+-->
 
 # Security Considerations
 
