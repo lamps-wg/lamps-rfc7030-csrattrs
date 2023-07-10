@@ -233,27 +233,24 @@ for a macAddress, a subjectAltName is specified as the only Extension element.
 {::include examples/potato-example.csrattr.dump}
 ~~~~
 
-<!--
-commented out as it equals the first example:
-## A second example of EST server requires a specific subjectAltName extension
+## Require a public key of a specific size
 
-A single subjectAltName extension is specified in a single Extension attribute.
+Gimme a CSR with an RSA key that's 4096 bits and sign it with sha256
 
 ### Base64 encoded example
 
 ~~~~ base64
-{:: include examples/corey-example.csrattr.b64}
+{:: include examples/harkins01.csrattr.b64}
 ~~~~
-{: sourcecode-markers="true" sourcecode-name="corey-example.csrattr”}
+{: sourcecode-markers="true" sourcecode-name="harkins01.csrattr”}
 
 ### ASN.1 DUMP output
 
-1. An extensionRequest container with a subjectAltName value containing the name
+1. Provide a CSR with an RSA key that's 4096 bits and sign it with sha256
 
 ~~~~
-{:: include examples/corey-example.csrattr.dump}
+{:: include examples/harkins01.csrattr.dump}
 ~~~~
--->
 
 # Security Considerations
 

@@ -1,0 +1,20 @@
+    <30 29>
+  0  41: SEQUENCE {
+    <06 09>
+  2   9:   OBJECT IDENTIFIER challengePassword (1 2 840 113549 1 9 7)
+       :     (PKCS #9)
+    <30 11>
+ 13  17:   SEQUENCE {
+    <06 09>
+ 15   9:     OBJECT IDENTIFIER rsaEncryption (1 2 840 113549 1 1 1)
+       :       (PKCS #1)
+    <31 04>
+ 26   4:     SET {
+    <02 02>
+ 28   2:       INTEGER 4096
+       :       }
+       :     }
+    <06 09>
+ 32   9:   OBJECT IDENTIFIER sha256WithRSAEncryption (1 2 840 113549 1 1 11)
+       :     (PKCS #1)
+       :   }
