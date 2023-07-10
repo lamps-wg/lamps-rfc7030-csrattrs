@@ -9,6 +9,10 @@ EXAMPLES+=examples/potato-example.csrattr.b64
 EXAMPLES+=examples/potato-example.csrattr.dump
 EXAMPLES+=examples/harkins01.csrattr.b64
 EXAMPLES+=examples/harkins01.csrattr.dump
+EXAMPLES+=examples/harkins02.csrattr.b64
+EXAMPLES+=examples/harkins02.csrattr.dump
+EXAMPLES+=examples/harkins03.csrattr.b64
+EXAMPLES+=examples/harkins03.csrattr.dump
 # EXAMPLES+=examples/corey-example.csrattr.dump
 
 ${DRAFT}-${VERSION}.txt: ${DRAFT}.txt

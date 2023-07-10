@@ -235,12 +235,12 @@ for a macAddress, a subjectAltName is specified as the only Extension element.
 
 ## Require a public key of a specific size
 
-Gimme a CSR with an RSA key that's 4096 bits and sign it with sha256
+The CSR requires a public key of a specific size
 
 ### Base64 encoded example
 
 ~~~~ base64
-{:: include examples/harkins01.csrattr.b64}
+{::include examples/harkins01.csrattr.b64}
 ~~~~
 {: sourcecode-markers="true" sourcecode-name="harkins01.csrattr”}
 
@@ -249,7 +249,49 @@ Gimme a CSR with an RSA key that's 4096 bits and sign it with sha256
 1. Provide a CSR with an RSA key that's 4096 bits and sign it with sha256
 
 ~~~~
-{:: include examples/harkins01.csrattr.dump}
+{::include examples/harkins01.csrattr.dump}
+~~~~
+
+## Require a public key of a specific curve
+
+The CSR requires a public key with a specific curve
+
+
+### Base64 encoded example
+
+~~~~ base64
+{::include examples/harkins02.csrattr.b64}
+~~~~
+{: sourcecode-markers="true" sourcecode-name="harkins02.csrattr”}
+
+### ASN.1 DUMP output
+
+Provide a CSR with an ECC key from p384, include your serial number, and
+sign it with sha384.
+
+~~~~
+{::include examples/harkins02.csrattr.dump}
+~~~~
+
+## Require a specific extension
+
+The CSR is required to have an EC key, to include a serial number,
+a friendly name, favorite drink, and be signed with SHA512.
+
+### Base64 encoded example
+
+~~~~ base64
+{::include examples/harkins03.csrattr.b64}
+~~~~
+{: sourcecode-markers="true" sourcecode-name="harkins03.csrattr”}
+
+### ASN.1 DUMP output
+
+Provide a CSR with an EC key from sha521, include your serial number,
+friendly name, and favorite drink, and sign it with sha512
+
+~~~~
+{::include examples/harkins03.csrattr.dump}
 ~~~~
 
 # Security Considerations
