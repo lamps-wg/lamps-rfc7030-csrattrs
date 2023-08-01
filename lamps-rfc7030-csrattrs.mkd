@@ -153,6 +153,29 @@ MUST NOT include more than one element with a particiular extnID.
 With this understanding, the needs of {{RFC8994}} and {{RFC8995}} are satisfied
 with no change to the bits on the wire.
 
+## Alternative: Use of CSR templates
+
+{{RFC8295, Appendix B}} suggests an alternative for the piecemeal specification of attributes that {{RFC7030}} documented.
+Instead, a CSR object is returned with various fields filled out, and other fields waiting to be filled in.
+This is also the method suggested by the CMP XYZ MECHANISM.
+
+~~~~
+    CertificationRequest ::= SEQUENCE {
+        certificationRequestInfo CertificationRequestInfo,
+        signatureAlgorithm AlgorithmIdentifier{{ SignatureAlgorithms }},
+        signature          BIT STRING
+    }
+    CertificationRequestInfo ::= SEQUENCE {
+        version       INTEGER { v1(0) } (v1,...),
+        subject       Name,
+        subjectPKInfo SubjectPublicKeyInfo{{ PKInfoAlgorithms }},
+        attributes    [0] Attributes{{ CRIAttributes }}
+        }
+~~~~
+
+The entire CSR is included as a new Attribute valid with OID TBD.
+
+
 # Co-existence with existing implementations
 
 # Examples
