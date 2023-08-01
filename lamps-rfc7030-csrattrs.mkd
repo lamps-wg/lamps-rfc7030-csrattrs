@@ -170,6 +170,7 @@ This is also the method defined CMP Update {{[I-D.ietf-lamps-cmp-updates}} and t
 
 The CertificationRequestInfo is included as a new Attribute in the CsrAttrs elements sequence.
  It has the type OID TBD.  This attribute MUST be the only element.  
+ Legacy servers MAY continue to use the {{RFC7030}} style piecemeal attribute/value pairs, as long as this new attribute is not also used.
  
  The use of the CertificationRequestInfo avoids a useless fake signature in the CSR object.
 The version code is always v1 (0). As shown in the example below, any empty values in the subject DN, and in any included X509v3 extensions are expected to be filled in by the client.
