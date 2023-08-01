@@ -160,11 +160,6 @@ Instead, a CSR object is returned with various fields filled out, and other fiel
 This is also the method suggested by the CMP XYZ MECHANISM.
 
 ~~~~
-    CertificationRequest ::= SEQUENCE {
-        certificationRequestInfo CertificationRequestInfo,
-        signatureAlgorithm AlgorithmIdentifier{{ SignatureAlgorithms }},
-        signature          BIT STRING
-    }
     CertificationRequestInfo ::= SEQUENCE {
         version       INTEGER { v1(0) } (v1,...),
         subject       Name,
