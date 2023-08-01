@@ -155,9 +155,9 @@ with no change to the bits on the wire.
 
 ## Alternative: Use of CSR templates
 
-{{RFC8295, Appendix B}} suggests an alternative for the piecemeal specification of attributes that {{RFC7030}} documented.
+{{?RFC8295, Appendix B}} suggests an alternative for the piecemeal specification of attributes that {{RFC7030}} documented.
 Instead, a CSR object is returned with various fields filled out, and other fields waiting to be filled in.
-This is also the method defined CMP Update {{[I-D.ietf-lamps-cmp-updates}} and the Lightweight CMP profile {{I-D.ietf-lamps-lightweight-cmp-profile, Section 4.3.3}}, which uses a CSR template in CRMF.
+This is also the method defined CMP Update {{?I-D.ietf-lamps-cmp-updates}} and the Lightweight CMP profile {{?I-D.ietf-lamps-lightweight-cmp-profile, Section 4.3.3}}, which uses a CSR template in CRMF.
 
 ~~~~
     CertificationRequestInfo ::= SEQUENCE {
