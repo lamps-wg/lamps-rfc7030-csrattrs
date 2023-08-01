@@ -168,7 +168,10 @@ This is also the method defined CMP Update {{[I-D.ietf-lamps-cmp-updates}} and t
         }
 ~~~~
 
-The entire CSR is included as a new Attribute valid with OID TBD.
+The CertificationRequestInfo is included as a new Attribute valid with OID TBD.  This avoids a useless fake signature in the CSR object.
+The version code is always v1 (0). As shown in the example below, any empty values in the subject DN, and in any included X509v3 extensions are expected to be filled in by the client.
+
+The SubjectPublicKeyInfo field must be present, but it MUST have an empty bit string for the key, as the server does not know what key will be used.  The server MAY specify (in the OID), the type of the key to use, but otherwise the OID type MUST be NULL.
 
 
 # Co-existence with existing implementations
