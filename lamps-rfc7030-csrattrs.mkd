@@ -153,7 +153,7 @@ MUST NOT include more than one element with a particiular extnID.
 With this understanding, the needs of {{RFC8994}} and {{RFC8995}} are satisfied
 with no change to the bits on the wire.
 
-## Alternative: Use of CSR templates
+## Alternative: Use of CSR templates {#csrtemplate}
 
 {{?RFC8295, Appendix B}} suggests an alternative for the piecemeal specification of attributes that {{RFC7030}} documented.
 Instead, a CSR object is returned with various fields filled out, and other fields waiting to be filled in.
@@ -169,7 +169,15 @@ This is also the method defined CMP Update {{?I-D.ietf-lamps-cmp-updates}} and t
 ~~~~
 
 The CertificationRequestInfo is included as a new Attribute in the CsrAttrs elements sequence.
- It has the type OID TBD.
+
+This new attribute is identified by the OID TBD.
+
+~~~~
+    id-aa-certificationRequestInfoTemplate OBJECT IDENTIFIER ::= {
+        id-aa TBD
+    }
+~~~~
+
  Legacy servers MAY continue to use the {{RFC7030}} style piecemeal attribute/value pairs, and MAY also include the template style described here.
  Clients which understand both MUST use the template only, and ignore all other CSRattrs elements.  Older clients will ignore this new element.
 
@@ -335,7 +343,9 @@ This may be desirable if the CA and EST server have different operators.
 
 # IANA Considerations
 
-No requests are made to IANA.
+IANA is asked to allocate a new Object Identifier from the SMI Security for S/MIME Attributes (1.2.840.113549.1.9.16.2) registry at: https://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml#security-smime-2
+as explained in section {{csrtemplate}}.
+
 
 # Acknowledgements
 
