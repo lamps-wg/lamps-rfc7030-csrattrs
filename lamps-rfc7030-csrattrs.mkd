@@ -190,7 +190,7 @@ Instead, an entire CSR object is returned with various fields filled
 out, and other fields waiting to be filled in, in a pKCS7PDU attribute.
 In the suggested approach, the pKCS7PDU attribute includes a Full PKI
 Data content type {{RFC5272}} and that in turn includes a CSR or CRMF
-formatted request; see {{RFC62668}} Sections 5 and 9, respectively.
+formatted request; see {{RFC6268}} Sections 5 and 9, respectively.
 
 The drawback to this approach, particularly for the CSR, is that some
 required fields are "faked"; specifically, the `signature` field on
