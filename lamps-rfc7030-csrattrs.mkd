@@ -38,7 +38,9 @@ author:
   email: dharkins@lounge.org
 
 normative:
+  RFC5272:
   RFC5280:
+  RFC5652:
   RFC5911:
   RFC5912:
   RFC6268:
@@ -132,7 +134,7 @@ Replace the second paragraph with the following text:
    is expected to use when generating the CSR.
 ~~~~
 
-## Extensions to RFC 7030 section 4.5.2.
+## Extensions to RFC 7030 section 4.5.2. {#csrattrs}
 
 The ASN.1 syntax for CSR Attributes as defined in EST section 4.5.2 is as follows:
 
@@ -182,42 +184,63 @@ with no change to the bits on the wire.
 
 ## Alternative: Use of CSR templates {#csrtemplate}
 
-{{?RFC8295, Appendix B}} suggests an alternative for the piecemeal specification of attributes that {{RFC7030}} documented.
-Instead, a CSR object is returned with various fields filled out, and other fields waiting to be filled in.
-This is also the method defined CMP Update {{?I-D.ietf-lamps-cmp-updates}} and the Lightweight CMP profile {{?I-D.ietf-lamps-lightweight-cmp-profile, Section 4.3.3}}, which uses a CSR template in CRMF.
+{{?RFC8295, Appendix B}} suggests an alternative that avoids the
+piecemeal inclusion of attributes that {{RFC7030}} documented.
+Instead, an entire CSR object is returned with various fields filled
+out, and other fields waiting to be filled in, in a pKCS7PDU attribute.
+In the suggested approach, the pKCS7PDU attribute includes a Full PKI
+Data content type {{RFC5272}} and that in turn includes a CSR or CRMF
+formatted request; see {{RFC62668}} Sections 5 and 9, respectively.
+
+The drawback to this approach, particularly for the CSR, is that some
+required fields are "faked"; specifically, the `signature` field on
+the CSR is faked with an empty big string. The avoid this drawback,
+this specification defines the Certificate Request Information
+Template attribute for CsrAttrs, see {{csrattrs}}, that is request
+minus the useless signature wrapper as follows:
 
 ~~~~
-    CertificationRequestInfo ::= SEQUENCE {
-        version       INTEGER { v1(0) } (v1,...),
-        subject       Name,
-        subjectPKInfo SubjectPublicKeyInfo{{ PKInfoAlgorithms }},
-        attributes    [0] Attributes{{ CRIAttributes }}
-        }
+  aa-certificationRequestInfoTemplate ATTRIBUTE ::=
+    { TYPE CertificationRequestInfoTemplate IDENTIFIED BY
+      id-aa-certificationRequestInfoTemplate }
+
+  id-aa-certificationRequestInfoTemplate OBJECT IDENTIFIER ::=
+    { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs9(9)
+      smime(16) aa(2) TBD2 }
+
+  CertificateRequestInfoTemplate ::= CertificationRequestInfo
 ~~~~
 
-The CertificationRequestInfo is included as a new Attribute in the CsrAttrs elements sequence.
-
-This new attribute is identified by the OID TBD.
+The CertificationRequestInfoTemplate uses the CertificationRequestInfo
+from {{RFC5912, Section 5}} and is included here for convenience:
 
 ~~~~
-    aa-certificationRequestInfoTemplate ATTRIBUTE ::=
-      { TYPE CertificationRequestInfoTemplate IDENTIFIED BY
-          id-aa-certificationRequestInfoTemplate }
-
-    id-aa-certificationRequestInfoTemplate OBJECT IDENTIFIER ::=
-      { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs9(9)
-        smime(16) aa(2) TBD2 }
+  CertificationRequestInfo ::= SEQUENCE {
+    version       INTEGER { v1(0) } (v1,...),
+    subject       Name,
+    subjectPKInfo SubjectPublicKeyInfo{{ PKInfoAlgorithms }},
+    attributes    [0] Attributes{{ CRIAttributes }}
+  }
 ~~~~
 
- Legacy servers MAY continue to use the {{RFC7030}} style piecemeal attribute/value pairs, and MAY also include the template style described here.
- Clients which understand both MUST use the template only, and ignore all other CSRattrs elements.  Older clients will ignore this new element.
+Legacy servers MAY continue to use the {{RFC7030}} style piecemeal
+attribute/value pairs, and MAY also include the template style described
+here. Clients which understand both MUST use the template only, and
+ignore all other CSRattrs elements.  Older clients will ignore this new
+element.
 
+The version code is always v1 (0). As shown in the example below, any
+empty values in the subject DN, and in any included X509v3 extensions
+are expected to be filled in by the client.
 
- The use of the CertificationRequestInfo avoids a useless fake signature in the CSR object.
-The version code is always v1 (0). As shown in the example below, any empty values in the subject DN, and in any included X509v3 extensions are expected to be filled in by the client.
+The SubjectPublicKeyInfo field must be present, but it MUST have an
+empty bit string for the key, as the server does not know what key will
+be used.  The server MAY specify (in the OID), the type of the key to
+use, but otherwise the OID type MUST be NULL.
 
-The SubjectPublicKeyInfo field must be present, but it MUST have an empty bit string for the key, as the server does not know what key will be used.  The server MAY specify (in the OID), the type of the key to use, but otherwise the OID type MUST be NULL.
-
+Each of the attributes has a single attribute value instance in the
+values set.  Even though the syntax is defined as a set, there MUST
+be exactly one instance of AttributeValue present.
 
 # Co-existence with existing implementations
 
