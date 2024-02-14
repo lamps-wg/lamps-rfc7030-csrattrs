@@ -39,6 +39,9 @@ author:
 
 normative:
   RFC5280:
+  RFC5911:
+  RFC5912:
+  RFC6268:
   RFC7030:
   RFC8994: ACP
   RFC8995: BRSKI
@@ -197,20 +200,13 @@ The CertificationRequestInfo is included as a new Attribute in the CsrAttrs elem
 This new attribute is identified by the OID TBD.
 
 ~~~~
-    IMPORTS
-
-    ATTRIBUTE
-    FROM PKIX-CommonTypes-2009
-        {iso(1) identified-organization(3) dod(6) internet(1) security(5)
-        mechanisms(5) pkix(7) id-mod(0) id-mod-pkixCommon-02(57)}
-
     aa-certificationRequestInfoTemplate ATTRIBUTE ::=
       { TYPE CertificationRequestInfoTemplate IDENTIFIED BY
           id-aa-certificationRequestInfoTemplate }
 
-    id-aa-certificationRequestInfoTemplate OBJECT IDENTIFIER ::= {
-        iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs9(9)
-        smime(16) aa(2) TBD }
+    id-aa-certificationRequestInfoTemplate OBJECT IDENTIFIER ::=
+      { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs9(9)
+        smime(16) aa(2) TBD2 }
 ~~~~
 
  Legacy servers MAY continue to use the {{RFC7030}} style piecemeal attribute/value pairs, and MAY also include the template style described here.
@@ -378,8 +374,10 @@ This may be desirable if the CA and EST server have different operators.
 
 # IANA Considerations
 
-IANA is asked to allocate a new Object Identifier from the SMI Security for S/MIME Attributes (1.2.840.113549.1.9.16.2) registry at: https://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml#security-smime-2
-as explained in section {{csrtemplate}}.
+IANA is asked to allocate two new Object Identifiers:
+
+* One from the SMI Security for S/MIME Module Identifier (1.2.840.113549.1.9.16.0) registry at for the ASN.1 module; see {{app-asn1-module}}, and
+* One from the SMI Security for S/MIME Attributes (1.2.840.113549.1.9.16.2) registry for the Certification Request Information Template attribute; see {{csrtemplate}} and {{app-asn1-module}}.
 
 
 # Acknowledgements
@@ -391,3 +389,49 @@ Corey Bonnell crafted example02 using a different tool, and this helped debug ot
 
 --- back
 
+# ASN.1 Module {#app-asn1-module}
+
+<aside markdown="block">
+RFC EDITOR: Please replace TBD1 and TBD2 with the value assigned by IANA
+during the publication of [I-D.ietf-lamps-rfc7030-csrattrs].
+</aside>
+
+This appendix provides an ASN.1 module {{X.680}} for the Certification
+Request Information Template attribute, and it follows the conventions
+established in {{RFC5911}}, {{RFC5912}}, and {{RFC6268}}.
+
+~~~~ asn.1
+CRITemplateModule
+  { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1)
+    pkcs-9(9) smime(16) modules(0) id-mod-critemplate(TBD1) }
+
+DEFINITIONS IMPLICIT TAGS ::=
+
+BEGIN
+
+IMPORTS
+
+ATTRIBUTE -- [RFC5911]
+ FROM PKIX-CommonTypes-2009
+   { iso(1) identified-organization(3) dod(6) internet(1) security(5)
+     mechanisms(5) pkix(7) id-mod(0) id-mod-pkixCommon-02(57) }
+
+CertificationRequestInfo -- [RFC5912]
+  FROM PKCS-10
+    { iso(1) identified-organization(3) dod(6) internet(1) security(5)
+      mechanisms(5) pkix(7) id-mod(0) id-mod-pkcs10-2009(69) }
+
+;
+
+aa-certificationRequestInfoTemplate ATTRIBUTE ::=
+  { TYPE CertificationRequestInfoTemplate IDENTIFIED BY
+    id-aa-certificationRequestInfoTemplate }
+
+id-aa-certificationRequestInfoTemplate OBJECT IDENTIFIER ::=
+  { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs9(9)
+    smime(16) aa(2) TBD2 }
+
+CertificationRequestInfoTemplate ::= CertificationRequestInfo
+
+END
+~~~~
