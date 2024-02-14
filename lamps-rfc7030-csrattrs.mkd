@@ -42,6 +42,30 @@ normative:
   RFC7030:
   RFC8994: ACP
   RFC8995: BRSKI
+  X.680:
+    target: https://www.itu.int/rec/T-REC-X.680
+    title: >
+      Information technology --
+      Abstract Syntax Notation One (ASN.1):
+      Specification of basic notation
+    author:
+    - org: ITU-T
+    date: 2021-02
+    seriesinfo:
+      ITU-T Recommendation: X.680
+      ISO/IEC: 8824-1:2021
+  X.690:
+    target: https://www.itu.int/rec/T-REC-X.680
+    title: >
+      Information technology --
+      ASN.1 encoding rules: Specification of Basic Encoding Rules (BER),
+      Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)
+    author:
+    - org: ITU-T
+    date: 2021-02
+    seriesinfo:
+      ITU-T Recommendation: X.690
+      ISO/IEC: 8825-1:2021
 
 informative:
   RFC8368:
@@ -80,7 +104,7 @@ to read and ambiguous to interpret that clarification is needed.
 
 This document motivates the different use cases, and provides additional worked out examples.
 
-Also, section 4.5.2 is extended to clarify the use of the existing ASN.1 syntax.
+Also, section 4.5.2 is extended to clarify the use of the existing ASN.1 syntax {{X.680}}{{X.690}}.
 This covers all uses and is fully backward compatible with existing use.
 
 # Terminology
