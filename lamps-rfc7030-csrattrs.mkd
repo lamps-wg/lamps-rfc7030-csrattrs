@@ -74,6 +74,9 @@ normative:
 
 informative:
   RFC8368:
+  RFC4211:
+  RFC9480:
+  RFC9483:
 
 --- abstract
 
@@ -222,6 +225,11 @@ from {{RFC5912, Section 5}} and is included here for convenience:
     attributes    [0] Attributes{{ CRIAttributes }}
   }
 ~~~~
+
+Note:
+This method has also been defined in CMP Updates {{RFC9480}}
+and the Lightweight CMP profile {{RFC9483, Section 4.3.3}},
+using a CSR template as defined for CRMF {{RFC4211}}.
 
 Legacy servers MAY continue to use the {{RFC7030}} style piecemeal
 attribute/value pairs, and MAY also include the template style described
