@@ -266,10 +266,12 @@ This is what might be created by an {{RFC8995}} Registrar that is asking for {{R
 
 ### Base64 encoded example
 
+The Base64:
+
 ~~~~ base64
 {::include examples/realistic-acp.csrattr.b64}
 ~~~~
-{: sourcecode-markers="true" sourcecode-name="realistic-acp.csrattr”}
+{: sourcecode-markers="false" sourcecode-name="realistic-acp.csrattr”}
 
 ### ASN.1 DUMP output
 
@@ -285,10 +287,12 @@ In this example, taken from {{RFC7030}}, a few different attributes are included
 
 ### Base64 encoded example
 
+The Base64:
+
 ~~~~ base64
 {::include examples/rfc7030-example01.csrattr.b64}
 ~~~~
-{: sourcecode-markers="true" sourcecode-name="rfc7030-example01.csrattr”}
+{: sourcecode-markers="false" sourcecode-name="rfc7030-example01.csrattr”}
 
 ### ASN.1 DUMP output
 
@@ -311,10 +315,12 @@ for a macAddress, a subjectAltName is specified as the only Extension element.
 
 ### Base64 encoded example
 
+The Base64:
+
 ~~~~ base64
 {::include examples/potato-example.csrattr.b64}
 ~~~~
-{: sourcecode-markers="true" sourcecode-name="rfc7030-example01.csrattr”}
+{: sourcecode-markers="false" sourcecode-name="rfc7030-example01.csrattr”}
 
 ### ASN.1 DUMP output
 
@@ -336,10 +342,12 @@ The CSR requires a public key of a specific size
 
 ### Base64 encoded example
 
+The Base64:
+
 ~~~~ base64
 {::include examples/harkins01.csrattr.b64}
 ~~~~
-{: sourcecode-markers="true" sourcecode-name="harkins01.csrattr”}
+{: sourcecode-markers="false" sourcecode-name="harkins01.csrattr”}
 
 ### ASN.1 DUMP output
 
@@ -356,10 +364,12 @@ The CSR requires a public key with a specific curve
 
 ### Base64 encoded example
 
+The Base64:
+
 ~~~~ base64
 {::include examples/harkins02.csrattr.b64}
 ~~~~
-{: sourcecode-markers="true" sourcecode-name="harkins02.csrattr”}
+{: sourcecode-markers="false" sourcecode-name="harkins02.csrattr”}
 
 ### ASN.1 DUMP output
 
@@ -377,10 +387,12 @@ a friendly name, favorite drink, and be signed with SHA512.
 
 ### Base64 encoded example
 
+The Base64:
+
 ~~~~ base64
 {::include examples/harkins03.csrattr.b64}
 ~~~~
-{: sourcecode-markers="true" sourcecode-name="harkins03.csrattr”}
+{: sourcecode-markers="false" sourcecode-name="harkins03.csrattr”}
 
 ### ASN.1 DUMP output
 
