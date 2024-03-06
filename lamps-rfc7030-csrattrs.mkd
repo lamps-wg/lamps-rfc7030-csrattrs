@@ -197,7 +197,7 @@ formatted request; see {{RFC6268}} Sections 5 and 9, respectively.
 
 The drawback to this approach, particularly for the CSR, is that some
 required fields are "faked"; specifically, the `signature` field on
-the CSR is faked with an empty big string. The avoid this drawback,
+the CSR is faked with an empty bit string. The avoid this drawback,
 this specification defines the Certificate Request Information
 Template attribute for CsrAttrs, see {{csrattrs}}, that is request
 minus the useless signature wrapper as follows:
