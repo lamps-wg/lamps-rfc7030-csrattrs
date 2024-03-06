@@ -128,13 +128,13 @@ Replace the second paragraph with the following text:
 ~~~~
    These attributes can provide additional descriptive information that
    the EST server cannot access itself, such as the Media Access Control
-   (MAC) address of an interface of the EST client. The EST server can also
-   provide concrete values that it tells the client to include in the CSR,
-   such as a specific X.509 Subject Alternative Name extension. Moreover,
-   these attributes can indicate the type of the included public key
-   or which crypto algorithms to use for the self-signature,
-   such as a specific elliptic curve or a specific hash function that the client
-   is expected to use when generating the CSR.
+   (MAC) address of an interface of the EST client. The EST server can
+   also provide concrete values that it tells the client to include in
+   the CSR, such as a specific X.509 Subject Alternative Name extension.
+   Moreover, these attributes can indicate the type of the included
+   public key or which crypto algorithms to use for the self-signature,
+   such as a specific elliptic curve or a specific hash function that
+   the client is expected to use when generating the CSR.
 ~~~~
 
 ## Extensions to RFC 7030 section 4.5.2. {#csrattrs}
