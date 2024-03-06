@@ -444,13 +444,15 @@ IMPORTS
 
 ATTRIBUTE -- [RFC5911]
  FROM PKIX-CommonTypes-2009
-   { iso(1) identified-organization(3) dod(6) internet(1) security(5)
-     mechanisms(5) pkix(7) id-mod(0) id-mod-pkixCommon-02(57) }
+   { iso(1) identified-organization(3) dod(6) internet(1)
+     security(5) mechanisms(5) pkix(7)
+     id-mod(0) id-mod-pkixCommon-02(57) }
 
 CertificationRequestInfo -- [RFC5912]
   FROM PKCS-10
-    { iso(1) identified-organization(3) dod(6) internet(1) security(5)
-      mechanisms(5) pkix(7) id-mod(0) id-mod-pkcs10-2009(69) }
+    { iso(1) identified-organization(3) dod(6) internet(1)
+      security(5) mechanisms(5) pkix(7)
+      id-mod(0) id-mod-pkcs10-2009(69) }
 
 ;
 
