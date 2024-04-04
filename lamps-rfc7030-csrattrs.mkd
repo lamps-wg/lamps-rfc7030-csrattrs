@@ -211,7 +211,7 @@ minus the useless signature wrapper as follows:
 
   id-aa-certificationRequestInfoTemplate OBJECT IDENTIFIER ::=
     { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs9(9)
-      smime(16) aa(2) TBD2 }
+      smime(16) aa(2) csrinfo(TBD2) }
 
   CertificateRequestInfoTemplate ::= CertificationRequestInfo
 ~~~~
@@ -421,8 +421,11 @@ This may be desirable if the CA and EST server have different operators.
 
 IANA is asked to allocate two new Object Identifiers:
 
-* One (TBD1) from the SMI Security for S/MIME Module Identifier (1.2.840.113549.1.9.16.0) registry at for the ASN.1 module; see {{app-asn1-module}}, and
-* One (TBD2) from the SMI Security for S/MIME Attributes (1.2.840.113549.1.9.16.2) registry for the Certification Request Information Template attribute; see {{csrtemplate}} and {{app-asn1-module}}.
+* One (TBD1) from the SMI Security for S/MIME Module Identifier
+  (1.2.840.113549.1.9.16.0) registry for the ASN.1 module: id-mod-critemplate; see {{app-asn1-module}}, and
+* One (TBD2) from the SMI Security for S/MIME Attributes
+  (1.2.840.113549.1.9.16.2) registry for the Certification Request
+  Information Template (csrinfo) attribute; see {{csrtemplate}} and {{app-asn1-module}}.
 
 
 # Acknowledgements
@@ -476,7 +479,7 @@ aa-certificationRequestInfoTemplate ATTRIBUTE ::=
 
 id-aa-certificationRequestInfoTemplate OBJECT IDENTIFIER ::=
   { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs9(9)
-    smime(16) aa(2) TBD2 }
+    smime(16) aa(2) csrinfo(TBD2) }
 
 CertificationRequestInfoTemplate ::= CertificationRequestInfo
 
