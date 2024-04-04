@@ -251,6 +251,90 @@ Each of the attributes has a single attribute value instance in the
 values set.  Even though the syntax is defined as a set, there MUST
 be exactly one instance of AttributeValue present.
 
+Suppose the server requires that the CSR will contain:
+
+*  the subject field with a common name to be filled in by the EE and
+   two organizational unit fields with given values "myDept" and
+   "myGroup",
+
+*  the publicKey field contains an Elliptic Curve Cryptography (ECC)
+   key on curve secp256r1,
+
+*  the subjectAltName extension with DNS name "www.myServer.com" and
+   an IP address to be filled in,
+
+*  the keyUsage extension marked critical with the value
+   digitalSignature and keyAgreement, and
+
+*  the extKeyUsage extension with values to be filled in by the EE.
+
+Then the `CertificationRequestInfo` structure will be encoded as follows:
+
+~~~
+ SEQUENCE {
+   INTEGER 0
+   SEQUENCE {
+     SET {
+       SEQUENCE {
+         OBJECT IDENTIFIER commonName (2 5 4 3)
+         UTF8String ""
+         }
+       }
+     SET {
+       SEQUENCE {
+         OBJECT IDENTIFIER organizationalUnitName (2 5 4 11)
+        UTF8String "myDept"
+        }
+      }
+     SET {
+       SEQUENCE {
+         OBJECT IDENTIFIER organizationalUnitName (2 5 4 11)
+         UTF8String "myGroup"
+         }
+       }
+     }
+  SEQUENCE {
+    SEQUENCE {
+      OBJECT IDENTIFIER ecPublicKey (1 2 840 10045 2 1)
+      OBJECT IDENTIFIER secp256r1 (1 2 840 10045 3 1 7)
+      }
+    BIT STRING ""
+    }
+  [0] {
+    SEQUENCE {
+      OBJECT IDENTIFIER extensionRequest (1 2 840 113549 1 9 14)
+      SET {
+        SEQUENCE {
+          SEQUENCE {
+            OBJECT IDENTIFIER subjectAltName (2 5 29 17)
+            OCTET STRING, encapsulates {
+              SEQUENCE {
+                [2] "www.myServer.com"
+                [7] ""
+                }
+              }
+            }
+          SEQUENCE {
+            OBJECT IDENTIFIER keyUsage (2 5 29 15)
+            BOOLEAN TRUE
+            OCTET STRING, encapsulates {
+              BIT STRING 3 unused bits
+                "10001"B
+              }
+            }
+          SEQUENCE {
+            OBJECT IDENTIFIER extKeyUsage (2 5 29 37)
+            OCTET STRING, encapsulates {
+              SEQUENCE {}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+~~~
+
 
 # Co-existence with existing implementations
 
