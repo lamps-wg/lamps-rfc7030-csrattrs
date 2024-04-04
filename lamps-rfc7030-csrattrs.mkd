@@ -89,6 +89,10 @@ both CSR attribute OIDs and also CSR attribute values,
 in particular X.509 extension values,
 that the server expects the client to include in subsequent CSR request.
 
+Moreover, it provides new convenient and straightforward approach: using
+a template for CSR contents that may be partially filled in by the server.
+This also allows specifying a subject Distinguished Name (DN).
+
 --- middle
 
 # Introduction
