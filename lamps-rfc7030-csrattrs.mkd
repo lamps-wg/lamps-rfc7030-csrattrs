@@ -196,17 +196,17 @@ with no change to the bits on the wire.
 piecemeal inclusion of attributes that {{RFC7030}} documented.
 Instead, an entire CSR object is returned with various fields filled
 out, and other fields waiting to be filled in, in a pKCS7PDU attribute.
-In the suggested approach, the pKCS7PDU attribute includes a Full PKI
+In that approach, the pKCS7PDU attribute includes a Full PKI
 Data content type {{RFC5272}} and that in turn includes a CSR or CRMF
 formatted request; see {{RFC6268}} Sections 5 and 9, respectively.
 
-The drawback to this approach, particularly for the CSR, is that some
-required fields are "faked"; specifically, the `signature` field on
-the CSR is faked with an empty bit string.
-To avoid this drawback,
-this specification defines the Certificate Request Information
-Template attribute for CsrAttrs, see {{csrattrs}}, that is request
-minus the useless signature wrapper as follows:
+The drawback to that approach, particularly for the CSR, is that some useless
+fields have to be included; specifically, the `signature` field on
+the CSR is faked with an empty bit string. We avoid this drawback as follows.
+
+This specification defines the Certificate Request Information
+Template attribute for CsrAttrs, see {{csrattrs}}, that is
+a partially filled in PKCS#10 CSR minus the signature wrapper as follows:
 
 ~~~~
   aa-certificationRequestInfoTemplate ATTRIBUTE ::=
@@ -237,14 +237,9 @@ This method has also been defined in CMP Updates {{RFC9480}}
 and the Lightweight CMP profile {{RFC9483, Section 4.3.3}},
 using a CSR template as defined for CRMF {{RFC4211}}.
 
-Legacy servers MAY continue to use the {{RFC7030}} style piecemeal
-attribute/value pairs, and MAY also include the template style described
-here. Clients which understand both MUST use the template only, and
-ignore all other CSRattrs elements.  Older clients will ignore this new
-element.
-
-The version code is always v1 (0). As shown in the example below, any
-empty values in the subject DN, and in any included X509v3 extensions
+The version code is always v1 (0). As shown in the example below,
+any empty sub-field (RDN) values in the subject DN,
+and empty values in any included X509v3 extensions
 are expected to be filled in by the client.
 
 The SubjectPublicKeyInfo field MUST be present, but it MUST have an
@@ -256,7 +251,14 @@ Each of the attributes has a single attribute value instance in the
 values set.  Even though the syntax is defined as a set, there MUST
 be exactly one instance of AttributeValue present.
 
+
 # Co-existence with existing implementations
+
+Legacy servers MAY continue to use the {{RFC7030}} style piecemeal
+attribute/value pairs, and MAY also include the template style described
+here. Clients which understand both MUST use the template only, and
+ignore all other CSRattrs elements.  Older clients will ignore this new
+element.
 
 # Examples
 
