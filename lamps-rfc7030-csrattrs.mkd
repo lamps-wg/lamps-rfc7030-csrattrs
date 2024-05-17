@@ -529,7 +529,7 @@ Corey Bonnell crafted example02 using a different tool, and this helped debug ot
 
 <aside markdown="block">
 RFC EDITOR: Please replace TBD1 and TBD2 with the value assigned by IANA
-during the publication of [I-D.ietf-lamps-rfc7030-csrattrs].
+during the publication of this document.
 </aside>
 
 This appendix provides an ASN.1 module {{X.680}} for the Certification
