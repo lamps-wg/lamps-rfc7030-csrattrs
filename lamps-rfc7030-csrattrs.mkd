@@ -190,9 +190,9 @@ MUST NOT include more than one element with a particiular extnID.
 With this understanding, the needs of {{RFC8994}} and {{RFC8995}} are satisfied
 with no change to the bits on the wire.
 
-## Alternative: Use of CSR templates {#csrtemplate}
+## Use of CSR templates {#csrtemplate}
 
-{{?RFC8295, Appendix B}} suggests an alternative that avoids the
+{{?RFC8295, Appendix B}} describes a mechanism that avoids the
 piecemeal inclusion of attributes that {{RFC7030}} documented.
 Instead, an entire CSR object is returned with various fields filled
 out, and other fields waiting to be filled in, in a pKCS7PDU attribute.
@@ -338,11 +338,10 @@ Then the `CertificationRequestInfo` structure will be encoded as follows:
 
 # Co-existence with existing implementations
 
-Legacy servers MAY continue to use the {{RFC7030}} style piecemeal
-attribute/value pairs, and MAY also include the template style described
-here. Clients which understand both MUST use the template only, and
-ignore all other CSRattrs elements.  Older clients will ignore this new
-element.
+Legacy servers MAY continue to use the {{RFC7030}} style piecemeal attribute/value pairs, and MAY also include the template style described in {#csrtemplate}.
+Clients which understand both MUST use the template only, and
+ignore all other CSRattrs elements.
+Older clients will ignore the new CertificateRequestInfoTemplate element.
 
 # Examples
 
