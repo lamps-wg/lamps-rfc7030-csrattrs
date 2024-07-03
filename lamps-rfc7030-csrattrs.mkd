@@ -334,6 +334,10 @@ Then the `CertificationRequestInfo` structure will be encoded as follows:
   }
 ~~~
 
+Note that empty sequences and zero-length fields in subject attributes, public
+keys, and X.509v3 extensions may violate the ASN.1 syntax of a given type.
+Implementations constructing or checking such fields may need to be made
+more permissive than usual in order to fully support these specific use cases.
 
 # Co-existence with existing implementations
 
