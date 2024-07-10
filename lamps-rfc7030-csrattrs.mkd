@@ -242,10 +242,15 @@ character) in the subject DN or other string sub-fields,
 as well as any empty X509v3 extensions included
 are expected to be filled in by the client.
 
-The SubjectPublicKeyInfo field MUST be present, but it MUST have an
-empty bit string for the key, as the server does not know what key will
-be used.  The server MAY specify (in the OID), the type of the key to
-use, but otherwise the OID type MUST be NULL.
+The SubjectPublicKeyInfo field MUST be present, but the BIT STRING value of the
+key field MUST be empty, as the server does not know what key will be used.
+The server MAY specify (in the OID), the type of the key to use,
+but otherwise the OID type MUST be NULL.
+
+Note that zero-length OCTET STRINGS in the `extnValue` field extnValue of
+X.509v3 extensions may violate future constraints of the ASN.1 syntax.
+Implementations constructing or checking such fields may then need to be made
+more permissive than usual in order to fully support these specific use cases.
 
 Each of the attributes has a single attribute value instance in the
 values set.  Even though the syntax is defined as a set, there MUST
@@ -326,9 +331,7 @@ will be as follows:
             }
           SEQUENCE {
             OBJECT IDENTIFIER extKeyUsage (2 5 29 37)
-            OCTET STRING, encapsulates {
-              SEQUENCE {}
-              }
+            OCTET STRING ""
             }
           }
         }
@@ -336,11 +339,6 @@ will be as follows:
     }
   }
 ~~~
-
-Note that empty sequences and zero-length fields in subject attributes, public
-keys, and X.509v3 extensions may violate the ASN.1 syntax of a given type.
-Implementations constructing or checking such fields may need to be made
-more permissive than usual in order to fully support these specific use cases.
 
 # Co-existence with existing implementations
 
