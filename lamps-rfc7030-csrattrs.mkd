@@ -237,8 +237,9 @@ and the Lightweight CMP profile {{RFC9483, Section 4.3.3}},
 using a CSR template as defined for CRMF {{RFC4211}}.
 
 The version code is always v1 (0). As shown in the example below,
-any empty sub-field (RDN) values in the subject DN,
-and empty values in any included X509v3 extensions
+any sub-field (RDN) values `"?"` (i.e., a string just containing a question mark
+character) in the subject DN or other string sub-fields,
+as well as any empty X509v3 extensions included
 are expected to be filled in by the client.
 
 The SubjectPublicKeyInfo field MUST be present, but it MUST have an
@@ -278,7 +279,7 @@ will be as follows:
      SET {
        SEQUENCE {
          OBJECT IDENTIFIER commonName (2 5 4 3)
-         UTF8String ""
+         UTF8String "?"
          }
        }
      SET {
