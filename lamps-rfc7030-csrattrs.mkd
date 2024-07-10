@@ -267,7 +267,9 @@ Suppose the server requires that the CSR will contain:
 
 *  the extKeyUsage extension with values to be filled in by the EE.
 
-Then the `CertificationRequestInfo` structure will be encoded as follows:
+
+Then the `CertificationRequestInfo` structure constructed by the server
+will be as follows:
 
 ~~~
  SEQUENCE {
