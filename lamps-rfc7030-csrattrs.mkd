@@ -204,7 +204,7 @@ fields have to be included; specifically, the `signature` field on
 the CSR is faked with an empty bit string. We avoid this drawback as follows.
 
 This specification defines the Certificate Request Information
-Template attribute for CsrAttrs, see {{csrattrs}}, that is
+Template attribute for CsrAttrs, see {{csrattrs}}, that is essentially
 a partially filled in PKCS#10 CSR minus the signature wrapper as follows:
 
 ~~~~
@@ -216,11 +216,59 @@ a partially filled in PKCS#10 CSR minus the signature wrapper as follows:
     { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs9(9)
       smime(16) aa(2) csrinfo(TBD2) }
 
-  CertificateRequestInfoTemplate ::= CertificationRequestInfo
+  CertificationRequestInfoTemplate ::= SEQUENCE {
+      version           INTEGER { v1(0) } (v1, ... ),
+      subject           NameTemplate OPTIONAL,
+      subjectPKInfo     SubjectPublicKeyInfoTemplate {{ PKInfoAlgorithms }} OPTIONAL,
+      attributes    [0] Attributes{{ CRIAttributes }}
+  }
+
+  NameTemplate ::= CHOICE { -- only one possibility for now --
+      rdnSequence  RDNSequenceTemplate }
+
+  RDNSequenceTemplate ::= SEQUENCE OF RelativeDistinguishedNameTemplate
+
+  RelativeDistinguishedNameTemplate  ::=
+      SET SIZE (1 .. MAX) OF AttributeTypeAndValueTemplate { {SupportedAttributes} }
+
+  AttributeTypeAndValueTemplate {ATTRIBUTE:AttrSet} ::= SEQUENCE {
+      type      ATTRIBUTE.&id({AttrSet}),
+      value     ATTRIBUTE.&Type({AttrSet}{@type}) OPTIONAL
+  }
+
+  SubjectPublicKeyInfoTemplate {PUBLIC-KEY: IOSet} ::= SEQUENCE {
+      algorithm        AlgorithmIdentifier {PUBLIC-KEY, {IOSet}},
+      subjectPublicKey BIT STRING OPTIONAL
+  }
+
+  pkcs-9-at-extensionRequestTemplate OBJECT IDENTIFIER ::= {pkcs-9 TBD3}
+
+  extensionRequestTemplate ATTRIBUTE ::= {
+          WITH SYNTAX ExtensionRequestTemplate
+          SINGLE VALUE TRUE
+          ID pkcs-9-at-extensionRequestTemplate
+  }
+
+  ExtensionRequestTemplate ::= ExtensionTemplates
+
+  ExtensionTemplates  ::=  SEQUENCE SIZE (1..MAX) OF ExtensionTemplate
+
+  ExtensionTemplate {EXTENSION:ExtensionSet} ::= SEQUENCE {
+     extnID      EXTENSION.&id({ExtensionSet}),
+     critical    BOOLEAN -- (EXTENSION.&Critical({ExtensionSet}{@extnID}))
+                 DEFAULT FALSE,
+     extnValue   OCTET STRING (CONTAINING
+                 EXTENSION.&ExtnType({ExtensionSet}{@extnID})) OPTIONAL
+                 --  contains the DER encoding of the ASN.1 value
+                 --  corresponding to the extension type identified
+                 --  by extnID when present
+  }
+
+
 ~~~~
 
-The CertificationRequestInfoTemplate uses the CertificationRequestInfo
-from {{RFC5912, Section 5}} and is included here for convenience:
+Note that the CertificationRequestInfoTemplate closely resembles the CertificationRequestInfo
+from {{RFC5912, Section 5}}:
 
 ~~~~
   CertificationRequestInfo ::= SEQUENCE {
@@ -231,45 +279,69 @@ from {{RFC5912, Section 5}} and is included here for convenience:
   }
 ~~~~
 
-Note:
-This method has also been defined in CMP Updates {{RFC9480}}
+with the following differences.
+
+* The `subject` field is made `OPTIONAL` to cover the case the server does not provide any
+requrements on the subject name and its RDNs.
+
+* RelativeDistinguishedNames (RDNs) in the `subject` fields are allowed to be empty,
+which is achieved by adding `OPTIONAL` to the `value` field of `AttributeTypeAndValueTemplate`.
+This means that the client is required to provide an RDN of the given type and fill in its value.
+
+* The `subjectPKInfo` field is made `OPTIONAL`,
+such that the server can leave it out in case there are no requirements on the key.\
+Otherwise the server specifies the algorithm of the key, i.e., the key type, in the `algorithm` field.
+The `subjectPublicKey` field contained in `SubjectPublicKeyInfoTemplate` is made
+`OPTIONAL` because usually it is left out, but in case the server needs to specify the size of an
+RSA key, the field is used to provide a dummy public key value of the desired RSA modulus length.
+
+* A new OID `pkcs-9-at-extensionRequestTemplate` and the related `ExtensionTemplate` structure
+is defind where the `extnValue` field is optional.
+If the field is absent this means that the client is required to provide an X.509 extension
+with the given `extnID` and potentially the `critical` flag and fill in its value.
+
+A similar method has been defined in CMP Updates {{RFC9480}}
 and the Lightweight CMP profile {{RFC9483, Section 4.3.3}},
 using a CSR template as defined for CRMF {{RFC4211}}.
+That method does not properly deal with empty RDNs (encoding them as empty strings),
+absent `subjectPublicKey` fields (encoding them as empty `BIT STRING`),
+and empty X.509v3 extension values (encoding them as empty `OCTET STRING`),
+which may cause issues with strict ASN.1 parsing and decoding.
 
-The version code is always v1 (0). As shown in the example below,
-any sub-field (RDN) values `"?"` (i.e., a string just containing a question mark
-character) in the subject DN or other string sub-fields,
-as well as any empty X509v3 extensions included
-are expected to be filled in by the client.
+The version code MUST be v1 (0).
 
-The SubjectPublicKeyInfo field MUST be present, but the BIT STRING value of the
-key field MUST be empty, as the server does not know what key will be used.
-The server MAY specify (in the OID), the type of the key to use,
-but otherwise the OID type MUST be NULL.
+<!--
+As shown in the example below,
+any empty RDN values in the `subject` as well as any empty X.509v3 extension values
+in the `attributes` field are expected to be filled in by the client.
+-->
 
-Note that zero-length OCTET STRINGS in the `extnValue` field extnValue of
-X.509v3 extensions may violate future constraints of the ASN.1 syntax.
-Implementations constructing or checking such fields may then need to be made
-more permissive than usual in order to fully support these specific use cases.
+If the `subjectPKInfo` field is present,
+it indicates the type of the key pair the client is expected to use,
+where the `subjectPublicKey` MUST NOT be given except if the `algorithm` indicates RSA.
 
+The `attributes` field MUST NOT contain multiple `extensionRequestTemplate` attributes
+and MUST NOT contain both `extensionRequest` and `extensionRequestTemplate` attributes.
+
+<!--
 Each of the attributes has a single attribute value instance in the
 values set.  Even though the syntax is defined as a set, there MUST
 be exactly one instance of AttributeValue present.
+-->
 
 Suppose the server requires that the CSR will contain:
 
 *  the subject field with a common name to be filled in by the EE and
-   two organizational unit fields with given values "myDept" and
-   "myGroup",
+   two organizational unit fields with given values "myDept" and "myGroup",
 
-*  the publicKey field contains an Elliptic Curve Cryptography (ECC)
-   key on curve secp256r1,
+*  the publicKey field contains an
+   Elliptic Curve Cryptography (ECC) key on curve secp256r1,
 
-*  the subjectAltName extension with DNS name "www.myServer.com" and
-   an IP address to be filled in,
+*  the subjectAltName X.509 extension
+   with DNS name "www.myServer.com" and an IP address to be filled in,
 
-*  the keyUsage extension marked critical with the value
-   digitalSignature and keyAgreement, and
+*  the keyUsage extension marked critical
+   with the value digitalSignature and keyAgreement, and
 
 *  the extKeyUsage extension with values to be filled in by the EE.
 
@@ -284,7 +356,6 @@ will be as follows:
      SET {
        SEQUENCE {
          OBJECT IDENTIFIER commonName (2 5 4 3)
-         UTF8String "?"
          }
        }
      SET {
@@ -305,11 +376,10 @@ will be as follows:
       OBJECT IDENTIFIER ecPublicKey (1 2 840 10045 2 1)
       OBJECT IDENTIFIER secp256r1 (1 2 840 10045 3 1 7)
       }
-    BIT STRING ""
     }
   [0] {
     SEQUENCE {
-      OBJECT IDENTIFIER extensionRequest (1 2 840 113549 1 9 14)
+      OBJECT IDENTIFIER extensionRequest (1 2 840 113549 1 9 TBD3)
       SET {
         SEQUENCE {
           SEQUENCE {
@@ -331,7 +401,6 @@ will be as follows:
             }
           SEQUENCE {
             OBJECT IDENTIFIER extKeyUsage (2 5 29 37)
-            OCTET STRING ""
             }
           }
         }
@@ -519,11 +588,13 @@ IANA is asked to allocate two new Object Identifiers:
 * One (TBD2) from the SMI Security for S/MIME Attributes
   (1.2.840.113549.1.9.16.2) registry for the Certification Request
   Information Template (csrinfo) attribute; see {{csrtemplate}} and {{app-asn1-module}}.
-
+* One (TBD3) from the PKCS#9 (1 2 840 113549 1 9) registry - TODO COMPLETE THIS ITEM
 
 # Acknowledgements
 
 Corey Bonnell crafted example02 using a different tool, and this helped debug other running code.
+
+Carl Wallace provided major parts of the CertificationRequestInfoTemplate syntax declaration.
 
 # Changelog
 
@@ -533,7 +604,7 @@ Corey Bonnell crafted example02 using a different tool, and this helped debug ot
 # ASN.1 Module {#app-asn1-module}
 
 <aside markdown="block">
-RFC EDITOR: Please replace TBD1 and TBD2 with the value assigned by IANA
+RFC EDITOR: Please replace TBD1, TBD2, and TBD3 with the value assigned by IANA
 during the publication of this document.
 </aside>
 
