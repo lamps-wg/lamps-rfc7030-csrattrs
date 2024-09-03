@@ -219,7 +219,8 @@ a partially filled in PKCS#10 CSR minus the signature wrapper as follows:
   CertificationRequestInfoTemplate ::= SEQUENCE {
       version           INTEGER { v1(0) } (v1, ... ),
       subject           NameTemplate OPTIONAL,
-      subjectPKInfo     SubjectPublicKeyInfoTemplate {{ PKInfoAlgorithms }} OPTIONAL,
+      subjectPKInfo     SubjectPublicKeyInfoTemplate {{
+                            PKInfoAlgorithms }} OPTIONAL,
       attributes    [0] Attributes{{ CRIAttributes }}
   }
 
@@ -229,7 +230,8 @@ a partially filled in PKCS#10 CSR minus the signature wrapper as follows:
   RDNSequenceTemplate ::= SEQUENCE OF RelativeDistinguishedNameTemplate
 
   RelativeDistinguishedNameTemplate  ::=
-      SET SIZE (1 .. MAX) OF AttributeTypeAndValueTemplate { {SupportedAttributes} }
+      SET SIZE (1 .. MAX) OF AttributeTypeAndValueTemplate {
+                             {SupportedAttributes} }
 
   AttributeTypeAndValueTemplate {ATTRIBUTE:AttrSet} ::= SEQUENCE {
       type      ATTRIBUTE.&id({AttrSet}),
@@ -255,8 +257,9 @@ a partially filled in PKCS#10 CSR minus the signature wrapper as follows:
 
   ExtensionTemplate {EXTENSION:ExtensionSet} ::= SEQUENCE {
      extnID      EXTENSION.&id({ExtensionSet}),
-     critical    BOOLEAN -- (EXTENSION.&Critical({ExtensionSet}{@extnID}))
-                 DEFAULT FALSE,
+     critical    BOOLEAN -- (
+                   EXTENSION.&Critical({ExtensionSet}{@extnID}))
+                   DEFAULT FALSE,
      extnValue   OCTET STRING (CONTAINING
                  EXTENSION.&ExtnType({ExtensionSet}{@extnID})) OPTIONAL
                  --  contains the DER encoding of the ASN.1 value
