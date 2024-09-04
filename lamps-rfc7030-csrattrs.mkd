@@ -8,6 +8,7 @@ docname: draft-ietf-lamps-rfc7030-csrattrs-11
 stand_alone: true
 
 ipr: trust200902
+submissionType: IETF
 area: Internet
 wg: LAMPS Working Group
 kw: Internet-Draft
