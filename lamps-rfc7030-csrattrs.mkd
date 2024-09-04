@@ -676,7 +676,8 @@ SubjectPublicKeyInfoTemplate {PUBLIC-KEY: IOSet} ::= SEQUENCE {
     subjectPublicKey BIT STRING OPTIONAL
 }
 
-pkcs-9-at-extensionRequestTemplate OBJECT IDENTIFIER ::= {pkcs-9 TBD3}
+pkcs-9-at-extensionRequestTemplate OBJECT IDENTIFIER ::=
+    {pkcs-9 TBD3}
 
 extensionRequestTemplate ATTRIBUTE ::= {
         WITH SYNTAX ExtensionRequestTemplate
