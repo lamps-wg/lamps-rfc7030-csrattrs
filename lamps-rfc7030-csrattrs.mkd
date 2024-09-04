@@ -649,7 +649,56 @@ id-aa-certificationRequestInfoTemplate OBJECT IDENTIFIER ::=
   { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs9(9)
     smime(16) aa(2) csrinfo(TBD2) }
 
-CertificationRequestInfoTemplate ::= CertificationRequestInfo
+CertificationRequestInfoTemplate ::= SEQUENCE {
+    version           INTEGER { v1(0) } (v1, ... ),
+    subject           NameTemplate OPTIONAL,
+    subjectPKInfo [0] SubjectPublicKeyInfoTemplate
+                              {{ PKInfoAlgorithms }} OPTIONAL,
+    attributes       [1] Attributes{{ CRIAttributes }}
+}
+
+NameTemplate ::= CHOICE { -- only one possibility for now --
+    rdnSequence  RDNSequenceTemplate }
+
+RDNSequenceTemplate ::= SEQUENCE OF RelativeDistinguishedNameTemplate
+
+RelativeDistinguishedNameTemplate  ::=
+    SET SIZE (1 .. MAX) OF AttributeTypeAndValueTemplate {
+                           {SupportedAttributes} }
+
+AttributeTypeAndValueTemplate {ATTRIBUTE:AttrSet} ::= SEQUENCE {
+    type      ATTRIBUTE.&id({AttrSet}),
+    value     ATTRIBUTE.&Type({AttrSet}{@type}) OPTIONAL
+}
+
+SubjectPublicKeyInfoTemplate {PUBLIC-KEY: IOSet} ::= SEQUENCE {
+    algorithm        AlgorithmIdentifier {PUBLIC-KEY, {IOSet}},
+    subjectPublicKey BIT STRING OPTIONAL
+}
+
+pkcs-9-at-extensionRequestTemplate OBJECT IDENTIFIER ::= {pkcs-9 TBD3}
+
+extensionRequestTemplate ATTRIBUTE ::= {
+        WITH SYNTAX ExtensionRequestTemplate
+        SINGLE VALUE TRUE
+        ID pkcs-9-at-extensionRequestTemplate
+}
+
+ExtensionRequestTemplate ::= ExtensionTemplates
+
+ExtensionTemplates  ::=  SEQUENCE SIZE (1..MAX) OF ExtensionTemplate
+
+ExtensionTemplate {EXTENSION:ExtensionSet} ::= SEQUENCE {
+   extnID      EXTENSION.&id({ExtensionSet}),
+   critical    BOOLEAN -- (
+                 EXTENSION.&Critical({ExtensionSet}{@extnID}))
+                 DEFAULT FALSE,
+   extnValue   OCTET STRING (CONTAINING
+               EXTENSION.&ExtnType({ExtensionSet}{@extnID})) OPTIONAL
+               --  contains the DER encoding of the ASN.1 value
+               --  corresponding to the extension type identified
+               --  by extnID when present
+}
 
 END
 ~~~~
