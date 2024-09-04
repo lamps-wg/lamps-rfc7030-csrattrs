@@ -293,7 +293,7 @@ which is achieved by adding `OPTIONAL` to the `value` field of `AttributeTypeAnd
 This means that the client is required to provide an RDN of the given type and fill in its value.
 
 * The `subjectPKInfo` field is made `OPTIONAL`,
-such that the server can leave it out in case there are no requirements on the key.\
+such that the server can leave it out in case there are no requirements on the key.<br>
 Otherwise the server specifies the algorithm of the key, i.e., the key type, in the `algorithm` field.
 The `subjectPublicKey` field contained in `SubjectPublicKeyInfoTemplate` is made
 `OPTIONAL` because usually it is left out, but in case the server needs to specify the size of an
