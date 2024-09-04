@@ -220,9 +220,9 @@ a partially filled in PKCS#10 CSR minus the signature wrapper as follows:
   CertificationRequestInfoTemplate ::= SEQUENCE {
       version           INTEGER { v1(0) } (v1, ... ),
       subject           NameTemplate OPTIONAL,
-      subjectPKInfo     SubjectPublicKeyInfoTemplate {{
-                            PKInfoAlgorithms }} OPTIONAL,
-      attributes    [0] Attributes{{ CRIAttributes }}
+      subjectPKInfo [0] SubjectPublicKeyInfoTemplate
+                                {{ PKInfoAlgorithms }} OPTIONAL,
+      attributes       [1] Attributes{{ CRIAttributes }}
   }
 
   NameTemplate ::= CHOICE { -- only one possibility for now --
