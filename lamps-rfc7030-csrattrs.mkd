@@ -210,11 +210,11 @@ a partially filled in PKCS#10 CSR minus the signature wrapper as follows:
 
 ~~~~
   CertificationRequestInfoTemplate ::= SEQUENCE {
-      version           INTEGER { v1(0) } (v1, ... ),
-      subject           NameTemplate OPTIONAL,
+      version       INTEGER { v1(0) } (v1, ... ),
+      subject       NameTemplate OPTIONAL,
       subjectPKInfo [0] SubjectPublicKeyInfoTemplate
                                 {{ PKInfoAlgorithms }} OPTIONAL,
-      attributes       [1] Attributes{{ CRIAttributes }}
+      attributes    [1] Attributes{{ CRIAttributes }}
   }
 ~~~~
 
@@ -331,34 +331,34 @@ Then the `CertificationRequestInfo` structure constructed by the server
 will be as follows:
 
 ~~~
- SEQUENCE {
-   INTEGER 0
-   SEQUENCE {
-     SET {
-       SEQUENCE {
-         OBJECT IDENTIFIER commonName (2 5 4 3)
-         }
-       }
-     SET {
-       SEQUENCE {
-         OBJECT IDENTIFIER organizationalUnitName (2 5 4 11)
-        UTF8String "myDept"
+SEQUENCE {
+  INTEGER 0
+  SEQUENCE {
+    SET {
+      SEQUENCE {
+        OBJECT IDENTIFIER commonName (2 5 4 3)
         }
       }
-     SET {
-       SEQUENCE {
-         OBJECT IDENTIFIER organizationalUnitName (2 5 4 11)
-         UTF8String "myGroup"
-         }
+    SET {
+      SEQUENCE {
+        OBJECT IDENTIFIER organizationalUnitName (2 5 4 11)
+       UTF8String "myDept"
        }
      }
-  SEQUENCE {
+    SET {
+      SEQUENCE {
+        OBJECT IDENTIFIER organizationalUnitName (2 5 4 11)
+        UTF8String "myGroup"
+        }
+      }
+    }
+  [0] {
     SEQUENCE {
       OBJECT IDENTIFIER ecPublicKey (1 2 840 10045 2 1)
       OBJECT IDENTIFIER secp256r1 (1 2 840 10045 3 1 7)
       }
     }
-  [0] {
+  [1] {
     SEQUENCE {
       OBJECT IDENTIFIER extensionRequest (1 2 840 113549 1 9 TBD3)
       SET {
@@ -616,8 +616,6 @@ CertificationRequestInfo -- [RFC5912]
       security(5) mechanisms(5) pkix(7)
       id-mod(0) id-mod-pkcs10-2009(69) }
 
-;
-
 aa-certificationRequestInfoTemplate ATTRIBUTE ::=
   { TYPE CertificationRequestInfoTemplate IDENTIFIED BY
     id-aa-certificationRequestInfoTemplate }
@@ -627,11 +625,11 @@ id-aa-certificationRequestInfoTemplate OBJECT IDENTIFIER ::=
     smime(16) aa(2) csrinfo(TBD2) }
 
 CertificationRequestInfoTemplate ::= SEQUENCE {
-    version           INTEGER { v1(0) } (v1, ... ),
-    subject           NameTemplate OPTIONAL,
+    version       INTEGER { v1(0) } (v1, ... ),
+    subject       NameTemplate OPTIONAL,
     subjectPKInfo [0] SubjectPublicKeyInfoTemplate
                               {{ PKInfoAlgorithms }} OPTIONAL,
-    attributes       [1] Attributes{{ CRIAttributes }}
+    attributes    [1] Attributes{{ CRIAttributes }}
 }
 
 NameTemplate ::= CHOICE { -- only one possibility for now --
