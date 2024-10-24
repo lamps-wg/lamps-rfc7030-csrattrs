@@ -40,14 +40,10 @@ author:
   email: dharkins@lounge.org
 
 normative:
-  RFC5272:
-  RFC5280:
   RFC5911:
   RFC5912:
   RFC6268:
   RFC7030:
-  RFC8994: ACP
-  RFC8995: BRSKI
   X.680:
     target: https://www.itu.int/rec/T-REC-X.680
     title: >
@@ -60,6 +56,18 @@ normative:
     seriesinfo:
       ITU-T Recommendation: X.680
       ISO/IEC: 8824-1:2021
+
+informative:
+  RFC2985:
+  RFC4211:
+  RFC5272:
+  RFC5280:
+  RFC8295:
+  RFC8368:
+  RFC8994: ACP
+  RFC8995: BRSKI
+  RFC9480:
+  RFC9483:
   X.690:
     target: https://www.itu.int/rec/T-REC-X.690
     title: >
@@ -72,12 +80,6 @@ normative:
     seriesinfo:
       ITU-T Recommendation: X.690
       ISO/IEC: 8825-1:2021
-
-informative:
-  RFC8368:
-  RFC4211:
-  RFC9480:
-  RFC9483:
 
 --- abstract
 
@@ -192,7 +194,7 @@ with no change to the bits on the wire.
 
 ## Use of CSR templates {#csrtemplate}
 
-{{?RFC8295, Appendix B}} describes a mechanism that avoids the
+{{RFC8295, Appendix B}} describes a mechanism that avoids the
 piecemeal inclusion of attributes that {{RFC7030}} documented.
 Instead, an entire CSR object is returned with various fields filled
 out, and other fields waiting to be filled in, in a pKCS7PDU attribute.
