@@ -1,0 +1,105 @@
+CRITemplateModule
+  { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1)
+    pkcs-9(9) smime(16) modules(0) id-mod-critemplate(TBD1) }
+
+DEFINITIONS IMPLICIT TAGS ::=
+
+BEGIN
+
+IMPORTS -- from [RFC5912]
+
+SupportedAttributes, PublicKeyAlgorithms
+ FROM PKIX1Explicit-2009
+  { iso(1) identified-organization(3) dod(6) internet(1) security(5)
+    mechanisms(5) pkix(7) id-mod(0) id-mod-pkix1-explicit-02(51)}
+
+EXTENSION
+ FROM PKIX-CommonTypes-2009
+  { iso(1) identified-organization(3) dod(6) internet(1) security(5)
+    mechanisms(5) pkix(7) id-mod(0) id-mod-pkixCommon-02(57) }
+
+PUBLIC-KEY, AlgorithmIdentifier{}
+ FROM AlgorithmInformation-2009
+  { iso(1) identified-organization(3) dod(6) internet(1) security(5)
+    mechanisms(5) pkix(7) id-mod(0)
+    id-mod-algorithmInformation-02(58)}
+
+CertExtensions, CrlExtensions, CrlEntryExtensions
+ FROM PKIX1Implicit-2009
+  { iso(1) identified-organization(3) dod(6) internet(1) security(5)
+    mechanisms(5) pkix(7) id-mod(0) id-mod-pkix1-implicit-02(59)}
+
+ATTRIBUTE, Attributes{}, CRIAttributes, CertificationRequestInfo
+ FROM PKCS-10
+  { iso(1) identified-organization(3) dod(6) internet(1)
+    security(5) mechanisms(5) pkix(7)
+    id-mod(0) id-mod-pkcs10-2009(69) }
+;
+
+aa-certificationRequestInfoTemplate ATTRIBUTE ::=
+  { TYPE CertificationRequestInfoTemplate IDENTIFIED BY
+    id-aa-certificationRequestInfoTemplate }
+
+id-aa-certificationRequestInfoTemplate OBJECT IDENTIFIER ::=
+  { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs9(9)
+    smime(16) aa(2) csrinfo(TBD2) }
+
+--  like CertificationRequestInfo but OPTIONAL subject, subjectPKInfo
+CertificationRequestInfoTemplate ::= SEQUENCE {
+    version       INTEGER { v1(0) } (v1, ... ),
+    subject       NameTemplate OPTIONAL,
+    subjectPKInfo [0] SubjectPublicKeyInfoTemplate
+                              {{ PKInfoAlgorithms }} OPTIONAL,
+    attributes    [1] Attributes{{ CRIAttributes }}
+}
+
+
+--  like Name, but with OPTIONAL RDN values
+NameTemplate ::= CHOICE { -- only one possibility for now --
+    rdnSequence  RDNSequenceTemplate }
+
+RDNSequenceTemplate ::= SEQUENCE OF RelativeDistinguishedNameTemplate
+
+RelativeDistinguishedNameTemplate  ::= SET SIZE (1 .. MAX)
+    OF SingleAttributeTemplate { {SupportedAttributes} }
+
+--  like SingleAttribute, but with OPTIONAL value
+SingleAttributeTemplate{ATTRIBUTE:AttrSet} ::= SEQUENCE {
+    type      ATTRIBUTE.&id({AttrSet}),
+    value     ATTRIBUTE.&Type({AttrSet}{@type}) OPTIONAL
+}
+
+--  like SubjectPublicKeyInfo, but with OPTIONAL subjectPublicKey
+SubjectPublicKeyInfoTemplate{PUBLIC-KEY:IOSet} ::= SEQUENCE {
+    algorithm        AlgorithmIdentifier{PUBLIC-KEY, {IOSet}},
+    subjectPublicKey BIT STRING OPTIONAL
+}
+
+
+id-extensionReqTemplate AttributeType ::= {pkcs-9 TBD3}
+
+--  like extensionRequest, but with OPTIONAL Extension extnValues
+--  original definition was in PKCS#9 RFC 2985 section 5.4.2
+at-extensionReqTemplate ATTRIBUTE ::= {
+    TYPE ExtensionReqTemplate IDENTIFIED BY id-extensionReqTemplate }
+
+ExtensionReqTemplate ::= ExtensionTemplates{{CertExtensions}}
+
+--  like Extensions, but with OPTIONAL extnValue
+ExtensionTemplates{EXTENSION:ExtensionSet} ::=
+    SEQUENCE SIZE (1..MAX) OF ExtensionTemplate{{ExtensionSet}}
+
+--  like Extension, but with OPTIONAL extnValue
+ExtensionTemplate{EXTENSION:ExtensionSet} ::= SEQUENCE {
+    extnID    EXTENSION.&id({ExtensionSet}),
+    critical  BOOLEAN
+  --                   (EXTENSION.&Critical({ExtensionSet}{@extnID}))
+                     DEFAULT FALSE,
+    extnValue OCTET STRING (CONTAINING
+              EXTENSION.&ExtnType({ExtensionSet}{@extnID})) OPTIONAL
+              --  contains the DER encoding of the ASN.1 value
+              --  corresponding to the extension type identified
+              --  by extnID when present
+}
+
+END
