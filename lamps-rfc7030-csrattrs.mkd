@@ -163,12 +163,13 @@ This remains unchanged, such that bits-on-the-wire compatibility is maintained.
 Key parts that were unclear were which OID to use in the 'type' field and
 that the 'values' field can contain an entire sequence of X.509 extensions.
 
-The OID to use for such attributes in the 'type' field MUST be extensionRequest,
-which has the numerical value 1.2.840.113549.1.9.14.
-There MUST be only one such Attribute.
+The OID to use for such attributes in the 'type' field MUST be `id-ExtensionReq`,
+which has the value 1.2.840.113549.1.9.14.
+Note that is the same as `pkcs-9-at-extensionRequest` defined in PKCS#9 {{RFC2985}}.
+There MUST be only one such attribute.
 
-The 'values' field of this attribute MUST contain a set with exactly one element,
-and this element MUST be of type Extensions, as per {{Section 4.1 of RFC5280}}:
+The `values` field of this attribute MUST contain a set with exactly one element,
+and this element MUST be of type `Extensions`, as per {{Section 4.1 of RFC5280}}:
 
 ~~~
    Extensions  ::=  SEQUENCE SIZE (1..MAX) OF Extension
