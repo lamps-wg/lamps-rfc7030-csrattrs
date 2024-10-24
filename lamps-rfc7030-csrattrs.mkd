@@ -187,7 +187,7 @@ An Extension comprises the OID of the specific X.509 extension (extnID),
 optionally the 'critical' bit, and the extension value (extnValue).
 
 An Extensions structure, which is a sequence of elements of type Extension,
-MUST NOT include more than one element with a particiular extnID.
+MUST NOT include more than one element with a particular extnID.
 
 With this understanding, the needs of {{RFC8994}} and {{RFC8995}} are satisfied
 with no change to the bits on the wire.
@@ -324,7 +324,7 @@ Suppose the server requires that the CSR will contain:
 *  the keyUsage extension marked critical
    with the value digitalSignature and keyAgreement, and
 
-*  the extKeyUsage extension with values to be filled in by the EE.
+*  the extKeyUsage extension with value to be filled in by the EE.
 
 
 Then the `CertificationRequestInfo` structure constructed by the server
@@ -334,12 +334,21 @@ will be as follows:
 {::include examples/template.txt}
 ~~~
 
+Note that a similar method has been defined in CMP Updates {{RFC9480}}
+and the Lightweight CMP profile {{RFC9483, Section 4.3.3}},
+using a CSR template as defined for CRMF {{RFC4211}}.
+That method does not properly deal with absent RDNs (encoding them as empty strings),
+absent `subjectPublicKey` fields (encoding them as empty `BIT STRING`),
+and absent X.509v3 extension values (encoding them as empty `OCTET STRING`),
+which may cause issues with strict ASN.1 parsing and decoding.
+
+
 # Co-existence with existing implementations
 
 Legacy servers MAY continue to use the {{RFC7030}} style piecemeal attribute/value pairs, and MAY also include the template style described in {#csrtemplate}.
 Clients which understand both MUST use the template only, and
 ignore all other CSRattrs elements.
-Older clients will ignore the new CertificateRequestInfoTemplate element.
+Older clients will ignore the new CertificationRequestInfoTemplate element.
 
 # Examples
 
@@ -391,7 +400,7 @@ The Base64:
 
 3. An extensionRequest container with an OID 1.3.6.1.1.1.1.22 (macAddress), but without a value, to indicate that the CSR should include an X.509v3 extension with this value.
 
-4. The ecdsaWithSHA384 OID is included to indicate what kind of hash is expected to be used for the self-signature of the PCKS#10 CSR structure.
+4. The ecdsaWithSHA384 OID is included to indicate what kind of hash is expected to be used for the self-signature of the PKCS#10 CSR structure.
 
 ~~~~
 {::include examples/rfc7030-example01.csrattr.dump}
@@ -419,7 +428,7 @@ The Base64:
 
 3. An extensionRequest container with a subjectAltName value containing the name potato@example.com
 
-4. The ecdsaWithSHA384 OID is included to indicate what kind of hash is expected to be used for the self-signature of the PCKS#10 CSR structure.
+4. The ecdsaWithSHA384 OID is included to indicate what kind of hash is expected to be used for the self-signature of the PKCS#10 CSR structure.
 
 ~~~~
 {::include examples/potato-example.csrattr.dump}
@@ -516,7 +525,7 @@ IANA is asked to allocate two new Object Identifiers:
 * One (TBD3) from the PKCS#9 (1 2 840 113549 1 9) registry for the
   id-extensionReqTemplate AttributeType; see {{csrtemplate}} and {{app-asn1-module}}
 
-# Acknowledgements
+# Acknowledgments
 
 Corey Bonnell crafted example02 using a different tool, and this helped debug other running code.
 
@@ -541,3 +550,19 @@ established in {{RFC5911}}, {{RFC5912}}, and {{RFC6268}}.
 ~~~~ asn.1
 {::include CRITemplateModule.asn}
 ~~~~
+
+<!--
+Local IspellDict: american
+LocalWords:  abbrev CSRAttrs docname ietf rfc csrattrs ipr wg pkcs
+LocalWords:  submissionType kw std toc sortrefs symrefs org mcr
+LocalWords:  seriesinfo bcp crypto CsrAttrs AttrOrOID IOSet asn
+LocalWords:  csrtemplate pKCS CertificationRequestInfoTemplate
+LocalWords:  NameTemplate subjectPKInfo PKInfoAlgorithms br acp
+LocalWords:  SubjectPublicKeyInfoTemplate AttrSet ExtensionSet
+LocalWords:  SingleAttributeTemplate extensionReqTemplate secp
+LocalWords:  ExtensionTemplate ExtnType myDept myGroup CSRattrs
+LocalWords:  publicKey dumpasn otherName acpNodeName otherNames
+LocalWords:  AcpNodeName sourcecode csrattr ecdsaWithSHA sha
+LocalWords:  harkins critemplate csrinfo Changelog markdown
+LocalWords:  CRITemplateModule ExtensionReq
+-->
