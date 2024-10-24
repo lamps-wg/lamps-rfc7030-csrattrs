@@ -1,0 +1,58 @@
+SEQUENCE {
+  INTEGER 0
+  SEQUENCE {
+    SET {
+      SEQUENCE {
+        OBJECT IDENTIFIER commonName (2 5 4 3)
+        }
+      }
+    SET {
+      SEQUENCE {
+        OBJECT IDENTIFIER organizationalUnitName (2 5 4 11)
+        UTF8String "myDept"
+        }
+      }
+    SET {
+      SEQUENCE {
+        OBJECT IDENTIFIER organizationalUnitName (2 5 4 11)
+        UTF8String "myGroup"
+        }
+      }
+    }
+  [0] {
+    SEQUENCE {
+      OBJECT IDENTIFIER ecPublicKey (1 2 840 10045 2 1)
+      OBJECT IDENTIFIER secp256r1 (1 2 840 10045 3 1 7)
+      }
+    }
+  [1] {
+    SEQUENCE {
+      OBJECT IDENTIFIER id-extensionReqTemplate
+                        (1 2 840 113549 1 9 TBD3)
+      SET {
+        SEQUENCE {
+          SEQUENCE {
+            OBJECT IDENTIFIER subjectAltName (2 5 29 17)
+            OCTET STRING, encapsulates {
+              SEQUENCE {
+                [2] "www.myServer.com"
+                [7] ""
+                }
+              }
+            }
+          SEQUENCE {
+            OBJECT IDENTIFIER keyUsage (2 5 29 15)
+            BOOLEAN TRUE
+            OCTET STRING, encapsulates {
+              BIT STRING 3 unused bits
+                "10001"B
+              }
+            }
+          SEQUENCE {
+            OBJECT IDENTIFIER extKeyUsage (2 5 29 37)
+            }
+          }
+        }
+      }
+    }
+  }
