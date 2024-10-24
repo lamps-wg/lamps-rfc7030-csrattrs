@@ -238,11 +238,11 @@ with the following differences.
 requrements on the subject name and its RDNs.
 
 * RelativeDistinguishedNames (RDNs) in the `subject` fields are allowed to be empty,
-which is achieved by adding `OPTIONAL` to the `value` field of `AttributeTypeAndValueTemplate`.
+which is achieved by adding `OPTIONAL` to the `value` field of `SingleAttributeTemplate`.
 This means that the client is required to provide an RDN of the given type and fill in its value.
 
 ~~~~
-  AttributeTypeAndValueTemplate {ATTRIBUTE:AttrSet} ::= SEQUENCE {
+  SingleAttributeTemplate {ATTRIBUTE:AttrSet} ::= SEQUENCE {
       type      ATTRIBUTE.&id({AttrSet}),
       value     ATTRIBUTE.&Type({AttrSet}{@type}) OPTIONAL
   }
@@ -252,27 +252,25 @@ This means that the client is required to provide an RDN of the given type and f
 * The `subjectPKInfo` field is made `OPTIONAL`,
 such that the server can leave it out in case there are no requirements on the key.<br>
 Otherwise the server specifies the algorithm of the key, i.e., the key type, in the `algorithm` field.
-The `subjectPublicKey` field contained in `SubjectPublicKeyInfoTemplate` is made
+The `subjectPublicKey` field contained in `SubjectPublicKeyInfoTemplate` has been made
 `OPTIONAL` because usually it is left out, but in case the server needs to specify the size of an
 RSA key, the field is used to provide a dummy public key value of the desired RSA modulus length.
 
 ~~~~
-  SubjectPublicKeyInfoTemplate {PUBLIC-KEY: IOSet} ::= SEQUENCE {
-      algorithm        AlgorithmIdentifier {PUBLIC-KEY, {IOSet}},
+  SubjectPublicKeyInfoTemplate{PUBLIC-KEY:IOSet} ::= SEQUENCE {
+      algorithm        AlgorithmIdentifier{PUBLIC-KEY, {IOSet}},
       subjectPublicKey BIT STRING OPTIONAL
   }
 ~~~~
-* A new OID `pkcs-9-at-extensionRequestTemplate` and the related `ExtensionTemplate` structure
-is defind where the `extnValue` field is optional.
+* A new OID `id-extensionReqTemplate` and the related `ExtensionTemplate` structure
+is defined where the `extnValue` field is optional.
 If the field is absent this means that the client is required to provide an X.509 extension
 with the given `extnID` and potentially the `critical` flag and fill in its value.
 
 ~~~~
   ExtensionTemplate {EXTENSION:ExtensionSet} ::= SEQUENCE {
      extnID      EXTENSION.&id({ExtensionSet}),
-     critical    BOOLEAN -- (
-                   EXTENSION.&Critical({ExtensionSet}{@extnID}))
-                   DEFAULT FALSE,
+     critical    BOOLEAN DEFAULT FALSE,
      extnValue   OCTET STRING (CONTAINING
                  EXTENSION.&ExtnType({ExtensionSet}{@extnID})) OPTIONAL
                  --  contains the DER encoding of the ASN.1 value
@@ -301,8 +299,8 @@ If the `subjectPKInfo` field is present,
 it indicates the type of the key pair the client is expected to use,
 where the `subjectPublicKey` MUST NOT be given except if the `algorithm` indicates RSA.
 
-The `attributes` field MUST NOT contain multiple `extensionRequestTemplate` attributes
-and MUST NOT contain both `extensionRequest` and `extensionRequestTemplate` attributes.
+The `attributes` field MUST NOT contain multiple `at-extensionReqTemplate` attributes
+and MUST NOT contain both `extensionRequest` and `at-extensionReqTemplate` attributes.
 
 <!--
 Each of the attributes has a single attribute value instance in the
@@ -602,19 +600,35 @@ DEFINITIONS IMPLICIT TAGS ::=
 
 BEGIN
 
-IMPORTS
+IMPORTS -- from [RFC5912]
 
-ATTRIBUTE -- [RFC5911]
+SupportedAttributes, PublicKeyAlgorithms
+ FROM PKIX1Explicit-2009
+  { iso(1) identified-organization(3) dod(6) internet(1) security(5)
+    mechanisms(5) pkix(7) id-mod(0) id-mod-pkix1-explicit-02(51)}
+
+EXTENSION
  FROM PKIX-CommonTypes-2009
-   { iso(1) identified-organization(3) dod(6) internet(1)
-     security(5) mechanisms(5) pkix(7)
-     id-mod(0) id-mod-pkixCommon-02(57) }
+  { iso(1) identified-organization(3) dod(6) internet(1) security(5)
+    mechanisms(5) pkix(7) id-mod(0) id-mod-pkixCommon-02(57) }
 
-CertificationRequestInfo -- [RFC5912]
-  FROM PKCS-10
-    { iso(1) identified-organization(3) dod(6) internet(1)
-      security(5) mechanisms(5) pkix(7)
-      id-mod(0) id-mod-pkcs10-2009(69) }
+PUBLIC-KEY, AlgorithmIdentifier{}
+ FROM AlgorithmInformation-2009
+  { iso(1) identified-organization(3) dod(6) internet(1) security(5)
+    mechanisms(5) pkix(7) id-mod(0)
+    id-mod-algorithmInformation-02(58)}
+
+CertExtensions, CrlExtensions, CrlEntryExtensions
+ FROM PKIX1Implicit-2009
+  { iso(1) identified-organization(3) dod(6) internet(1) security(5)
+    mechanisms(5) pkix(7) id-mod(0) id-mod-pkix1-implicit-02(59)}
+
+ATTRIBUTE, Attributes{}, CRIAttributes, CertificationRequestInfo
+ FROM PKCS-10
+  { iso(1) identified-organization(3) dod(6) internet(1)
+    security(5) mechanisms(5) pkix(7)
+    id-mod(0) id-mod-pkcs10-2009(69) }
+;
 
 aa-certificationRequestInfoTemplate ATTRIBUTE ::=
   { TYPE CertificationRequestInfoTemplate IDENTIFIED BY
@@ -624,6 +638,7 @@ id-aa-certificationRequestInfoTemplate OBJECT IDENTIFIER ::=
   { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs9(9)
     smime(16) aa(2) csrinfo(TBD2) }
 
+--  like CertificationRequestInfo but OPTIONAL subject, subjectPKInfo
 CertificationRequestInfoTemplate ::= SEQUENCE {
     version       INTEGER { v1(0) } (v1, ... ),
     subject       NameTemplate OPTIONAL,
@@ -632,48 +647,53 @@ CertificationRequestInfoTemplate ::= SEQUENCE {
     attributes    [1] Attributes{{ CRIAttributes }}
 }
 
+
+--  like Name, but with OPTIONAL RDN values
 NameTemplate ::= CHOICE { -- only one possibility for now --
     rdnSequence  RDNSequenceTemplate }
 
 RDNSequenceTemplate ::= SEQUENCE OF RelativeDistinguishedNameTemplate
 
-RelativeDistinguishedNameTemplate  ::=
-    SET SIZE (1 .. MAX) OF AttributeTypeAndValueTemplate {
-                           {SupportedAttributes} }
+RelativeDistinguishedNameTemplate  ::= SET SIZE (1 .. MAX)
+    OF SingleAttributeTemplate { {SupportedAttributes} }
 
-AttributeTypeAndValueTemplate {ATTRIBUTE:AttrSet} ::= SEQUENCE {
+--  like SingleAttribute, but with OPTIONAL value
+SingleAttributeTemplate{ATTRIBUTE:AttrSet} ::= SEQUENCE {
     type      ATTRIBUTE.&id({AttrSet}),
     value     ATTRIBUTE.&Type({AttrSet}{@type}) OPTIONAL
 }
 
-SubjectPublicKeyInfoTemplate {PUBLIC-KEY: IOSet} ::= SEQUENCE {
-    algorithm        AlgorithmIdentifier {PUBLIC-KEY, {IOSet}},
+--  like SubjectPublicKeyInfo, but with OPTIONAL subjectPublicKey
+SubjectPublicKeyInfoTemplate{PUBLIC-KEY:IOSet} ::= SEQUENCE {
+    algorithm        AlgorithmIdentifier{PUBLIC-KEY, {IOSet}},
     subjectPublicKey BIT STRING OPTIONAL
 }
 
-pkcs-9-at-extensionRequestTemplate OBJECT IDENTIFIER ::=
-    {pkcs-9 TBD3}
 
-extensionRequestTemplate ATTRIBUTE ::= {
-        WITH SYNTAX ExtensionRequestTemplate
-        SINGLE VALUE TRUE
-        ID pkcs-9-at-extensionRequestTemplate
-}
+id-extensionReqTemplate AttributeType ::= {pkcs-9 TBD3}
 
-ExtensionRequestTemplate ::= ExtensionTemplates
+--  like extensionRequest, but with OPTIONAL Extension extnValues
+--  original definition was in PKCS#9 RFC 2985 section 5.4.2
+at-extensionReqTemplate ATTRIBUTE ::= {
+    TYPE ExtensionReqTemplate IDENTIFIED BY id-extensionReqTemplate }
 
-ExtensionTemplates  ::=  SEQUENCE SIZE (1..MAX) OF ExtensionTemplate
+ExtensionReqTemplate ::= ExtensionTemplates{{CertExtensions}}
 
-ExtensionTemplate {EXTENSION:ExtensionSet} ::= SEQUENCE {
-   extnID      EXTENSION.&id({ExtensionSet}),
-   critical    BOOLEAN -- (
-                 EXTENSION.&Critical({ExtensionSet}{@extnID}))
-                 DEFAULT FALSE,
-   extnValue   OCTET STRING (CONTAINING
-               EXTENSION.&ExtnType({ExtensionSet}{@extnID})) OPTIONAL
-               --  contains the DER encoding of the ASN.1 value
-               --  corresponding to the extension type identified
-               --  by extnID when present
+--  like Extensions, but with OPTIONAL extnValue
+ExtensionTemplates{EXTENSION:ExtensionSet} ::=
+    SEQUENCE SIZE (1..MAX) OF ExtensionTemplate{{ExtensionSet}}
+
+--  like Extension, but with OPTIONAL extnValue
+ExtensionTemplate{EXTENSION:ExtensionSet} ::= SEQUENCE {
+    extnID    EXTENSION.&id({ExtensionSet}),
+    critical  BOOLEAN
+  --                   (EXTENSION.&Critical({ExtensionSet}{@extnID}))
+                     DEFAULT FALSE,
+    extnValue OCTET STRING (CONTAINING
+              EXTENSION.&ExtnType({ExtensionSet}{@extnID})) OPTIONAL
+              --  contains the DER encoding of the ASN.1 value
+              --  corresponding to the extension type identified
+              --  by extnID when present
 }
 
 END
