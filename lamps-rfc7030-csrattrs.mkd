@@ -563,11 +563,12 @@ This may be desirable if the CA and EST server have different operators.
 IANA is asked to allocate two new Object Identifiers:
 
 * One (TBD1) from the SMI Security for S/MIME Module Identifier
-  (1.2.840.113549.1.9.16.0) registry for the ASN.1 module: id-mod-critemplate; see {{app-asn1-module}}, and
+  (1.2.840.113549.1.9.16.0) registry for the ASN.1 module: id-mod-critemplate; see {{app-asn1-module}}
 * One (TBD2) from the SMI Security for S/MIME Attributes
   (1.2.840.113549.1.9.16.2) registry for the Certification Request
-  Information Template (csrinfo) attribute; see {{csrtemplate}} and {{app-asn1-module}}.
-* One (TBD3) from the PKCS#9 (1 2 840 113549 1 9) registry - TODO COMPLETE THIS ITEM
+  Information Template (csrinfo) attribute; see {{app-asn1-module}}
+* One (TBD3) from the PKCS#9 (1 2 840 113549 1 9) registry for the
+  id-extensionReqTemplate AttributeType; see {{csrtemplate}} and {{app-asn1-module}}
 
 # Acknowledgements
 
