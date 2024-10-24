@@ -128,7 +128,7 @@ This covers all uses and is fully backward compatible with existing use.
 
 # CSR Attributes Handling
 
-## Extensions to RFC 7030 section 2.6.
+## Extensions to RFC 7030 section 2.6
 
 Replace the second paragraph with the following text:
 
@@ -144,9 +144,9 @@ Replace the second paragraph with the following text:
    the client is expected to use when generating the CSR.
 ~~~~
 
-## Extensions to RFC 7030 section 4.5.2. {#csrattrs}
+## Extensions to RFC 7030 section 4.5.2 {#csrattrs}
 
-The ASN.1 syntax for CSR Attributes as defined in EST section 4.5.2 is as follows:
+The ASN.1 syntax for CSR Attributes as defined in EST {{RFC7030, Section 4.5.2}} is as follows:
 
 ~~~
    CsrAttrs ::= SEQUENCE SIZE (0..MAX) OF AttrOrOID
@@ -195,21 +195,32 @@ with no change to the bits on the wire.
 
 ## Use of CSR templates {#csrtemplate}
 
-{{RFC8295, Appendix B}} describes a mechanism that avoids the
-piecemeal inclusion of attributes that {{RFC7030}} documented.
-Instead, an entire CSR object is returned with various fields filled
-out, and other fields waiting to be filled in, in a pKCS7PDU attribute.
-In that approach, the pKCS7PDU attribute includes a Full PKI
-Data content type {{RFC5272}} and that in turn includes a CSR or CRMF
-formatted request; see {{RFC6268}} Sections 5 and 9, respectively.
-
-The drawback to that approach, particularly for the CSR, is that some useless
+Alternatively to the piecemeal inclusion of CSR attributes
+specified in {{RFC7030, Section 4.5.2}} with its limitations and ambiguities,
+{{Appendix B of RFC8295}} describes an approach using a CSR template.
+An entire CSR object is returned with various fields filled out,
+and other fields waiting to be filled in.
+In that approach, a pKCS7PDU attribute includes a Full PKI Data content type {{RFC5272}}
+and that in turn includes a CSR or CRMF formatted request
+(for details see {{RFC6268}} Sections 5 or 9, respectively).<br>
+One drawback to that approach, particularly for the CSR, is that some useless
 fields have to be included; specifically, the `signature` field on
-the CSR is faked with an empty bit string. We avoid this drawback as follows.
+the CSR is faked with an empty bit string.
 
-This specification defines the Certificate Request Information
-Template attribute for CsrAttrs, see {{csrattrs}}, that is essentially
-a partially filled in PKCS#10 CSR minus the signature wrapper as follows:
+A similar method has been defined in CMP Updates {{RFC9480}}
+and the Lightweight CMP profile {{RFC9483, Section 4.3.3}},
+using a CSR template as defined for CRMF {{RFC4211}}.
+Like the approach mentioned before,
+this method does not properly deal with absent RDNs (encoding them as empty strings),
+absent `subjectPublicKey` fields (encoding them as empty `BIT STRING`),
+and absent X.509v3 extension values (encoding them as empty `OCTET STRING`),
+which may cause issues with strict ASN.1 parsing and decoding.
+
+We avoid these drawbacks as follows.
+
+This specification defines a new Certificate Request Information Template attribute
+for CsrAttrs (as given in {{csrattrs}}) that is essentially
+a partially filled in PKCS#10 CSR minus the signature wrapper:
 
 ~~~~
   CertificationRequestInfoTemplate ::= SEQUENCE {
@@ -223,7 +234,7 @@ a partially filled in PKCS#10 CSR minus the signature wrapper as follows:
 
 {{app-asn1-module}} contains all detail.
 
-Note that the CertificationRequestInfoTemplate closely resembles the CertificationRequestInfo
+The CertificationRequestInfoTemplate closely resembles the CertificationRequestInfo
 from {{RFC5912, Section 5}}:
 
 ~~~~
@@ -336,18 +347,11 @@ will be as follows:
 {::include examples/template.txt}
 ~~~
 
-Note that a similar method has been defined in CMP Updates {{RFC9480}}
-and the Lightweight CMP profile {{RFC9483, Section 4.3.3}},
-using a CSR template as defined for CRMF {{RFC4211}}.
-That method does not properly deal with absent RDNs (encoding them as empty strings),
-absent `subjectPublicKey` fields (encoding them as empty `BIT STRING`),
-and absent X.509v3 extension values (encoding them as empty `OCTET STRING`),
-which may cause issues with strict ASN.1 parsing and decoding.
-
 
 # Co-existence with existing implementations
 
-Legacy servers MAY continue to use the {{RFC7030}} style piecemeal attribute/value pairs, and MAY also include the template style described in {#csrtemplate}.
+Legacy servers MAY continue to use the {{RFC7030}} style piecemeal attribute/value pairs,
+and MAY also include the template style described in {#csrtemplate}.
 Clients which understand both MUST use the template only, and
 ignore all other CSRattrs elements.
 Older clients will ignore the new CertificationRequestInfoTemplate element.
