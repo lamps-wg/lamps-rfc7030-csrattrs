@@ -3,7 +3,7 @@ v: 3
 
 title: Clarification and enhancement of RFC7030 CSR Attributes definition
 abbrev: CSRAttrs
-docname: draft-ietf-lamps-rfc7030-csrattrs-11
+docname: draft-ietf-lamps-rfc7030-csrattrs-13
 
 stand_alone: true
 
