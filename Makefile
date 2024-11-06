@@ -15,6 +15,9 @@ EXAMPLES+=examples/harkins03.csrattr.b64
 EXAMPLES+=examples/harkins03.csrattr.dump
 # EXAMPLES+=examples/corey-example.csrattr.dump
 
+.phony: default
+default: ${DRAFT}-${VERSION}.txt ${DRAFT}.pdf
+
 ${DRAFT}-${VERSION}.txt: ${DRAFT}.txt
 	cp ${DRAFT}.txt ${DRAFT}-${VERSION}.txt
 	: git add ${DRAFT}-${VERSION}.txt ${DRAFT}.txt
