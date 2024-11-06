@@ -16,7 +16,7 @@ EXAMPLES+=examples/harkins03.csrattr.dump
 # EXAMPLES+=examples/corey-example.csrattr.dump
 
 .phony: default
-default: ${DRAFT}-${VERSION}.txt ${DRAFT}.pdf
+default: ${DRAFT}-${VERSION}.txt
 
 ${DRAFT}-${VERSION}.txt: ${DRAFT}.txt
 	cp ${DRAFT}.txt ${DRAFT}-${VERSION}.txt
@@ -32,9 +32,6 @@ ${DRAFT}-${VERSION}.txt: ${DRAFT}.txt
 
 %.html: %.xml
 	unset DISPLAY; XML_LIBRARY=$(XML_LIBRARY):./src xml2rfc --html -o $@ $?
-
-%.pdf: %.mkd
-	kdrfc --v3 -P $<
 
 submit: ${DRAFT}.xml
 	curl -s -F "user=mcr+ietf@sandelman.ca" ${REPLACES} -F "xml=@${DRAFT}.xml" https://datatracker.ietf.org/api/submission | jq
