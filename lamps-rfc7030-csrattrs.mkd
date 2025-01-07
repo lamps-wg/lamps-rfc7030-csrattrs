@@ -528,8 +528,9 @@ IANA is asked to allocate two new Object Identifiers:
 * One (TBD2) from the SMI Security for S/MIME Attributes
   (1.2.840.113549.1.9.16.2) registry for the Certification Request
   Information Template (csrinfo) attribute; see {{app-asn1-module}}
-* One (TBD3) from the PKCS#9 (1 2 840 113549 1 9) registry for the
-  id-extensionReqTemplate AttributeType; see {{csrtemplate}} and {{app-asn1-module}}
+* One (TBD3) SMI Security for S/MIME Attributes
+  (1.2.840.113549.1.9.16.2) registry for the extension request
+  template (extensionReqTemplate) attribute; see Appendix A
 
 # Acknowledgments
 

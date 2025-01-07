@@ -76,7 +76,9 @@ SubjectPublicKeyInfoTemplate{PUBLIC-KEY:IOSet} ::= SEQUENCE {
 }
 
 
-id-extensionReqTemplate AttributeType ::= {pkcs-9 TBD3}
+id-extensionReqTemplate AttributeType ::=
+{ iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs9(9)
+  smime(16) aa(2) extnReqTemplate(TBD3) }
 
 --  like extensionRequest, but with OPTIONAL Extension extnValues
 --  original definition was in PKCS#9 RFC 2985 section 5.4.2
