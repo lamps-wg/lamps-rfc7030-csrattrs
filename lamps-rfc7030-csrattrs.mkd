@@ -285,7 +285,7 @@ Otherwise, the `subjectPublicKey` MUST be absent.
   }
 ~~~~
 
-* A new OID `id-extensionReqTemplate` and the related `ExtensionTemplate` structure
+* A new OID `id-aa-extensionReqTemplate` and the related `ExtensionTemplate` structure
 is defined where the `extnValue` field has been made `OPTIONAL`.
 This is only needed to enable specifying partial extensions with values to be filled in
 by the client; otherwise the `id-ExtensionReq` OID and the respective value of type
