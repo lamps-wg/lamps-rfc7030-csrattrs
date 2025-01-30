@@ -68,6 +68,12 @@ informative:
   RFC8995: BRSKI
   RFC9480:
   RFC9483:
+  dumpasn1:
+    target: "https://www.cs.auckland.ac.nz/~pgut001/dumpasn1.c"
+    title: "Dump ASN"
+    author:
+    - name: "Peter Gutmann"
+
   X.690:
     target: https://www.itu.int/rec/T-REC-X.690
     title: >
@@ -368,7 +374,7 @@ Older clients will ignore the new CertificationRequestInfoTemplate element.
 Each example has a high-level (English) explanation of what is expected.
 Some mapping back to the Attribute and Extension definitions above are included.
 The base64 DER encoding is then shown.
-The output of "dumpasn1" is then provided to detail what the contents are.
+The output of "dumpasn1" {{dumpasn1}} is then provided to detail what the contents are.
 
 ## RFC8994/ACP subjectAltName with specific otherName {#acpNodeName}
 
