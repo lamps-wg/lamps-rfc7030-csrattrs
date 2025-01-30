@@ -472,7 +472,7 @@ The Base64:
 
 ### ASN.1 DUMP output
 
-Provide a CSR with an RSA key that's 4096 bits and hash it with sha256
+Provide a CSR with an RSA key that's 4096 bits and use SHA256 as the hash within the signature.
 
 ~~~~
 {::include examples/harkins01.csrattr.dump}
@@ -495,7 +495,7 @@ The Base64:
 ### ASN.1 DUMP output
 
 Provide a CSR with an ECC key from p384, include your serial number, and
-hash it with sha384.
+use SHA384 as the hash within the signature.
 
 ~~~~
 {::include examples/harkins02.csrattr.dump}
@@ -504,7 +504,8 @@ hash it with sha384.
 ## Require a specific extension
 
 The CSR is required to have an EC key, to include a serial number,
-a friendly name, favorite drink {{favoritedrink}} [OID 0.9.2342.19200300.100.1.5], and be hashed with SHA512.
+a friendly name, favorite drink {{favoritedrink}} [OID 0.9.2342.19200300.100.1.5], and
+use SHA512 as the hash within the signature.
 
 ### Base64 encoded example
 
