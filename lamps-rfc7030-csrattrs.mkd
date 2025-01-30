@@ -468,7 +468,7 @@ The Base64:
 
 ### ASN.1 DUMP output
 
-1. Provide a CSR with an RSA key that's 4096 bits and sign it with sha256
+Provide a CSR with an RSA key that's 4096 bits and hash it with sha256
 
 ~~~~
 {::include examples/harkins01.csrattr.dump}
@@ -491,7 +491,7 @@ The Base64:
 ### ASN.1 DUMP output
 
 Provide a CSR with an ECC key from p384, include your serial number, and
-sign it with sha384.
+hash it with sha384.
 
 ~~~~
 {::include examples/harkins02.csrattr.dump}
@@ -514,7 +514,7 @@ The Base64:
 ### ASN.1 DUMP output
 
 Provide a CSR with an EC key from sha521, include your serial number,
-friendly name, and favorite drink, and sign it with sha512
+friendly name, and favorite drink, and hash it with sha512
 
 ~~~~
 {::include examples/harkins03.csrattr.dump}
