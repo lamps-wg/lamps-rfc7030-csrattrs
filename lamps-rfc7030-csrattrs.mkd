@@ -74,6 +74,10 @@ informative:
     author:
     - name: "Peter Gutmann"
 
+  favoritedrink:
+    target: "https://oid-base.com/get/0.9.2342.19200300.100.1.5"
+    title: "Favorite Drink: arbitrary OID"
+
   X.690:
     target: https://www.itu.int/rec/T-REC-X.690
     title: >
@@ -500,7 +504,7 @@ hash it with sha384.
 ## Require a specific extension
 
 The CSR is required to have an EC key, to include a serial number,
-a friendly name, favorite drink, and be signed with SHA512.
+a friendly name, favorite drink {{favoritedrink}} [OID 0.9.2342.19200300.100.1.5], and be hashed with SHA512.
 
 ### Base64 encoded example
 
@@ -552,9 +556,7 @@ Corey Bonnell crafted example02 using a different tool, and this helped debug ot
 Carl Wallace provided major parts of the CertificationRequestInfoTemplate syntax declaration.
 
 Russ Housley did many reviews of the ASN.1 and suggested many fixes.
-
-# Changelog
-
+Deb Cooley did the usual Area Director Review.
 
 --- back
 
