@@ -557,6 +557,7 @@ Corey Bonnell crafted example02 using a different tool, and this helped debug ot
 Carl Wallace provided major parts of the CertificationRequestInfoTemplate syntax declaration.
 
 Russ Housley did many reviews of the ASN.1 and suggested many fixes.
+
 Deb Cooley did the usual Area Director Review.
 
 --- back
