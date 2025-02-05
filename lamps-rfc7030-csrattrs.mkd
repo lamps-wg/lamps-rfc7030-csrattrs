@@ -212,7 +212,7 @@ with no change to the bits on the wire.
 
 ## Use of CSR templates {#csrtemplate}
 
-Alternatively to the partial inclusion of CSR attributes
+Alternatively to the unstructured inclusion of CSR attributes
 specified in {{RFC7030, Section 4.5.2}} with its limitations and ambiguities,
 {{Appendix B of RFC8295}} describes an approach using a CSR template.
 An entire CSR object is returned with various fields filled out,
