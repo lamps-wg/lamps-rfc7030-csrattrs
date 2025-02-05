@@ -505,7 +505,7 @@ use SHA384 as the hash algorithm within the signature.
 
 The CSR is required to have an EC key, to include a serial number,
 a friendly name, favorite drink {{favoritedrink}} [OID 0.9.2342.19200300.100.1.5], and
-use SHA512 as the hash within the signature.
+use SHA512 as the hash algorithm within the signature.
 
 ### Base64 encoded example
 
