@@ -367,7 +367,7 @@ will be as follows:
 
 # Co-existence with existing implementations
 
-Legacy servers MAY continue to use the {{RFC7030}} style partial attribute/value pairs,
+Legacy servers MAY continue to use the {{RFC7030}}-style unstructured list of attribute/value pairs,
 and MAY also include the template style described in {#csrtemplate}.
 Clients which understand both MUST use the template only, and
 ignore all other CSRattrs elements.
