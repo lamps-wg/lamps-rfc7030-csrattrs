@@ -495,7 +495,7 @@ The Base64:
 ### ASN.1 DUMP output
 
 Provide a CSR with an ECC key from p384, include your serial number, and
-use SHA384 as the hash within the signature.
+use SHA384 as the hash algorithm within the signature.
 
 ~~~~
 {::include examples/harkins02.csrattr.dump}
