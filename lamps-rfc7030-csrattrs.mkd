@@ -519,7 +519,7 @@ The Base64:
 ### ASN.1 DUMP output
 
 Provide a CSR with an EC key from sha521, include your serial number,
-friendly name, and favorite drink, and hash it with sha512
+friendly name, and favorite drink, and hash it with SHA512
 
 ~~~~
 {::include examples/harkins03.csrattr.dump}
