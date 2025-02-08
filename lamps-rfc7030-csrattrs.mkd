@@ -382,7 +382,7 @@ The output of "dumpasn1" {{dumpasn1}} is then provided to detail what the conten
 
 ## RFC8994/ACP subjectAltName with specific otherName {#acpNodeName}
 
-A single subjectAltName extension is specified in a single Extension attribute.
+A single subjectAltName extension is specified in a single {{RFC7030}} CsrAttrs Extension attribute.
 This is what might be created by an {{RFC8995}} Registrar that is asking for {{RFC8994}} AcpNodeName format otherNames.
 
 ### Base64 encoded example
@@ -404,7 +404,7 @@ There is a single subjectAltName Extension with an Attribute with Extension type
 
 ## RFC7030 original example
 
-In this example, taken from {{RFC7030}}, a few different attributes are included.
+In this example, taken from {{RFC7030, Section 4.5.2}}, a few different attributes are included in the extensionRequest.
 
 ### Base64 encoded example
 
