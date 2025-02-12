@@ -302,12 +302,12 @@ Otherwise, the `subjectPublicKey` MUST be absent.
   }
 ~~~~
 
-* A new OID `id-aa-extensionReqTemplate` and the related `ExtensionTemplate` structure
+* A new OID `id-aa-extensionReqTemplate` and the related `ExtensionOrIdTemplate` structure
 is defined where the `extnValue` field has been made `OPTIONAL`.
 This is only needed to enable specifying partial extensions with values to be filled in
 by the client; otherwise the `id-ExtensionReq` OID and the respective value of type
 `ExtensionReq` MUST be used.<br>
-For each extension of type `Extension` or `ExtensionTemplate` provided by the server,
+For each extension of type `Extension` or `ExtensionIdOrTemplate` provided by the server,
 the client is expected to include an extension of the type given by the `extnID`.
 If the `critical` field is present, the client is expected to use the given value.
 If the `extnValue` is present (which is always the case when type `Extension` is used),
@@ -318,15 +318,19 @@ If the subjectAltName extension contains the `directoryName` choice containing t
 this means that the client is expected to fill in the respective `GeneralName` value.
 
 ~~~~
-  ExtensionTemplate {EXTENSION:ExtensionSet} ::= SEQUENCE {
-     extnID      EXTENSION.&id({ExtensionSet}),
-     critical    BOOLEAN DEFAULT FALSE,
-     extnValue   OCTET STRING (CONTAINING
+   ExtensionIdOrTemplate{EXTENSION:ExtensionSet} ::= CHOICE {
+     extnID   EXTENSION.&id({ExtensionSet}),
+     template SEQUENCE {
+       extnID    EXTENSION.&id({ExtensionSet}),
+       critical  BOOLEAN
+     --                 (EXTENSION.&Critical({ExtensionSet}{@extnID}))
+                        DEFAULT FALSE,
+       extnValue OCTET STRING (CONTAINING
                  EXTENSION.&ExtnType({ExtensionSet}{@extnID})) OPTIONAL
                  --  contains the DER encoding of the ASN.1 value
                  --  corresponding to the extension type identified
                  --  by extnID when present
-  }
+   }
 ~~~~
 
 The `version` field of the `CertificationRequestInfoTemplate` MUST contain v1 (0).
@@ -586,7 +590,7 @@ LocalWords:  csrtemplate pKCS CertificationRequestInfoTemplate
 LocalWords:  NameTemplate subjectPKInfo PKInfoAlgorithms br acp
 LocalWords:  SubjectPublicKeyInfoTemplate AttrSet ExtensionSet
 LocalWords:  SingleAttributeTemplate extensionReqTemplate secp
-LocalWords:  ExtensionTemplate ExtnType myDept myGroup CSRattrs
+LocalWords:  ExtensionOrIdTemplate ExtnType myDept myGroup CSRattrs
 LocalWords:  publicKey dumpasn otherName acpNodeName otherNames
 LocalWords:  AcpNodeName sourcecode csrattr ecdsaWithSHA sha
 LocalWords:  harkins critemplate csrinfo Changelog markdown
