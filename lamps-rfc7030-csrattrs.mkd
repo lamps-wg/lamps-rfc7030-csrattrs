@@ -404,7 +404,17 @@ There is a single subjectAltName Extension with an Attribute with Extension type
 
 ## RFC7030 original example
 
-In this example, taken from {{RFC7030, Section 4.5.2}}, a few different attributes are included in the extensionRequest.
+
+In t
+## RFC7030 original example
+
+In this example, taken from {{RFC7030}}, a few different attributes are
+included. The original example was not aligned with the definition of the
+Extension Request attribute as specified in {{Section 5.4.2 of RFC2985}}.
+This example uses one item in the SET OF attribute values, and it uses
+a SEQUENCE OF ExtensionTemplate for the requested extensions, including
+a requirement for the MAC Address as one attribute in the Subject Directory
+Attributes extension.
 
 ### Base64 encoded example
 
@@ -417,13 +427,24 @@ The Base64:
 
 ### ASN.1 DUMP output
 
-1. The challengePassword attribute is included to indicate that the CSR should include this value.
+The CsrAttrs structure contains:
 
-2. An ecPublicKey attribute is provided with the value secp384r1 to indicate what kind of key should be submitted.
+1. The challengePassword attribute is included to indicate that the
+   CSR should include this value.
 
-3. An extensionRequest container with an OID 1.3.6.1.1.1.1.22 (macAddress), but without a value, to indicate that the CSR should include an X.509v3 extension with this value.
+2. An ecPublicKey OID is provided with the value secp384r1 to
+   indicate what kind of public key should be submitted.
 
-4. The ecdsaWithSHA384 OID is included to indicate what kind of hash is expected to be used for the self-signature of the PKCS#10 CSR structure.
+3. An extensionRequest attribute with a requirement to include the
+   subjectDirectoryAttributes extension.  The macAddress attribute
+   is required in that extension, with the OID 1.3.6.1.1.1.1.22,
+   but without a value.  This indicates that the CSR should include
+   a subjectDirectoryAttributes extension, and the value for this
+   extension is is required to include the macAddress.
+
+4. The ecdsaWithSHA384 OID is included to indicate what kind of hash
+   is expected to be used for the self-signature in the PKCS#10 CSR.
+
 
 ~~~~
 {::include examples/rfc7030-example01.csrattr.dump}
