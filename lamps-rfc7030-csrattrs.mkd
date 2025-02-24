@@ -579,7 +579,7 @@ The CsrAttrs structure contains:
 
 3. An extensionRequest attribute with a requirement to include the
    subjectDirectoryAttributes extension.  The friendly name and
-   and favorite drink attributes are required in the extension.
+   and favorite drink attributes {{favoritedrink}} are required in the extension.
 
 4. A serialNumber OID to indicate that the CSR should include a
    serial number as part of subject name.

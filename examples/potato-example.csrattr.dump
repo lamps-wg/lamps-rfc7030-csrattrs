@@ -1,55 +1,55 @@
     <30 67>
   0 103: SEQUENCE {
     <06 09>
-  2   9:   OBJECT IDENTIFIER challengePassword (1 2 840 113549 1 9 7)
-       :     (PKCS #9)
+  2   9:  OBJECT IDENTIFIER challengePassword (1 2 840 113549 1 9 7)
+       :   (PKCS #9)
     <30 12>
- 13  18:   SEQUENCE {
+ 13  18:  SEQUENCE {
     <06 07>
- 15   7:     OBJECT IDENTIFIER ecPublicKey (1 2 840 10045 2 1)
-       :       (ANSI X9.62 public key type)
+ 15   7:   OBJECT IDENTIFIER ecPublicKey (1 2 840 10045 2 1)
+       :    (ANSI X9.62 public key type)
     <31 07>
- 24   7:     SET {
+ 24   7:   SET {
     <06 05>
- 26   5:       OBJECT IDENTIFIER secp384r1 (1 3 132 0 34)
-       :         (SECG (Certicom) named elliptic curve)
-       :       }
+ 26   5:    OBJECT IDENTIFIER secp384r1 (1 3 132 0 34)
+       :     (SECG (Certicom) named elliptic curve)
        :     }
+       :    }
     <30 3C>
- 33  60:   SEQUENCE {
+ 33  60:  SEQUENCE {
     <06 09>
- 35   9:     OBJECT IDENTIFIER extensionRequest (1 2 840 113549 1 9 14)
-       :       (PKCS #9 via CRMF)
+ 35   9:   OBJECT IDENTIFIER extensionRequest (1 2 840 113549 1 9 14)
+       :    (PKCS #9 via CRMF)
     <31 2F>
- 46  47:     SET {
+ 46  47:   SET {
     <30 2D>
- 48  45:       SEQUENCE {
+ 48  45:    SEQUENCE {
     <30 2B>
- 50  43:         SEQUENCE {
+ 50  43:     SEQUENCE {
     <06 03>
- 52   3:           OBJECT IDENTIFIER subjectAltName (2 5 29 17)
-       :             (X.509 extension)
+ 52   3:      OBJECT IDENTIFIER subjectAltName (2 5 29 17)
+       :       (X.509 extension)
     <04 24>
- 57  36:           OCTET STRING, encapsulates {
+ 57  36:      OCTET STRING, encapsulates {
     <30 22>
- 59  34:             SEQUENCE {
+ 59  34:       SEQUENCE {
     <A0 20>
- 61  32:               [0] {
+ 61  32:        [0] {
     <06 08>
- 63   8:                 OBJECT IDENTIFIER '1 3 6 1 5 5 7 8 10'
+ 63   8:         OBJECT IDENTIFIER '1 3 6 1 5 5 7 8 10'
     <A0 14>
- 73  20:                 [0] {
+ 73  20:         [0] {
     <16 12>
- 75  18:                   IA5String 'potato@example.com'
-       :                   }
-       :                 }
-       :               }
-       :             }
+ 75  18:          IA5String 'potato@example.com'
        :           }
+       :          }
        :         }
+       :        }
        :       }
+       :      }
        :     }
+       :    }
     <06 08>
- 95   8:   OBJECT IDENTIFIER ecdsaWithSHA384 (1 2 840 10045 4 3 3)
-       :     (ANSI X9.62 ECDSA algorithm with SHA384)
+ 95   8:  OBJECT IDENTIFIER ecdsaWithSHA384 (1 2 840 10045 4 3 3)
+       :   (ANSI X9.62 ECDSA algorithm with SHA384)
        :   }

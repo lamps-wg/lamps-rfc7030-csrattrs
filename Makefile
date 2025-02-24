@@ -47,7 +47,7 @@ examples: ${EXAMPLES}
 # this data is from ANIMAgus-Minerva's Fountain implementation, dumped by tests as
 #    tmp/csr_bulb1.csrattr.der
 examples/%.csrattr.dump: examples/%.csrattr.der
-	dumpasn1 -htl $< | sed -e's/ *$$//' >$@
+	dumpasn1 -ihtl $< | sed -e's/ *$$//' >$@
 
 examples/%.csrattr.b64:  examples/%.csrattr.der
 	base64 --wrap=48 $< > $@
