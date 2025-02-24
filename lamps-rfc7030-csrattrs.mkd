@@ -382,8 +382,10 @@ The output of "dumpasn1" {{dumpasn1}} is then provided to detail what the conten
 
 ## RFC8994/ACP subjectAltName with specific otherName {#acpNodeName}
 
-A single subjectAltName extension is specified in a single {{RFC7030}} CsrAttrs Extension attribute.
-This is what might be created by an {{RFC8995}} Registrar that is asking for {{RFC8994}} AcpNodeName format otherNames.
+A single critical subjectAltName extension is specified in the CsrAttrs
+structure with a single Extension Request attribute.  This is what might
+be created by a Registrar {{RFC8995}} to ask for one otherName in the
+AcpNodeName format {{RFC8994}}.
 
 ### Base64 encoded example
 
@@ -396,7 +398,9 @@ The Base64:
 
 ### ASN.1 DUMP output
 
-There is a single subjectAltName Extension with an Attribute with Extension type.
+The CsrAttrs structure contains the Extension Request attribute
+with a single subjectAltName Extension containing the otherName
+with AcpNodeName format.
 
 ~~~~
 {::include examples/realistic-acp.csrattr.dump}
@@ -404,126 +408,307 @@ There is a single subjectAltName Extension with an Attribute with Extension type
 
 ## RFC7030 original example
 
-In this example, taken from {{RFC7030, Section 4.5.2}}, a few different attributes are included in the extensionRequest.
+In this example, taken from {{RFC7030}}, a few different attributes are
+included. The original example was not aligned with the definition of the
+Extension Request attribute as specified in {{Section 5.4.2 of RFC2985}}.
+This example uses one item in the SET OF attribute values, and it uses
+a SEQUENCE OF ExtensionTemplate for the requested extensions, including
+a requirement for the MAC Address as one attribute in the Subject Directory
+Attributes extension.
 
 ### Base64 encoded example
 
 The Base64:
 
-~~~~ base64
-{::include examples/rfc7030-example01.csrattr.b64}
-~~~~
-{: sourcecode-markers="false" sourcecode-name="rfc7030-example01.csrattr”}
+>
+~~~
+MFAGCSqGSIb3DQEJBzASBgcqhkjOPQIBMQcGBSuBBAAiMCUGCSqGSIb3DQEJDjEY
+MBYwFAYDVR0JBA0wCzAJBgcrBgEBAQEWBggqhkjOPQQDAw==
+~~~
 
 ### ASN.1 DUMP output
 
-1. The challengePassword attribute is included to indicate that the CSR should include this value.
+The CsrAttrs structure contains:
 
-2. An ecPublicKey attribute is provided with the value secp384r1 to indicate what kind of key should be submitted.
+1. The challengePassword attribute is included to indicate that the
+   CSR should include this value.
 
-3. An extensionRequest container with an OID 1.3.6.1.1.1.1.22 (macAddress), but without a value, to indicate that the CSR should include an X.509v3 extension with this value.
+2. An ecPublicKey OID is provided with the value secp384r1 to
+   indicate what kind of public key should be submitted.
 
-4. The ecdsaWithSHA384 OID is included to indicate what kind of hash is expected to be used for the self-signature of the PKCS#10 CSR structure.
+3. An extensionRequest attribute with a requirement to include the
+   subjectDirectoryAttributes extension.  The macAddress attribute
+   is required in that extension, with the OID 1.3.6.1.1.1.1.22,
+   but without a value.  This indicates that the CSR should include
+   a subjectDirectoryAttributes extension, and the value for this
+   extension is is required to include the macAddress.
 
-~~~~
-{::include examples/rfc7030-example01.csrattr.dump}
-~~~~
+4. The ecdsaWithSHA384 OID is included to indicate what kind of hash
+   is expected to be used for the self-signature in the PKCS#10 CSR.
+
+~~~
+  0  80: SEQUENCE {
+  2   9:  OBJECT IDENTIFIER challengePassword (1 2 840 113549 1 9 7)
+ 13  18:  SEQUENCE {
+ 15   7:   OBJECT IDENTIFIER ecPublicKey (1 2 840 10045 2 1)
+ 24   7:   SET {
+ 26   5:    OBJECT IDENTIFIER secp384r1 (1 3 132 0 34)
+       :     }
+       :    }
+ 33  37:  SEQUENCE {
+ 35   9:   OBJECT IDENTIFIER
+       :    extensionRequest (1 2 840 113549 1 9 14)
+ 46  24:   SET {
+ 48  22:    SEQUENCE {
+ 50  20:     SEQUENCE {
+ 52   3:      OBJECT IDENTIFIER
+       :       subjectDirectoryAttributes (2 5 29 9)
+ 57  13:      OCTET STRING, encapsulates {
+ 59  11:       SEQUENCE {
+ 61   9:        SEQUENCE {
+ 63   7:         OBJECT IDENTIFIER
+       :          macAddress (1 3 6 1 1 1 1 22)
+       :          }
+       :         }
+       :        }
+       :       }
+       :      }
+       :     }
+       :    }
+ 72   8:  OBJECT IDENTIFIER ecdsaWithSHA384 (1 2 840 10045 4 3 3)
+       :   }
+~~~
 
 ## EST server requires a specific subjectAltName extension
 
-This example is the same as the previous one except that instead of the OID
-for a macAddress, a subjectAltName is specified as the only Extension element.
+This example is the same as the previous one except that instead of
+the OID for a macAddress, a subjectAltName is specified as the only
+Extension element.
 
 ### Base64 encoded example
 
 The Base64:
 
-~~~~ base64
-{::include examples/potato-example.csrattr.b64}
-~~~~
-{: sourcecode-markers="false" sourcecode-name="rfc7030-example01.csrattr”}
+>
+~~~
+MGcGCSqGSIb3DQEJBzASBgcqhkjOPQIBMQcGBSuBBAAiMDwGCSqGSIb3DQEJDjEv
+MC0wKwYDVR0RBCQwIqAgBggrBgEFBQcICqAUFhJwb3RhdG9AZXhhbXBsZS5jb20G
+CCqGSM49BAMD
+~~~
 
 ### ASN.1 DUMP output
 
-1. The challengePassword attribute is included to indicate that the CSR should include this value.
+The CsrAttrs structure contains:
 
-2. An ecPublicKey attribute is provided with the value secp384r1 to indicate what kind of key should be submitted.
+1. The challengePassword attribute is included to indicate that the
+   CSR should include this value.
 
-3. An extensionRequest container with a subjectAltName value containing the name potato@example.com
+2. An ecPublicKey OID is provided with the value secp384r1 to
+   indicate what kind of public key should be submitted.
 
-4. The ecdsaWithSHA384 OID is included to indicate what kind of hash is expected to be used for the self-signature of the PKCS#10 CSR structure.
+3. An extensionRequest attribute with the subjectAltName OID
+   and a value of potato@example.com as an otherName in the
+   AcpNodeName format {{RFC8994}}.
 
-~~~~
-{::include examples/potato-example.csrattr.dump}
-~~~~
+4. The ecdsaWithSHA384 OID is included to indicate what kind of hash
+   is expected to be used for the self-signature in the PKCS#10 CSR.
+
+~~~
+  0 103: SEQUENCE {
+  2   9:  OBJECT IDENTIFIER challengePassword (1 2 840 113549 1 9 7)
+ 13  18:  SEQUENCE {
+ 15   7:   OBJECT IDENTIFIER ecPublicKey (1 2 840 10045 2 1)
+ 24   7:   SET {
+ 26   5:    OBJECT IDENTIFIER secp384r1 (1 3 132 0 34)
+       :     }
+       :    }
+ 33  60:  SEQUENCE {
+ 35   9:   OBJECT IDENTIFIER
+       :    extensionRequest (1 2 840 113549 1 9 14)
+ 46  47:   SET {
+ 48  45:    SEQUENCE {
+ 50  43:     SEQUENCE {
+ 52   3:      OBJECT IDENTIFIER subjectAltName (2 5 29 17)
+ 57  36:      OCTET STRING, encapsulates {
+ 59  34:       SEQUENCE {
+ 61  32:        [0] {
+ 63   8:         OBJECT IDENTIFIER
+       :          AcpNodeName (1 3 6 1 5 5 7 8 10)
+ 73  20:         [0] {
+ 75  18:          IA5String 'potato@example.com'
+       :           }
+       :          }
+       :         }
+       :        }
+       :       }
+       :      }
+       :     }
+       :    }
+ 95   8:  OBJECT IDENTIFIER ecdsaWithSHA384 (1 2 840 10045 4 3 3)
+       :   }
+~~~
 
 ## Require a public key of a specific size
 
-The CSR requires a public key of a specific size
+The CSR requires a RSA public key of a specific size.
 
 ### Base64 encoded example
 
 The Base64:
 
-~~~~ base64
-{::include examples/harkins01.csrattr.b64}
-~~~~
-{: sourcecode-markers="false" sourcecode-name="harkins01.csrattr”}
+>
+~~~
+MCkGCSqGSIb3DQEJBzARBgkqhkiG9w0BAQExBAICEAAGCSqGSIb3DQEBCw==
+~~~
 
 ### ASN.1 DUMP output
 
-Provide a CSR with an RSA key that's 4096 bits and use SHA256 as the hash algorithm within the signature.
+The CsrAttrs structure contains:
 
-~~~~
-{::include examples/harkins01.csrattr.dump}
-~~~~
+1. The challengePassword attribute is included to indicate that the
+   CSR should include this value.
+
+2. The rsaEncryption OID is provided with the INTEGER value of 4096
+   to indicate the size of the RSA public key should be submitted.
+
+3. The sha256WithRSAEncryption OID is included to indicate that SHA-256
+   is expected to be used as the hash algorithm for the self-signature
+   in the PKCS#10 CSR.
+
+~~~
+  0  41: SEQUENCE {
+  2   9:  OBJECT IDENTIFIER challengePassword (1 2 840 113549 1 9 7)
+ 13  17:  SEQUENCE {
+ 15   9:   OBJECT IDENTIFIER rsaEncryption (1 2 840 113549 1 1 1)
+ 26   4:   SET {
+ 28   2:    INTEGER 4096
+       :     }
+       :    }
+ 32   9:  OBJECT IDENTIFIER
+       :   sha256WithRSAEncryption (1 2 840 113549 1 1 11)
+       :   }
+~~~
 
 ## Require a public key of a specific curve
 
-The CSR requires a public key with a specific curve
-
+In this example, the CSR requires an ECDSA public key with a specific elliptic,
+curve and the subject name includes a serial number.
 
 ### Base64 encoded example
 
 The Base64:
 
-~~~~ base64
-{::include examples/harkins02.csrattr.b64}
-~~~~
-{: sourcecode-markers="false" sourcecode-name="harkins02.csrattr”}
+>
+~~~
+MC4GCSqGSIb3DQEJBzASBgcqhkjOPQIBMQcGBSuBBAAiBgNVBAUGCCqGSM49BAMD
+~~~
 
 ### ASN.1 DUMP output
 
-Provide a CSR with an ECC key from p384, include your serial number, and
-use SHA384 as the hash algorithm within the signature.
+The CsrAttrs structure contains:
 
-~~~~
-{::include examples/harkins02.csrattr.dump}
-~~~~
+1. The challengePassword attribute is included to indicate that the
+   CSR should include this value.
+
+2. An ecPublicKey OID is provided with the value secp384r1 to
+   indicate what kind of public key should be submitted.
+
+3. A serialNumber OID (2.5.4.5) to indicate that the CSR
+   should include a serial number as part of subject name.
+
+4. The ecdsaWithSHA384 OID is included to indicate what kind of hash
+   is expected to be used for the self-signature in the PKCS#10 CSR.
+
+~~~
+  0  46: SEQUENCE {
+  2   9:  OBJECT IDENTIFIER challengePassword (1 2 840 113549 1 9 7)
+ 13  18:  SEQUENCE {
+ 15   7:   OBJECT IDENTIFIER ecPublicKey (1 2 840 10045 2 1)
+ 24   7:   SET {
+ 26   5:    OBJECT IDENTIFIER secp384r1 (1 3 132 0 34)
+       :     }
+       :    }
+ 33   3:  OBJECT IDENTIFIER serialNumber (2 5 4 5)
+ 38   8:  OBJECT IDENTIFIER ecdsaWithSHA384 (1 2 840 10045 4 3 3)
+       :   }
+~~~
 
 ## Require a specific extension
 
-The CSR is required to have an EC key, to include a serial number,
-a friendly name, favorite drink {{favoritedrink}} [OID 0.9.2342.19200300.100.1.5], and
-use SHA512 as the hash algorithm within the signature.
+In this example, the CSR is required to have an Elliptic Curve key,
+to include a serial number as part of the subject name, to include
+the Subject Directory Attributes extension with both the friendly
+name and favorite drink attributes, and to use SHA-512 as the hash
+algorithm within the signature.
 
 ### Base64 encoded example
 
 The Base64:
 
-~~~~ base64
-{::include examples/harkins03.csrattr.b64}
-~~~~
-{: sourcecode-markers="false" sourcecode-name="harkins03.csrattr”}
+>
+~~~
+MGUGCSqGSIb3DQEJBzASBgcqhkjOPQIBMQcGBSuBBAAjMDUGCSqGSIb3DQEJDjEo
+MCYwJAYDVR0JBB0wGzALBgkqhkiG9w0BCRQwDAYKCZImiZPyLGQBBQYDVQQFBggq
+hkjOPQQDBA==
+~~~
 
 ### ASN.1 DUMP output
 
-Provide a CSR with an EC key from sha521, include your serial number,
-friendly name, and favorite drink, and hash it with SHA512
+The CsrAttrs structure contains:
 
-~~~~
-{::include examples/harkins03.csrattr.dump}
-~~~~
+1. The challengePassword attribute is included to indicate that the
+   CSR should include this value.
+
+2. An ecPublicKey OID is provided with the value secp521r1 to
+   indicate what kind of public key should be submitted.
+
+3. An extensionRequest attribute with a requirement to include the
+   subjectDirectoryAttributes extension.  The friendly name and
+   and favorite drink attributes are required in the extension.
+
+4. A serialNumber OID to indicate that the CSR should include a
+   serial number as part of subject name.
+
+5. The ecdsaWithSHA512 OID is included to indicate the SHA-512 hash
+   is expected to be used for the self-signature in the PKCS#10 CSR.
+
+~~~
+  0 101: SEQUENCE {
+  2   9:  OBJECT IDENTIFIER challengePassword (1 2 840 113549 1 9 7)
+ 13  18:  SEQUENCE {
+ 15   7:   OBJECT IDENTIFIER ecPublicKey (1 2 840 10045 2 1)
+ 24   7:   SET {
+ 26   5:    OBJECT IDENTIFIER secp521r1 (1 3 132 0 35)
+       :     }
+       :    }
+ 33  53:  SEQUENCE {
+ 35   9:   OBJECT IDENTIFIER
+       :    extensionRequest (1 2 840 113549 1 9 14)
+ 46  40:   SET {
+ 48  38:    SEQUENCE {
+ 50  36:     SEQUENCE {
+ 52   3:      OBJECT IDENTIFIER
+       :       subjectDirectoryAttributes (2 5 29 9)
+ 57  29:      OCTET STRING, encapsulates {
+ 59  27:       SEQUENCE {
+ 61  11:        SEQUENCE {
+ 63   9:         OBJECT IDENTIFIER
+       :          friendlyName (1 2 840 113549 1 9 20)
+       :          }
+ 74  12:        SEQUENCE {
+ 76  10:         OBJECT IDENTIFIER
+       :          favouriteDrink (0 9 2342 19200300 100 1 5)
+       :          }
+       :         }
+       :        }
+       :       }
+       :      }
+       :     }
+       :    }
+ 88   3:  OBJECT IDENTIFIER serialNumber (2 5 4 5)
+ 93   8:  OBJECT IDENTIFIER ecdsaWithSHA512 (1 2 840 10045 4 3 4)
+       :   }
+~~~
 
 # Security Considerations
 
