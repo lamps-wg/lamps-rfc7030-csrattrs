@@ -63,6 +63,10 @@ RDNSequenceTemplate ::= SEQUENCE OF RelativeDistinguishedNameTemplate
 RelativeDistinguishedNameTemplate  ::= SET SIZE (1 .. MAX)
     OF SingleAttributeTemplate { {SupportedAttributes} }
 
+--  like Attributes, but with OPTIONAL value
+SingleAttributeTemplates{ATTRIBUTE:AttrSet} ::= SEQUENCE OF 
+    SingleAttributeTemplates{ {AttrSet} }
+
 --  like SingleAttribute, but with OPTIONAL value
 SingleAttributeTemplate{ATTRIBUTE:AttrSet} ::= SEQUENCE {
     type      ATTRIBUTE.&id({AttrSet}),
@@ -74,7 +78,6 @@ SubjectPublicKeyInfoTemplate{PUBLIC-KEY:IOSet} ::= SEQUENCE {
     algorithm        AlgorithmIdentifier{PUBLIC-KEY, {IOSet}},
     subjectPublicKey BIT STRING OPTIONAL
 }
-
 
 id-aa-extensionReqTemplate OBJECT IDENTIFIER ::=
 { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs9(9)
