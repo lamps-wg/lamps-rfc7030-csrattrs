@@ -426,13 +426,23 @@ The Base64:
 
 ### ASN.1 DUMP output
 
-1. The challengePassword attribute is included to indicate that the CSR should include this value.
+The CsrAttrs structure contains:
 
-2. An ecPublicKey OID is provided with the value secp384r1 to indicate what kind of public key should be submitted.
+1. The challengePassword attribute is included to indicate that the
+   CSR should include this value.
 
-3. An macAddress OID (1.3.6.1.1.1.1.22) to indicate that the CSR should include a MAC Address when the request is submitted.
+2. An ecPublicKey OID is provided with the value secp384r1 to
+   indicate what kind of public key should be submitted.
 
-4. The ecdsaWithSHA384 OID is included to indicate what kind of hash is expected to be used for the self-signature in the PKCS#10 CSR.
+3. An extensionRequest attribute with a requirement to include the
+   subjectDirectoryAttributes extension.  The macAddress attribute
+   is required in that extension, with the OID 1.3.6.1.1.1.1.22,
+   but without a value.  This indicates that the CSR should include
+   a subjectDirectoryAttributes extension, and the value for this
+   extension is is required to include the macAddress.
+
+4. The ecdsaWithSHA384 OID is included to indicate what kind of hash
+   is expected to be used for the self-signature in the PKCS#10 CSR.
 
 ~~~~
 {::include examples/rfc7030-example01.csrattr.dump}
