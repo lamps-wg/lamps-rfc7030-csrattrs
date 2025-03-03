@@ -177,15 +177,15 @@ The ASN.1 syntax for CSR Attributes as defined in EST {{RFC7030, Section 4.5.2}}
 
 This remains unchanged, such that bits-on-the-wire compatibility is maintained.
 
-Key parts that were unclear were which OID to use in the 'type' field and
-that the 'values' field can contain an entire sequence of X.509 extensions.
+Key parts that were unclear were which OID to use in the '`type`' field and
+that the '`values`' field can contain an entire sequence of X.509 extensions.
 
-The OID to use for such attributes in the 'type' field MUST be `id-ExtensionReq`,
+The OID to use for such attributes in the '`type`' field MUST be `id-ExtensionReq`,
 which has the value 1.2.840.113549.1.9.14.
 Note that is the same as `pkcs-9-at-extensionRequest` defined in PKCS#9 {{RFC2985}}.
 There MUST be only one such attribute.
 
-The `values` field of this attribute MUST contain a set with exactly one element,
+The '`values`' field of this attribute MUST contain a set with exactly one element,
 and this element MUST be of type `Extensions`, as per {{Section 4.1 of RFC5280}}:
 
 ~~~
@@ -221,7 +221,7 @@ In that approach, a pKCS7PDU attribute includes a Full PKI Data content type {{R
 and that in turn includes a CSR or CRMF formatted request
 (for details see {{RFC6268}} Sections 5 or 9, respectively).<br>
 One drawback to that approach, particularly for the CSR, is that some useless
-fields have to be included; specifically, the `signature` field on
+fields have to be included; specifically, the '`signature`' field on
 the CSR is faked with an empty bit string.
 
 A similar method has been defined in CMP Updates {{RFC9480}}
@@ -229,8 +229,8 @@ and the Lightweight CMP profile {{RFC9483, Section 4.3.3}},
 using a CSR template as defined for CRMF {{RFC4211}}.
 Like the approach mentioned before,
 this method does not properly deal with absent RDNs (encoding them as empty strings),
-absent `subjectPublicKey` fields (encoding them as empty `BIT STRING`),
-and absent X.509v3 extension values (encoding them as empty `OCTET STRING`),
+absent '`subjectPublicKey`' fields (encoding them as empty `BIT STRING`),
+and absent X.509 extension values (encoding them as empty `OCTET STRING`),
 which may cause issues with strict ASN.1 parsing and decoding.
 
 We avoid these drawbacks as follows.
@@ -265,14 +265,14 @@ from {{RFC5912, Section 5}}:
 
 with the following differences.
 
-* The `subject` field has been made `OPTIONAL`.
+* The '`subject`' field has been made `OPTIONAL`.
 It MUST be present if the server places any requirements on the RDNs of the subject name;
 otherwise it MUST be absent.
 
-* RelativeDistinguishedNames (RDNs) in the `subject` fields are allowed to have no value,
-which has been achieved by adding `OPTIONAL` to the `value` field of `SingleAttributeTemplate`.
+* RelativeDistinguishedNames (RDNs) in the '`subject`' fields are allowed to have no value,
+which has been achieved by adding `OPTIONAL` to the '`value`' field of `SingleAttributeTemplate`.
 If the client is expected to provide an RDN of a certain type such as `commonName`,
-the respective RDN MUST be present in the `subject` field; otherwise it MUST be absent.
+the respective RDN MUST be present in the '`subject`' field; otherwise it MUST be absent.
 If the RDN value is present, this means that the client is required to use the given value
 for the RDN, otherwise the client is expected to fill in the value.
 
@@ -284,12 +284,12 @@ for the RDN, otherwise the client is expected to fill in the value.
 
 ~~~~
 
-* The `subjectPKInfo` field has been made `OPTIONAL`.
+* The '`subjectPKInfo`' field has been made `OPTIONAL`.
 The field MUST be absent if the server places no requirements on the key.
-Otherwise it MUST be present, and the `algorithm` field
+Otherwise it MUST be present, and the '`algorithm`' field
 specifies the type of the key pair the client is expected to use.
 
-* The `subjectPublicKey` field contained in `SubjectPublicKeyInfoTemplate`
+* The '`subjectPublicKey`' field contained in `SubjectPublicKeyInfoTemplate`
 has been made `OPTIONAL` because usually it is not needed.
 In case the server requires use of an RSA key and needs to specify its size, the field
 MUST be present and contain a dummy public key value of the desired RSA modulus length.
@@ -303,18 +303,19 @@ Otherwise, the `subjectPublicKey` MUST be absent.
 ~~~~
 
 * A new OID `id-aa-extensionReqTemplate` and the related `ExtensionTemplate` structure
-is defined where the `extnValue` field has been made `OPTIONAL`.
+is defined where the '`extnValue`' field has been made `OPTIONAL`.
 This is only needed to enable specifying partial extensions with values to be filled in
 by the client; otherwise the `id-ExtensionReq` OID and the respective value of type
 `ExtensionReq` MUST be used.<br>
+
 For each extension of type `Extension` or `ExtensionTemplate` provided by the server,
 the client is expected to include an extension of the type given by the `extnID`.
-If the `critical` field is present, the client is expected to use the given value.
-If the `extnValue` is present (which is always the case when type `Extension` is used),
+If the '`critical`' field is present, the client is expected to use the given value.
+If the '`extnValue`' is present (which is always the case when type `Extension` is used),
 the client is required to use the given extension value.
 Otherwise it is expected to fill in the extension value.<br>
-If the subjectAltName extension contains the `directoryName` choice containing the `NULL-DN`
-(i.e., an empty sequence of RDNs) or the `iPAddress` choice with an empty `OCTET STRING`,
+If the '`subjectAltName`' extension contains the '`directoryName`' choice containing the `NULL-DN`
+(i.e., an empty sequence of RDNs) or the '`iPAddress`' choice with an empty `OCTET STRING`,
 this means that the client is expected to fill in the respective `GeneralName` value.
 
 ~~~~
@@ -329,10 +330,14 @@ this means that the client is expected to fill in the respective `GeneralName` v
   }
 ~~~~
 
-The `version` field of the `CertificationRequestInfoTemplate` MUST contain v1 (0).
+The '`version`' field of the `CertificationRequestInfoTemplate` MUST contain v1 (0).
 
-The `attributes` field MUST NOT contain multiple `at-extensionReqTemplate` attributes
-and MUST NOT contain both `extensionRequest` and `at-extensionReqTemplate` attributes.
+The '`attributes`' field MUST NOT contain multiple `id-aa-extensionReqTemplate` attributes
+and MUST NOT contain both `id-ExtensionReq` and `id-aa-extensionReqTemplate` attributes.
+
+The '`values`' field of an `id-aa-extensionReqTemplate` attribute
+MUST contain a set with exactly one element,
+and this element MUST be of type `ExtensionTemplate`.
 
 <!--
 Each of the attributes has a single attribute value instance in the
@@ -342,19 +347,19 @@ be exactly one instance of AttributeValue present.
 
 Suppose the server requires that the CSR will contain:
 
-*  the subject field with a common name to be filled in by the EE and
-   two organizational unit fields with given values "myDept" and "myGroup",
+*  the '`subject`' field with a common name to be filled in by the EE and
+   two organizational unit names with given values "myDept" and "myGroup",
 
-*  the publicKey field contains an
-   Elliptic Curve Cryptography (ECC) key on curve secp256r1,
+*  the '`publicKey`' field contains an
+   Elliptic Curve Cryptography (ECC) key on curve `secp256r1`,
 
-*  the subjectAltName extension
+*  the '`subjectAltName`' extension
    with DNS name "www.myServer.com" and an empty IP address to be filled in,
 
-*  the keyUsage extension marked critical
+*  the '`keyUsage`' extension marked critical
    with the value digitalSignature and keyAgreement, and
 
-*  the extKeyUsage extension with value to be filled in by the EE.
+*  the '`extKeyUsage`' extension with value to be filled in by the EE.
 
 
 Then the `CertificationRequestInfo` structure constructed by the server
