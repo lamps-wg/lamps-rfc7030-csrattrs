@@ -438,10 +438,12 @@ The Base64:
 {::include examples/rfc7030-example01.csrattr.dump}
 ~~~~
 
-## EST server requires a specific subjectAltName extension
+## Requires a specific extension
 
-This example is the same as the previous one except that instead of the OID
-for a macAddress, a subjectAltName is specified as the only Extension element.
+In this example, the CSR is required to have an Elliptic Curve key,
+to include a serial number as part of the subject name, to include
+both the friendly name and favorite drink attributes, and to use
+SHA-512 as the hash algorithm within the signature.
 
 ### Base64 encoded example
 
@@ -454,13 +456,19 @@ The Base64:
 
 ### ASN.1 DUMP output
 
+The CsrAttrs structure contains:
+
 1. The challengePassword attribute is included to indicate that the CSR should include this value.
 
-2. An ecPublicKey attribute is provided with the value secp384r1 to indicate what kind of key should be submitted.
+2. An ecPublicKey OID is provided with the value secp521r1 to indicate what kind of public key should be submitted.
 
-3. An extensionRequest container with a subjectAltName value containing the name potato@example.com
+3. The friendly name attributes are required in the CSR.
 
-4. The ecdsaWithSHA384 OID is included to indicate what kind of hash is expected to be used for the self-signature of the PKCS#10 CSR structure.
+4. The favorite drink attributes are required in the CSR.
+
+5. A serialNumber OID to indicate that the CSR should include a serial number as part of subject name.
+
+6. The ecdsaWithSHA512 OID is included to indicate the SHA-512 hash is expected to be used for the self-signature in the PKCS#10 CSR.
 
 ~~~~
 {::include examples/potato-example.csrattr.dump}
