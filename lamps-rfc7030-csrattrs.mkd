@@ -331,8 +331,12 @@ this means that the client is expected to fill in the respective `GeneralName` v
 
 The `version` field of the `CertificationRequestInfoTemplate` MUST contain v1 (0).
 
-The `attributes` field MUST NOT contain multiple `at-extensionReqTemplate` attributes
-and MUST NOT contain both `extensionRequest` and `at-extensionReqTemplate` attributes.
+The '`attributes`' field MUST NOT contain multiple `id-aa-extensionReqTemplate` attributes
+and MUST NOT contain both `id-ExtensionReq` and `id-aa-extensionReqTemplate` attributes.
+
+The '`values`' field of an `id-aa-extensionReqTemplate` attribute
+MUST contain a set with exactly one element,
+and this element MUST be of type `ExtensionTemplate`.
 
 <!--
 Each of the attributes has a single attribute value instance in the
