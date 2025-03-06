@@ -27,6 +27,9 @@ ${DRAFT}-${VERSION}.txt: ${DRAFT}.txt
 	unset DISPLAY; XML_LIBRARY=$(XML_LIBRARY):./src xml2rfc --v2v3 ${DRAFT}.xml
 	mv ${DRAFT}.v2v3.xml ${DRAFT}.xml
 
+%.pdf: %.xml
+	xml2rfc --pdf -o $@ $?
+
 %.txt: %.xml
 	unset DISPLAY; XML_LIBRARY=$(XML_LIBRARY):./src xml2rfc --text -o $@ $?
 
@@ -46,10 +49,10 @@ examples: ${EXAMPLES}
 
 # this data is from ANIMAgus-Minerva's Fountain implementation, dumped by tests as
 #    tmp/csr_bulb1.csrattr.der
-examples/%.csrattr.dump: examples/%.csrattr.der
+%.dump: %.der
 	dumpasn1 -htl $< | sed -e's/ *$$//' >$@
 
-examples/%.csrattr.b64:  examples/%.csrattr.der
+%.b64:  %.der
 	base64 --wrap=48 $< > $@
 
 update:
