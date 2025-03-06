@@ -1,31 +1,40 @@
-    <30 64>
-  0 100: SEQUENCE {
-    <30 62>
-  2  98:   SEQUENCE {
+    <30 68>
+  0 104: SEQUENCE {
+    <30 66>
+  2 102:   SEQUENCE {
     <06 09>
   4   9:     OBJECT IDENTIFIER extensionRequest (1 2 840 113549 1 9 14)
        :       (PKCS #9 via CRMF)
-    <31 55>
- 15  85:     SET {
-    <30 53>
- 17  83:       SEQUENCE {
+    <31 59>
+ 15  89:     SET {
+    <30 57>
+ 17  87:       SEQUENCE {
+    <30 55>
+ 19  85:         SEQUENCE {
     <06 03>
- 19   3:         OBJECT IDENTIFIER subjectAltName (2 5 29 17)
-       :           (X.509 extension)
+ 21   3:           OBJECT IDENTIFIER subjectAltName (2 5 29 17)
+       :             (X.509 extension)
     <01 01>
- 24   1:         BOOLEAN TRUE
-    <04 49>
- 27  73:         OCTET STRING
-       :           A0 47 30 45 06 08 2B 06    .G0E..+.
-       :           01 05 05 07 08 0A 0C 39    .......9
-       :           72 66 63 38 39 39 34 2B    rfc8994+
-       :           66 64 37 33 39 66 63 32    fd739fc2
-       :           33 63 33 34 34 30 31 31    3c344011
-       :           32 32 33 33 34 34 35 35    22334455
-       :           30 30 30 30 30 30 30 30    00000000
-       :           2B 40 61 63 70 2E 65 78    +@acp.ex
-       :           61 6D 70 6C 65 2E 63 6F    ample.co
-       :           6D                         m
+ 26   1:           BOOLEAN TRUE
+    <04 4B>
+ 29  75:           OCTET STRING, encapsulates {
+    <30 49>
+ 31  73:             SEQUENCE {
+    <A0 47>
+ 33  71:               [0] {
+    <06 08>
+ 35   8:                 OBJECT IDENTIFIER '1 3 6 1 5 5 7 8 10'
+    <A0 3B>
+ 45  59:                 [0] {
+    <16 39>
+ 47  57:                   IA5String
+       :                   'rfc8994+fd739fc23c3440112233445500000000+@acp.ex'
+       :                   'ample.com'
+       :                   }
+       :                 }
+       :               }
+       :             }
+       :           }
        :         }
        :       }
        :     }
