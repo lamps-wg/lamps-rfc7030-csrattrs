@@ -366,7 +366,7 @@ Then the `CertificationRequestInfo` structure constructed by the server
 will be as follows:
 
 ~~~
-{::include examples/template.txt}
+{::include examples/CSR-template.dump}
 ~~~
 
 
