@@ -1,5 +1,5 @@
-    <30 54>
-  0  84: SEQUENCE {
+    <30 45>
+  0  69: SEQUENCE {
     <06 09>
   2   9:   OBJECT IDENTIFIER challengePassword (1 2 840 113549 1 9 7)
        :     (PKCS #9)
@@ -15,25 +15,15 @@
        :         (SECG (Certicom) named elliptic curve)
        :       }
        :     }
-    <30 29>
- 33  41:   SEQUENCE {
     <06 09>
- 35   9:     OBJECT IDENTIFIER extensionRequest (1 2 840 113549 1 9 14)
-       :       (PKCS #9 via CRMF)
-    <31 1C>
- 46  28:     SET {
-    <06 03>
- 48   3:       OBJECT IDENTIFIER serialNumber (2 5 4 5)
-       :         (X.520 DN component)
-    <06 09>
- 53   9:       OBJECT IDENTIFIER
-       :         friendlyName (for PKCS #12) (1 2 840 113549 1 9 20)
-       :         (PKCS #9 via PKCS #12)
+ 33   9:   OBJECT IDENTIFIER friendlyName (for PKCS #12) (1 2 840 113549 1 9 20)
+       :     (PKCS #9 via PKCS #12)
     <06 0A>
- 64  10:       OBJECT IDENTIFIER '0 9 2342 19200300 100 1 5'
-       :       }
-       :     }
+ 44  10:   OBJECT IDENTIFIER '0 9 2342 19200300 100 1 5'
+    <06 03>
+ 56   3:   OBJECT IDENTIFIER serialNumber (2 5 4 5)
+       :     (X.520 DN component)
     <06 08>
- 76   8:   OBJECT IDENTIFIER ecdsaWithSHA512 (1 2 840 10045 4 3 4)
+ 61   8:   OBJECT IDENTIFIER ecdsaWithSHA512 (1 2 840 10045 4 3 4)
        :     (ANSI X9.62 ECDSA algorithm with SHA512)
        :   }
