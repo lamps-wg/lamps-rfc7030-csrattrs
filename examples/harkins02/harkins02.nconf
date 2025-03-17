@@ -1,0 +1,16 @@
+asn1 = SEQUENCE:seq_section
+[seq_section]
+# challengePassword
+field1 = OID:challengePassword
+# domain parameter set
+field2 = SEQUENCE:ecattrs
+field3 = OID:serialNumber
+# hash algorithm
+field4 = OID:ecdsa-with-SHA384
+
+[ecattrs]
+field1 = OID:id-ecPublicKey
+field2 = SET:curve
+
+[curve]
+field1 = OID:secp384r1
