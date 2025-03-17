@@ -207,8 +207,12 @@ optionally the 'critical' bit, and the extension value (extnValue).
 An Extensions structure, which is a sequence of elements of type Extension,
 MUST NOT include more than one element with a particular extnID.
 
-With this understanding, the needs of {{RFC8994}} and {{RFC8995}} are satisfied
-with no change to the bits on the wire.
+With this understanding, the needs of {{RFC8994}} and {{RFC8995}} are satisfied with no change to the bits on the wire.
+
+When not using the template-based approach of {#csrtemplate}, specifying the requirement for a public key of a specific type and optionally its size and other parameters MUST be done as follows:  Include exactly one Attribute with the `type` field being the OID specifying the type of the key, such as `ecPublicKey` or `rsaEncryption`.
+The '`values`' field MAY be empty to indicate no further requirements on the key.
+Otherwise it MUST contain suitable parameters for the given key type, such as a singleton set containing the OID of an EC curve such as `secp384r1` or containing an integer value for the RSA key size such as 4096.
+Many examples for this are given in {#examples}
 
 ## Use of CSR templates {#csrtemplate}
 
@@ -378,7 +382,7 @@ Clients which understand both MUST use the template only, and
 ignore all other CSRattrs elements.
 Older clients will ignore the new CertificationRequestInfoTemplate element.
 
-# Examples using the original RFC 7030 approach
+# Examples using the original RFC 7030 approach {#examples}
 
 Each example has a high-level (English) explanation of what is expected.
 Some mapping back to the Attribute and Extension definitions above are included.
@@ -480,6 +484,7 @@ The CsrAttrs structure contains:
 ## Require a public key of a specific size
 
 The CSR requires a public key of a specific size
+(Example harkins01)
 
 ### Base64 encoded example
 
@@ -500,7 +505,8 @@ Provide a CSR with an RSA key that's 4096 bits and use SHA256 as the hash algori
 
 ## Require a public key of a specific curve
 
-The CSR requires a public key with a specific curve
+The CSR requires a public key with a specific curve.
+(Example harkins02)
 
 
 ### Base64 encoded example
@@ -526,6 +532,7 @@ use SHA384 as the hash algorithm within the signature.
 The CSR is required to have an EC key, to include a serial number,
 a friendly name, favorite drink {{favoritedrink}} [OID 0.9.2342.19200300.100.1.5], and
 use SHA512 as the hash algorithm within the signature.
+(Example harkins03)
 
 ### Base64 encoded example
 
