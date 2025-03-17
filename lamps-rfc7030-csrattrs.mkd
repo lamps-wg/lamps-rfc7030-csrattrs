@@ -209,10 +209,16 @@ MUST NOT include more than one element with a particular extnID.
 
 With this understanding, the needs of {{RFC8994}} and {{RFC8995}} are satisfied with no change to the bits on the wire.
 
-When not using the template-based approach of {#csrtemplate}, specifying the requirement for a public key of a specific type and optionally its size and other parameters MUST be done as follows:  Include exactly one Attribute with the `type` field being the OID specifying the type of the key, such as `ecPublicKey` or `rsaEncryption`.
+When not using the template-based approach of {{csrtemplate}},
+specifying the requirement for a public key of a specific type
+and optionally its size and other parameters MUST be done as follows:
+Include exactly one Attribute with the `type` field being the OID specifying
+the type of the key, such as `ecPublicKey` or `rsaEncryption`.
 The '`values`' field MAY be empty to indicate no further requirements on the key.
-Otherwise it MUST contain suitable parameters for the given key type, such as a singleton set containing the OID of an EC curve such as `secp384r1` or containing an integer value for the RSA key size such as 4096.
-Many examples for this are given in {#examples}
+Otherwise it MUST contain suitable parameters for the given key type,
+such as a singleton set containing the OID of an EC curve such as `secp384r1`
+or containing an integer value for the RSA key size such as 4096.
+Many examples for this are given in {{examples}}.
 
 ## Use of CSR templates {#csrtemplate}
 
@@ -377,7 +383,7 @@ will be as follows:
 # Co-existence with existing implementations
 
 Legacy servers MAY continue to use the {{RFC7030}}-style unstructured list of attribute/value pairs,
-and MAY also include the template style described in {#csrtemplate}.
+and MAY also include the template style described in {{csrtemplate}}.
 Clients which understand both MUST use the template only, and
 ignore all other CSRattrs elements.
 Older clients will ignore the new CertificationRequestInfoTemplate element.
