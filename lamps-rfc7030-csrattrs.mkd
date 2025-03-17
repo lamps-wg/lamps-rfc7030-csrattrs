@@ -489,8 +489,8 @@ The CsrAttrs structure contains:
 
 ## Require a public key of a specific size
 
-The CSR requires a public key of a specific size
-(Example harkins01)
+The CSR requires an RSA public key of a specific size.
+<!--(Example harkins01)-->
 
 ### Base64 encoded example
 
@@ -511,8 +511,8 @@ Provide a CSR with an RSA key that's 4096 bits and use SHA256 as the hash algori
 
 ## Require a public key of a specific curve
 
-The CSR requires a public key with a specific curve.
-(Example harkins02)
+The CSR requires an ECC public key with a specific curve.
+<!--(Example harkins02)-->
 
 
 ### Base64 encoded example
@@ -538,7 +538,7 @@ use SHA384 as the hash algorithm within the signature.
 The CSR is required to have an EC key, to include a serial number,
 a friendly name, favorite drink {{favoritedrink}} [OID 0.9.2342.19200300.100.1.5], and
 use SHA512 as the hash algorithm within the signature.
-(Example harkins03)
+<!--(Example harkins03)-->
 
 ### Base64 encoded example
 
