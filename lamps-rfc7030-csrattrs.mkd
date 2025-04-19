@@ -186,7 +186,7 @@ Note that is the same as `pkcs-9-at-extensionRequest` defined in PKCS#9 {{RFC298
 There MUST be only one such attribute.
 
 The '`values`' field of this attribute MUST contain a set with exactly one element,
-and this element MUST be of type `Extensions`, as per {{Section 4.1 of RFC5280}}:
+and this element MUST be of type `Extensions`, as per {{Section 4.2 of RFC5280}}:
 
 ~~~
    Extensions  ::=  SEQUENCE SIZE (1..MAX) OF Extension
