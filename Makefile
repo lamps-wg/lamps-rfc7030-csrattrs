@@ -50,7 +50,7 @@ examples: ${EXAMPLES}
 # this data is from ANIMAgus-Minerva's Fountain implementation, dumped by tests as
 #    tmp/csr_bulb1.csrattr.der
 %.dump: %.der
-	dumpasn1 -htl $< | sed -e's/ *$$//' >$@
+	dumpasn1 -htl -w50 $< | sed -e's/ *$$//' >$@
 
 %.b64:  %.der
 	base64 --wrap=48 $< > $@

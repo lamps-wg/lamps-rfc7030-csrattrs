@@ -3,7 +3,8 @@
     <30 66>
   2 102:   SEQUENCE {
     <06 09>
-  4   9:     OBJECT IDENTIFIER extensionRequest (1 2 840 113549 1 9 14)
+  4   9:     OBJECT IDENTIFIER
+       :       extensionRequest (1 2 840 113549 1 9 14)
        :       (PKCS #9 via CRMF)
     <31 59>
  15  89:     SET {
@@ -12,7 +13,8 @@
     <30 55>
  19  85:         SEQUENCE {
     <06 03>
- 21   3:           OBJECT IDENTIFIER subjectAltName (2 5 29 17)
+ 21   3:           OBJECT IDENTIFIER
+       :             subjectAltName (2 5 29 17)
        :             (X.509 extension)
     <01 01>
  26   1:           BOOLEAN TRUE
