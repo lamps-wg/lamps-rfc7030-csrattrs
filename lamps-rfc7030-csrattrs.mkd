@@ -239,7 +239,7 @@ A similar method has been defined in CMP Updates {{RFC9480}}
 and the Lightweight CMP profile {{RFC9483, Section 4.3.3}},
 using a CSR template as defined for CRMF {{RFC4211}}.
 Like the approach mentioned before,
-this method does not properly deal with absent Relative Distingished Names (RDN), as it would encode them as invalid empty strings.
+this method does not properly deal with absent Relative Distinguished Name (RDN) values, as it would encode them as invalid empty strings.
 The absence of the '`subjectPublicKey`' fields (encoding them as empty `BIT STRING`),
 and absent X.509 extension values (encoding them as empty `OCTET STRING`),
 cause issues with strict ASN.1 parsing and decoding.
