@@ -228,7 +228,7 @@ specified in {{RFC7030, Section 4.5.2}} with its limitations and ambiguities,
 An entire CSR object is returned with various fields filled out,
 and other fields waiting to be filled in.
 In that approach, a pKCS7PDU attribute includes a Full PKI Data content type {{RFC5272}}
-and that in turn includes a CSR or Certificate Request Message Format (CRMF) formatted request
+and that in turn includes an {{RFC2986}} CSR or a Certificate Request Message Format (CRMF) formatted request
 (for details see {{RFC6268}} Sections 5 or 9, respectively).
 
 One drawback to that approach, particularly for the CSR, is that some useless
