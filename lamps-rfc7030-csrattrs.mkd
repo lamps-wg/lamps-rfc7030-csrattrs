@@ -242,7 +242,7 @@ Like the approach mentioned before,
 this method does not properly deal with absent Relative Distinguished Name (RDN) values, as it would encode them as invalid empty strings.
 Encoding an absent '`subjectPublicKey`' value as an empty `BIT STRING`
 and an absent X.509 extension value as an empty `OCTET STRING` can
-cause issues with strict ASN.1 parsing and decoding.
+causes issues with strict ASN.1 parsing and decoding.
 
 We avoid these drawbacks as follows:
 
@@ -321,18 +321,17 @@ by the client; otherwise the `id-ExtensionReq` OID and the respective value of t
 
 For each extension of type `Extension` or `ExtensionTemplate` provided by the server,
 the client is expected to include an extension of the type given by the `extnID`.
-If the 'critical' field is present, the client SHOULD use it in the extension as well.
+If the '`critical`' field is present, the client SHOULD use it in the extension as well.
 If the '`extnValue`' is present (which is always the case when type `Extension` is used),
-the client MUST use the given extension value in its CSR.
+the client SHOULD use the given extension value in its CSR.
 When the type `ExtensionTemplate` is used, the '`extnValue`' can be absent, and then the client SHOULD provide an extension value in an extension with the given `extnID`.
-For instance, if the server includes an `ExtensionTemplate` with the `extnID` '`subjectAltName`' but without an `extnValue`, the client SHOULD add a SAN extension (with same suitable value).
+For instance, if the server includes an `ExtensionTemplate` with the `extnID` '`subjectAltName`' but without an `extnValue`, the client SHOULD add a SAN extension (with some suitable value).
 
 In case the server includes an `ExtensionTemplate` with the `extnID` '`subjectAltName`'
 and a partially filled in `extnValue`, such as a '`directoryName`' choice containing the `NULL-DN`
 (i.e., an empty sequence of RDNs) or the '`iPAddress`' choice with an empty `OCTET STRING`,
 this means that the client SHOULD fill in the respective `GeneralName` value.
 
-When the a different type is used, then the extnValue MAY be empty, and in that case the client is expected to provide a value in an extension of that type.
 
 ~~~~
   ExtensionTemplate {EXTENSION:ExtensionSet} ::= SEQUENCE {
