@@ -115,8 +115,7 @@ This also allows an EST server to specify a subject Distinguished Name (DN).
 This document updates RFC7030 Enrollment over Secure Transport (EST) and clarifies
 how the Certificate Signing Request (CSR) Attributes Response can be used by an EST server to specify
 both CSR attribute OIDs and also CSR attribute values.
-
-In particular, it needs to specify X.509 extension values, that the server expects the client to include in subsequent CSR  request.
+In particular, the server needs to be able to specify X.509 extension values that it expects the client to include in the subsequent CSR.
 
 Enrollment over Secure Transport {{RFC7030}} (EST) has been used in a wide variety of applications.
 In particular, {{RFC8994}} and {{RFC8995}} describe a way to use it in order to build out an Autonomic Control Plane (ACP) {{RFC8368}}.
