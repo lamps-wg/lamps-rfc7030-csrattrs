@@ -93,14 +93,16 @@ informative:
 
 --- abstract
 
-This document updates RFC7030 (EST) and clarifies
-how the CSR Attributes Response can be used by an EST server to specify
-both CSR attribute OIDs and also CSR attribute values,
+This document updates RFC7030, Enrollment over Secure Transport (EST), clarifying
+how the Certificate Signiing Request (CSR) Attributes Response can be used by an EST server to specify
+both CSR attribute Object IDs (OID) and also CSR attribute values,
 in particular X.509 extension values,
 that the server expects the client to include in subsequent CSR request.
 
-The Enrollment over Secure Transport (EST, RFC7030) is ambiguous in its specification of the CSR Attributes Response. This has resulted in implementation challenges and implementor confusion.
-As a result of some of the implementation challenges, it came to light that the particular way of that RFC7030 (EST) says to use the CSR attributes was not universally agreed upon.
+RFC7030 (EST) is ambiguous in its specification of the CSR Attributes Response.
+This has resulted in implementation challenges and implementor confusion.
+As a result, there was not universal understanding of what was specified.
+This document clarifies the encoding rules.
 
 This document therefore also provides a new straightforward approach: using
 a template for CSR contents that may be partially filled in by the server.
@@ -110,19 +112,17 @@ This also allows an EST server to specify a subject Distinguished Name (DN).
 
 # Introduction
 
-This document updates RFC7030 (EST) and clarifies
-how the CSR Attributes Response can be used by an EST server to specify
-both CSR attribute OIDs and also CSR attribute values,
-in particular X.509 extension values,
-that the server expects the client to include in subsequent CSR request.
+This document updates RFC7030 Enrollment over Secure Transport (EST) and clarifies
+how the Certificate Signing Request (CSR) Attributes Response can be used by an EST server to specify
+both CSR attribute OIDs and also CSR attribute values.
+In particular, the server needs to be able to specify X.509 extension values that it expects the client to include in the subsequent CSR.
 
 Enrollment over Secure Transport {{RFC7030}} (EST) has been used in a wide variety of applications.
-In particular, {{RFC8994}} and {{RFC8995}} describe a way to use it in order to build out an autonomic control plane (ACP) {{RFC8368}}.
+In particular, {{RFC8994}} and {{RFC8995}} describe a way to use it in order to build out an Autonomic Control Plane (ACP) {{RFC8368}}.
 
-The ACP requires that each node be given a very specific subjectAltName.
-In the ACP specification, the solution was for the EST server to use
-section 2.6 of {{RFC7030}} to convey to the EST client
-the actual subjectAltName that will end up in its certificate.
+When bootstrapping the ACP, there is a requirement that each node be given a very specific subjectAltName.
+In {{RFC8994}}, the ACP specification, the EST server is specified to make use of the CSR Attributes ("/csrattrs") resource (specified in section 2.6 of {{RFC7030}}) to convey to the EST client the actual subjectAltName that needs to go
+into its CSR and thus ultimately into its End Entity certificate.
 
 As a result of some implementation challenges, it came to light that this particular way of using the CSR attributes was not universally agreed upon, and it was suggested that it went contrary to section 2.6.
 
@@ -228,8 +228,9 @@ specified in {{RFC7030, Section 4.5.2}} with its limitations and ambiguities,
 An entire CSR object is returned with various fields filled out,
 and other fields waiting to be filled in.
 In that approach, a pKCS7PDU attribute includes a Full PKI Data content type {{RFC5272}}
-and that in turn includes a CSR or CRMF formatted request
-(for details see {{RFC6268}} Sections 5 or 9, respectively).<br>
+and that in turn includes an {{RFC2986}} CSR or a Certificate Request Message Format (CRMF) formatted request
+(for details see {{RFC6268}} Sections 5 or 9, respectively).
+
 One drawback to that approach, particularly for the CSR, is that some useless
 fields have to be included; specifically, the '`signature`' field on
 the CSR is faked with an empty bit string.
@@ -238,12 +239,12 @@ A similar method has been defined in CMP Updates {{RFC9480}}
 and the Lightweight CMP profile {{RFC9483, Section 4.3.3}},
 using a CSR template as defined for CRMF {{RFC4211}}.
 Like the approach mentioned before,
-this method does not properly deal with absent RDNs (encoding them as empty strings),
-absent '`subjectPublicKey`' fields (encoding them as empty `BIT STRING`),
-and absent X.509 extension values (encoding them as empty `OCTET STRING`),
-which may cause issues with strict ASN.1 parsing and decoding.
+this method does not properly deal with absent Relative Distinguished Name (RDN) values, as it would encode them as invalid empty strings.
+Encoding an absent '`subjectPublicKey`' value as an empty `BIT STRING`
+and an absent X.509 extension value as an empty `OCTET STRING` can
+causes issues with strict ASN.1 parsing and decoding.
 
-We avoid these drawbacks as follows.
+We avoid these drawbacks as follows:
 
 This specification defines a new Certificate Request Information Template attribute
 for CsrAttrs (as given in {{csrattrs}}) that is essentially
@@ -316,17 +317,21 @@ Otherwise, the `subjectPublicKey` MUST be absent.
 is defined where the '`extnValue`' field has been made `OPTIONAL`.
 This is only needed to enable specifying partial extensions with values to be filled in
 by the client; otherwise the `id-ExtensionReq` OID and the respective value of type
-`ExtensionReq` MUST be used.<br>
+`ExtensionReq` MUST be used.
 
 For each extension of type `Extension` or `ExtensionTemplate` provided by the server,
 the client is expected to include an extension of the type given by the `extnID`.
-If the '`critical`' field is present, the client is expected to use the given value.
+If the '`critical`' field is present, the client SHOULD use it in the extension as well.
 If the '`extnValue`' is present (which is always the case when type `Extension` is used),
-the client is required to use the given extension value.
-Otherwise it is expected to fill in the extension value.<br>
-If the '`subjectAltName`' extension contains the '`directoryName`' choice containing the `NULL-DN`
+the client SHOULD use the given extension value in its CSR.
+When the type `ExtensionTemplate` is used, the '`extnValue`' can be absent, and then the client SHOULD provide an extension value in an extension with the given `extnID`.
+For instance, if the server includes an `ExtensionTemplate` with the `extnID` '`subjectAltName`' but without an `extnValue`, the client SHOULD add a SAN extension (with some suitable value).
+
+In case the server includes an `ExtensionTemplate` with the `extnID` '`subjectAltName`'
+and a partially filled in `extnValue`, such as a '`directoryName`' choice containing the `NULL-DN`
 (i.e., an empty sequence of RDNs) or the '`iPAddress`' choice with an empty `OCTET STRING`,
-this means that the client is expected to fill in the respective `GeneralName` value.
+this means that the client SHOULD fill in the respective `GeneralName` value.
+
 
 ~~~~
   ExtensionTemplate {EXTENSION:ExtensionSet} ::= SEQUENCE {
@@ -489,7 +494,8 @@ The CsrAttrs structure contains:
 
 ## Require a public key of a specific size
 
-(TODO remove: Example ref Harkins01)<br>
+(TODO remove: Example ref Harkins01)
+
 The CSR requires an RSA public key of a specific size.
 
 ### Base64 encoded example
@@ -511,7 +517,8 @@ Provide a CSR with an RSA key that's 4096 bits and use SHA256 as the hash algori
 
 ## Require a public key of a specific curve
 
-(TODO remove: Example ref Harkins02)<br>
+(TODO remove: Example ref Harkins02)
+
 The CSR requires an ECC public key with a specific curve.
 
 
@@ -535,7 +542,8 @@ use SHA384 as the hash algorithm within the signature.
 
 ## Require specific extensions and attributes
 
-(TODO remove: Example ref Harkins03)<br>
+(TODO remove: Example ref Harkins03)
+
 The CSR is required to have an EC key, to include a serial number,
 a friendly name, favorite drink {{favoritedrink}} [OID 0.9.2342.19200300.100.1.5], and
 use SHA512 as the hash algorithm within the signature.
