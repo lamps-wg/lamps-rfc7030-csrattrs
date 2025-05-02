@@ -321,15 +321,18 @@ by the client; otherwise the `id-ExtensionReq` OID and the respective value of t
 
 For each extension of type `Extension` or `ExtensionTemplate` provided by the server,
 the client is expected to include an extension of the type given by the `extnID`.
-If the '`critical`' field is present, the client is expected to use the given value.
+If the 'critical' field is present, the client SHOULD use it in the extension as well.
 If the '`extnValue`' is present (which is always the case when type `Extension` is used),
-the client MUST use the given extension value in it's request.
+the client MUST use the given extension value in its CSR.
+When the type `ExtensionTemplate` is used, the '`extnValue`' can be absent, and then the client SHOULD provide an extension value in an extension with the given `extnID`.
+For instance, if the server includes an `ExtensionTemplate` with the `extnID` '`subjectAltName`' but without an `extnValue`, the client SHOULD add a SAN extension (with same suitable value).
+
+In case the server includes an `ExtensionTemplate` with the `extnID` '`subjectAltName`'
+and a partially filled in `extnValue`, such as a '`directoryName`' choice containing the `NULL-DN`
+(i.e., an empty sequence of RDNs) or the '`iPAddress`' choice with an empty `OCTET STRING`,
+this means that the client SHOULD fill in the respective `GeneralName` value.
 
 When the a different type is used, then the extnValue MAY be empty, and in that case the client is expected to provide a value in an extension of that type.
-
-For instance, if the '`subjectAltName`' extension contains the '`directoryName`' choice containing the `NULL-DN`
-(i.e., an empty sequence of RDNs) or the '`iPAddress`' choice with an empty `OCTET STRING`,
-this means that the client MUST fill in the respective `GeneralName` value in the resulting CSR.
 
 ~~~~
   ExtensionTemplate {EXTENSION:ExtensionSet} ::= SEQUENCE {
