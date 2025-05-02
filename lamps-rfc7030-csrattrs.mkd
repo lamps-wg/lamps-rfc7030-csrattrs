@@ -122,7 +122,7 @@ In particular, {{RFC8994}} and {{RFC8995}} describe a way to use it in order to 
 
 When bootstrapping the ACP, there is a requirement that each node be given a very specific subjectAltName.
 In {{RFC8994}}, the ACP specification, the EST server is specified to make use of the CSR Attributes ("/csrattrs") resource (specified in section 2.6 of {{RFC7030}}) to convey to the EST client the actual subjectAltName that needs to go
-into its End Entity certificate.
+into its CSR and thus ultimately into its End Entity certificate.
 
 As a result of some implementation challenges, it came to light that this particular way of using the CSR attributes was not universally agreed upon, and it was suggested that it went contrary to section 2.6.
 
