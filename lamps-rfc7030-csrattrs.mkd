@@ -340,7 +340,7 @@ this means that the client SHOULD fill in the respective `GeneralName` value.
      extnID      EXTENSION.&id({ExtensionSet}),
      critical    BOOLEAN DEFAULT FALSE,
      extnValue   OCTET STRING (CONTAINING
-                 EXTENSION.&ExtnType({ExtensionSe}{@extnID})) OPTIONAL
+                 EXTENSION.&ExtnType({ExtensionSet}{@extnID})) OPTIONAL
                  --  contains the DER encoding of the ASN.1 value
                  --  corresponding to the extension type identified
                  --  by extnID when present
