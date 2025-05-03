@@ -240,14 +240,14 @@ and the Lightweight CMP profile {{RFC9483, Section 4.3.3}},
 using a CSR template as defined for CRMF {{RFC4211}}.
 Like the approach mentioned before,
 this method does not properly deal with absent Relative Distinguished Name (RDN) values, as it would encode them as invalid empty strings.
-Encoding an absent '`subjectPublicKey`' value as an empty `BIT STRING`
-and an absent X.509 extension value as an empty `OCTET STRING` can
-causes issues with strict ASN.1 parsing and decoding.
+Also encoding an absent '`subjectPublicKey`' value as an empty `BIT STRING`
+and an absent X.509 extension value as an empty `OCTET STRING`
+can cause issues with strict ASN.1 parsing and decoding.
 
 We avoid these drawbacks as follows:
 
 This specification defines a new Certificate Request Information Template attribute
-for CsrAttrs (as given in {{csrattrs}}) that is essentially
+for `CsrAttrs` (as given in {{csrattrs}}) that is essentially
 a partially filled in PKCS#10 CSR minus the signature wrapper:
 
 ~~~~
@@ -317,15 +317,17 @@ Otherwise, the `subjectPublicKey` MUST be absent.
 is defined where the '`extnValue`' field has been made `OPTIONAL`.
 This is only needed to enable specifying partial extensions with values to be filled in
 by the client; otherwise the `id-ExtensionReq` OID and the respective value of type
-`ExtensionReq` MUST be used.
+`ExtensionReq` MUST be used for specifying requirements on X.509 extensions.
 
 For each extension of type `Extension` or `ExtensionTemplate` provided by the server,
 the client is expected to include an extension of the type given by the `extnID`.
 If the '`critical`' field is present, the client SHOULD use it in the extension as well.
 If the '`extnValue`' is present (which is always the case when type `Extension` is used),
 the client SHOULD use the given extension value in its CSR.
-When the type `ExtensionTemplate` is used, the '`extnValue`' can be absent, and then the client SHOULD provide an extension value in an extension with the given `extnID`.
-For instance, if the server includes an `ExtensionTemplate` with the `extnID` '`subjectAltName`' but without an `extnValue`, the client SHOULD add a SAN extension (with some suitable value).
+When the type `ExtensionTemplate` is used, the '`extnValue`' can be absent, and then the client SHOULD provide an extension value in an `Extension` with the given `extnID`.
+For instance, if the server includes an `ExtensionTemplate`
+with the `extnID` '`subjectAltName`' but without an `extnValue`,
+the client SHOULD include a SAN extension with a suitable value.
 
 In case the server includes an `ExtensionTemplate` with the `extnID` '`subjectAltName`'
 and a partially filled in `extnValue`, such as a '`directoryName`' choice containing the `NULL-DN`
@@ -390,7 +392,7 @@ will be as follows:
 Legacy servers MAY continue to use the {{RFC7030}}-style unstructured list of attribute/value pairs,
 and MAY also include the template style described in {{csrtemplate}}.
 Clients which understand both MUST use the template only, and
-ignore all other CSRattrs elements.
+ignore all other `CSRattrs` elements.
 Older clients will ignore the new CertificationRequestInfoTemplate element.
 
 # Examples using the original RFC 7030 approach {#examples}
@@ -402,8 +404,9 @@ The output of "dumpasn1" {{dumpasn1}} is then provided to detail what the conten
 
 ## Require an RFC8994/ACP subjectAltName with specific otherName {#acpNodeName}
 
-A single subjectAltName extension is specified in a single {{RFC7030}} CsrAttrs Extension attribute.
-This is what might be created by an {{RFC8995}} Registrar that is asking for {{RFC8994}} AcpNodeName format otherNames.
+A single subjectAltName extension is specified in a single {{RFC7030}} `CsrAttrs`
+attribute with OID '`id-ExtensionReq`' indicating type `Extensions`.
+This is what might be created by an {{RFC8995}} Registrar that is asking for {{RFC8994}} AcpNodeName with format '`otherNames`'.
 
 ### Base64 encoded example
 
@@ -427,10 +430,10 @@ There is a single subjectAltName Extension with an Attribute with Extension type
 In this example, taken from {{RFC7030, Section 4.5.2}}, a few different attributes are included.
 The original encoding of the '`macAddress`' part in the example is NOT CORRECT.
 It was not aligned with the definition of the Extension Request attribute as specified in {{Section 5.4.2 of RFC2985}}.
-The revised encoding given here does not use an Extension Request attribute
+The revised encoding given here does not use an '`id-ExtensionReq`' attribute
 because the MAC Address is not an X.509 certificate extension by itself
 and because the server provides its OID without a value,
-which is not allowed syntactically within an Extension structure.
+which is not allowed syntactically within a structure of type '`Extension`'.
 
 ### Base64 encoded example
 
