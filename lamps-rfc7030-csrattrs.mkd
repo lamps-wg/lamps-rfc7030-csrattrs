@@ -228,7 +228,7 @@ specified in {{RFC7030, Section 4.5.2}} with its limitations and ambiguities,
 An entire CSR object is returned with various fields filled out,
 and other fields waiting to be filled in.
 In that approach, a pKCS7PDU attribute includes a Full PKI Data content type {{RFC5272}}
-and that in turn includes an {{RFC2986}} CSR or a Certificate Request Message Format (CRMF) formatted request
+and that in turn includes an {{!RFC2986}} CSR or a Certificate Request Message Format (CRMF) formatted request
 (for details see {{RFC6268}} Sections 5 or 9, respectively).
 
 One drawback to that approach, particularly for the CSR, is that some useless
@@ -548,7 +548,7 @@ use SHA384 as the hash algorithm within the signature.
 (TODO remove: Example ref Harkins03)
 
 The CSR is required to have an EC key, to include a serial number,
-a friendly name, favorite drink {{favoritedrink}} [OID 0.9.2342.19200300.100.1.5], and
+a friendly name, favorite drink {{favoritedrink}} \[OID 0.9.2342.19200300.100.1.5\], and
 use SHA512 as the hash algorithm within the signature.
 
 ### Base64 encoded example
