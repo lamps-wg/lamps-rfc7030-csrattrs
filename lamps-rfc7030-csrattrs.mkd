@@ -389,8 +389,8 @@ will be as follows:
 
 # Co-existence with existing implementations
 
-Legacy servers MAY continue to use the {{RFC7030}}-style unstructured list of attribute/value pairs,
-and MAY also include the template style described in {{csrtemplate}}.
+EST servers with legacy clients MAY continue to use the {{RFC7030}}-style unstructured list of attribute/value pairs,
+and MAY also include the template style described in {{csrtemplate}} for newer clients.
 Clients which understand both MUST use the template only, and
 ignore all other `CSRattrs` elements.
 Older clients will ignore the new CertificationRequestInfoTemplate element.
