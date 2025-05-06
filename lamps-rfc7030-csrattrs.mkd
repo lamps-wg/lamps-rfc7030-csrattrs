@@ -136,7 +136,7 @@ to read and ambiguous to interpret that clarification is needed.
 
 This document motivates the different use cases, and provides additional worked out examples.
 
-Also, section 4.5.2 is extended to clarify the use of the existing ASN.1 syntax {{X.680}}{{X.690}}.
+Also, {{RFC7030, Section 4.5.2}} is extended to clarify the use of the existing ASN.1 syntax {{X.680}}{{X.690}}.
 This covers all uses and is fully backward compatible with existing use.
 
 # Terminology
