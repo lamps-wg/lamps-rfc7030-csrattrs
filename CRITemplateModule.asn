@@ -42,7 +42,7 @@ aa-certificationRequestInfoTemplate ATTRIBUTE ::=
 
 id-aa-certificationRequestInfoTemplate OBJECT IDENTIFIER ::=
   { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs9(9)
-    smime(16) aa(2) csrinfo(TBD2) }
+    smime(16) aa(2) id-aa-csrinfo(TBD2) }
 
 --  like CertificationRequestInfo but OPTIONAL subject, subjectPKInfo
 CertificationRequestInfoTemplate ::= SEQUENCE {
@@ -64,7 +64,7 @@ RelativeDistinguishedNameTemplate  ::= SET SIZE (1 .. MAX)
     OF SingleAttributeTemplate { {SupportedAttributes} }
 
 --  like Attributes, but with OPTIONAL value
-SingleAttributeTemplates{ATTRIBUTE:AttrSet} ::= SEQUENCE OF 
+SingleAttributeTemplates{ATTRIBUTE:AttrSet} ::= SEQUENCE OF
     SingleAttributeTemplates{ {AttrSet} }
 
 --  like SingleAttribute, but with OPTIONAL value

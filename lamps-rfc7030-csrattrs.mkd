@@ -583,7 +583,7 @@ This may be desirable if the CA and EST server have different operators.
 
 # IANA Considerations
 
-IANA is asked to allocate two new Object Identifiers:
+IANA is asked to allocate three new Object Identifiers:
 
 * One (TBD1) from the SMI Security for S/MIME Module Identifier
   (1.2.840.113549.1.9.16.0) registry for the ASN.1 module: id-mod-critemplate; see {{app-asn1-module}}
