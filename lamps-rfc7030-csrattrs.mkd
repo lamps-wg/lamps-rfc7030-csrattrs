@@ -121,12 +121,12 @@ Enrollment over Secure Transport {{RFC7030}} (EST) has been used in a wide varie
 In particular, {{RFC8994}} and {{RFC8995}} describe a way to use it in order to build out an Autonomic Control Plane (ACP) {{RFC8368}}.
 
 When bootstrapping the ACP, there is a requirement that each node be given a very specific subjectAltName.
-In {{RFC8994}}, the ACP specification, the EST server is specified to make use of the CSR Attributes ("/csrattrs") resource (specified in section 2.6 of {{RFC7030}}) to convey to the EST client the actual subjectAltName that needs to go
+In {{RFC8994}}, the ACP specification, the EST server is specified to make use of the CSR Attributes ("/csrattrs") resource (specified in {{RFC7030, Section 2.6}}) to convey to the EST client the actual subjectAltName that needs to go
 into its CSR and thus ultimately into its End Entity certificate.
 
-As a result of some implementation challenges, it came to light that this particular way of using the CSR attributes was not universally agreed upon, and it was suggested that it went contrary to section 2.6.
+As a result of some implementation challenges, it came to light that this particular way of using the CSR attributes was not universally agreed upon, and it was suggested that it went contrary to {{RFC7030, Section 2.6}}.
 
-Section 2.6 says that the CSR attributes "can provide additional
+{{RFC7030, Section 2.6}} says that the CSR attributes "can provide additional
 descriptive information that the EST server cannot access itself".
 This is extended to describe how the EST server can provide values that it demands to use.
 
