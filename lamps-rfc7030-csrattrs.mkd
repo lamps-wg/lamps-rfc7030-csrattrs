@@ -231,7 +231,7 @@ In that approach, a pKCS7PDU attribute includes a Full PKI Data content type {{R
 and that in turn includes an {{RFC2986}} CSR or a Certificate Request Message Format (CRMF) formatted request
 (for details see {{RFC6268}} Sections 5 or 9, respectively).
 
-One drawback to that approach, particularly for the CSR, is that some useless
+One drawback to that approach, particularly for the CSR, is that some unused
 fields have to be included; specifically, the '`signature`' field on
 the CSR is faked with an empty bit string.
 
@@ -244,7 +244,7 @@ Also encoding an absent '`subjectPublicKey`' value as an empty `BIT STRING`
 and an absent X.509 extension value as an empty `OCTET STRING`
 can cause issues with strict ASN.1 parsing and decoding.
 
-We avoid these drawbacks as follows:
+These drawbacks are avoided as follows:
 
 This specification defines a new Certificate Request Information Template attribute
 for `CsrAttrs` (as given in {{csrattrs}}) that is essentially
