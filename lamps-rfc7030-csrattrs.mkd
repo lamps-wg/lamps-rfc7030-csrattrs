@@ -56,6 +56,18 @@ normative:
     seriesinfo:
       ITU-T Recommendation: X.680
       ISO/IEC: 8824-1:2021
+  X.690:
+    target: https://www.itu.int/rec/T-REC-X.690
+    title: >
+      Information technology --
+      ASN.1 encoding rules: Specification of Basic Encoding Rules (BER),
+      Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)
+    author:
+    - org: ITU-T
+    date: 2021-02
+    seriesinfo:
+      ITU-T Recommendation: X.690
+      ISO/IEC: 8825-1:2021
 
 informative:
   RFC2985:
@@ -78,18 +90,6 @@ informative:
     target: "https://oid-base.com/get/0.9.2342.19200300.100.1.5"
     title: "Favorite Drink: arbitrary OID"
 
-  X.690:
-    target: https://www.itu.int/rec/T-REC-X.690
-    title: >
-      Information technology --
-      ASN.1 encoding rules: Specification of Basic Encoding Rules (BER),
-      Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)
-    author:
-    - org: ITU-T
-    date: 2021-02
-    seriesinfo:
-      ITU-T Recommendation: X.690
-      ISO/IEC: 8825-1:2021
 
 --- abstract
 
