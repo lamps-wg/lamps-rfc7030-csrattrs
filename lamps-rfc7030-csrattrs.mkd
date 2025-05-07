@@ -150,7 +150,7 @@ This covers all uses and is fully backward compatible with existing use.
 Replace the second paragraph with the following text:
 
 ~~~~
-   These attributes can provide additional descriptive information that
+   These attributes can provide additional information that
    the EST server cannot access itself, such as the Media Access Control
    (MAC) address of an interface of the EST client. The EST server can
    also provide concrete values that it tells the client to include in
