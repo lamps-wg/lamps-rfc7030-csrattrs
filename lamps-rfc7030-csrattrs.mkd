@@ -589,7 +589,7 @@ IANA is asked to allocate three new Object Identifiers:
   (1.2.840.113549.1.9.16.0) registry for the ASN.1 module: id-mod-critemplate; see {{app-asn1-module}}
 * One (TBD2) from the SMI Security for S/MIME Attributes
   (1.2.840.113549.1.9.16.2) registry for the Certification Request
-  Information Template (id-aa-csrinfo) attribute; see {{app-asn1-module}}
+  Information Template (id-aa-certificationRequestInfoTemplate) attribute; see {{app-asn1-module}}
 * One (TBD3) SMI Security for S/MIME Attributes
   (1.2.840.113549.1.9.16.2) registry for the extension request
   template (id-aa-extensionReqTemplate) attribute; see Appendix A

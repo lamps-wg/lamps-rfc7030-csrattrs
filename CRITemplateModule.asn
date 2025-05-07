@@ -42,7 +42,7 @@ aa-certificationRequestInfoTemplate ATTRIBUTE ::=
 
 id-aa-certificationRequestInfoTemplate OBJECT IDENTIFIER ::=
   { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs9(9)
-    smime(16) aa(2) id-aa-csrinfo(TBD2) }
+    smime(16) aa(2) id-aa-certificationRequestInfoTemplate(TBD2) }
 
 --  like CertificationRequestInfo but OPTIONAL subject, subjectPKInfo
 CertificationRequestInfoTemplate ::= SEQUENCE {
