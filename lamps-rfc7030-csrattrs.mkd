@@ -215,7 +215,7 @@ and optionally its size and other parameters MUST be done as follows:
 Include exactly one Attribute with the `type` field being the OID specifying
 the type of the key, such as `ecPublicKey` or `rsaEncryption`.
 The '`values`' field MAY be empty to indicate no further requirements on the key.
-Otherwise it MUST contain suitable parameters for the given key type,
+Otherwise, it MUST contain suitable parameters for the given key type,
 such as a singleton set containing the OID of an EC curve such as `secp384r1`
 or containing an integer value for the RSA key size such as 4096.
 Many examples for this are given in {{examples}}.
@@ -278,7 +278,7 @@ with the following differences.
 
 * The '`subject`' field has been made `OPTIONAL`.
 It MUST be present if the server places any requirements on the RDNs of the subject name;
-otherwise it MUST be absent.
+otherwise, it MUST be absent.
 
 * RelativeDistinguishedNames (RDNs) in the '`subject`' fields are allowed to have no value,
 which has been achieved by adding `OPTIONAL` to the '`value`' field of `SingleAttributeTemplate`.
@@ -297,13 +297,13 @@ for the RDN, otherwise the client is expected to fill in the value.
 
 * The '`subjectPKInfo`' field has been made `OPTIONAL`.
 The field MUST be absent if the server places no requirements on the key.
-Otherwise it MUST be present, and the '`algorithm`' field
+Otherwise, it MUST be present, and the '`algorithm`' field
 specifies the type of the key pair the client is expected to use.
 
 * The '`subjectPublicKey`' field contained in `SubjectPublicKeyInfoTemplate`
 has been made `OPTIONAL` because usually it is not needed.
 In case the server requires use of an RSA key and needs to specify its size, the field
-MUST be present and contain a dummy public key value of the desired RSA modulus length.
+MUST be present and contain a placeholder public key value of the desired RSA modulus length.
 Otherwise, the `subjectPublicKey` MUST be absent.
 
 ~~~~
