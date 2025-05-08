@@ -369,8 +369,9 @@ Suppose the server requires that the CSR will contain:
 *  the '`publicKey`' field contains an
    Elliptic Curve Cryptography (ECC) key on curve `secp256r1`,
 
-*  the '`subjectAltName`' extension
-   with DNS name "www.myServer.com" and an empty IP address to be filled in,
+* the 'subjectAltName' extension with two entries; one DNS entry with
+  name "www.myServer.com" and IP entry that is empty for the IP address
+  to be filled in.
 
 *  the '`keyUsage`' extension marked critical
    with the value digitalSignature and keyAgreement, and

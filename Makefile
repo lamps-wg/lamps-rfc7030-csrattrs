@@ -49,8 +49,9 @@ examples: ${EXAMPLES}
 
 # this data is from ANIMAgus-Minerva's Fountain implementation, dumped by tests as
 #    tmp/csr_bulb1.csrattr.der
+# ideally, use dumpasn1 from the git@github.com:mcr/dumpasn1.git
 %.dump: %.der
-	dumpasn1 -htl -w50 $< | sed -e's/ *$$//' >$@
+	dumpasn1 -htl -w50 -B24 $< | sed -e's/ *$$//' >$@
 
 %.b64:  %.der
 	base64 --wrap=48 $< > $@
