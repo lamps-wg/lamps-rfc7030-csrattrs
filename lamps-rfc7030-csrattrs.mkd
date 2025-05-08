@@ -150,7 +150,7 @@ including addressesing the needs of {{RFC8994}} and {{RFC8995}}.
 Replace the second paragraph with the following text:
 
 ~~~~
-   These attributes can provide additional tinformation that
+   These attributes can provide additional information that
    the EST server cannot access itself, such as the Media Access Control
    (MAC) address of an interface of the EST client. The EST server can
    also provide concrete values that it tells the client to include in
