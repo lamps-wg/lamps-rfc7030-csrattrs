@@ -284,6 +284,7 @@ If the client is expected to provide an RDN of a certain type such as `commonNam
 the respective RDN MUST be present in the '`subject`' field; otherwise it MUST be absent.
 If the RDN value is present, this means that the client is required to use the given value
 for the RDN, otherwise the client is expected to fill in the value.
+(The example at the end of this section shows a server specifying the RDN)
 
 ~~~~
   SingleAttributeTemplate {ATTRIBUTE:AttrSet} ::= SEQUENCE {
