@@ -282,9 +282,11 @@ otherwise, it MUST be absent.
 which has been achieved by adding `OPTIONAL` to the '`value`' field of `SingleAttributeTemplate`.
 If the client is expected to provide an RDN of a certain type such as `commonName`,
 the respective RDN MUST be present in the '`subject`' field; otherwise it MUST be absent.
-If the RDN value is present, this means that the client is required to use the given value
-for the RDN, otherwise the client is expected to fill in the value.
-(The example at the end of this section shows a server specifying the RDN)
+If the server in addition gives an RDN value,
+this means that the client is expected to use this value for the RDN,
+otherwise the client is expected to fill in a suitable value.
+The example at the end of this section has a '`subject`' field
+that contains both forms of RDN specifications.
 
 ~~~~
   SingleAttributeTemplate {ATTRIBUTE:AttrSet} ::= SEQUENCE {
