@@ -128,16 +128,16 @@ As a result of some implementation challenges, it came to light that this partic
 
 {{RFC7030, Section 2.6}} says that the CSR attributes "can provide additional
 descriptive information that the EST server cannot access itself".
-This is extended to describe how the EST server can provide values that it demands to use.
+This is extended to describe how the EST server can provide values that it demands be used.
 
 After significant discussion, it has been determined that
 {{Section 4.5 of RFC7030}} specification is sufficiently difficult
 to read and ambiguous to interpret that clarification is needed.
 
-This document motivates the different use cases, and provides additional worked out examples.
-
 Also, {{RFC7030, Section 4.5.2}} is extended to clarify the use of the existing ASN.1 syntax {{X.680}}{{X.690}}.
-This covers all uses and is fully backward compatible with existing use.
+
+This covers all uses and is fully backward compatible with existing use,
+including addressesing the needs of {{RFC8994}} and {{RFC8995}}.
 
 # Terminology
 
@@ -150,7 +150,7 @@ This covers all uses and is fully backward compatible with existing use.
 Replace the second paragraph with the following text:
 
 ~~~~
-   These attributes can provide additional information that
+   These attributes can provide additional tinformation that
    the EST server cannot access itself, such as the Media Access Control
    (MAC) address of an interface of the EST client. The EST server can
    also provide concrete values that it tells the client to include in
@@ -206,8 +206,6 @@ optionally the 'critical' bit, and the extension value (extnValue).
 
 An Extensions structure, which is a sequence of elements of type Extension,
 MUST NOT include more than one element with a particular extnID.
-
-With this understanding, the needs of {{RFC8994}} and {{RFC8995}} are satisfied with no change to the bits on the wire.
 
 When not using the template-based approach of {{csrtemplate}},
 specifying the requirement for a public key of a specific type
