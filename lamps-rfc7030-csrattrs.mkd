@@ -44,6 +44,7 @@ normative:
   RFC5912:
   RFC6268:
   RFC7030:
+  RFC9148:
   X.680:
     target: https://www.itu.int/rec/T-REC-X.680
     title: >
@@ -388,6 +389,18 @@ will be as follows:
 {::include examples/CSR-template.dump}
 ~~~
 
+# Updates to RFC9148
+
+The updates to EST in this document equally apply when using
+CoAP as a transport as described in {{RFC9148}}.
+This document therefore adds the following paragraph after the second paragraph
+of {{RFC9148, Section 1}}
+
+EST over CoAP as specified in this document applies unchanged
+to RFC7030 updated by THISRFC.
+Hence, all references to RFC7030 in this document are assumed to indicate RFC7030 updated by THISRFC.
+
+THISRFC also becomes a new mandatory reference to {{RFC9148}}
 
 # Co-existence with existing implementations
 
