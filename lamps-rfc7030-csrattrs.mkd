@@ -13,7 +13,7 @@ area: Internet
 wg: LAMPS Working Group
 kw: Internet-Draft
 cat: std
-updates: 7030
+updates: 7030,9148
 
 pi:    # can use array (if all yes) or hash here
   toc: yes
