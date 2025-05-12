@@ -27,7 +27,7 @@ SEQUENCE {
     }
   [1] {
     SEQUENCE {
-      OBJECT IDENTIFIER id-extensionReqTemplate
+      OBJECT IDENTIFIER id-aa-extensionReqTemplate
                         (1 2 840 113549 1 9 TBD3)
       SET {
         SEQUENCE {
