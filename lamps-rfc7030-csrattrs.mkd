@@ -232,7 +232,7 @@ RFC EDITOR: Please replace THISRFC with the RFC number for this document.
 ```
 EST over CoAP as specified in {{!RFC9148}} applies unchanged
 to {{!RFC7030}} updated by THISRFC.
-Hence, all references to {{RFC7030}} in this document are assumed to indicate
+Hence, all references to {{RFC7030}} in {{!RFC9148}} are assumed to indicate
 {{RFC7030}} updated by THISRFC.
 ```
 
