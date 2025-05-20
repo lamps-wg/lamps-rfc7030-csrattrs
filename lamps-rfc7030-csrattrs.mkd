@@ -218,6 +218,24 @@ such as a singleton set containing the OID of an EC curve such as `secp384r1`
 or containing an integer value for the RSA key size such as 4096.
 Many examples for this are given in {{examples}}.
 
+## Update to RFC9148
+
+The updates to EST in this document equally apply when using
+CoAP as a transport as described in {{!RFC9148}}.
+This document therefore adds the following paragraph after the second paragraph
+of {{RFC9148, Section 1}}:
+
+<aside markdown="block">
+RFC EDITOR: Please replace THISRFC with the RFC number for this document.
+</aside>
+
+```
+EST over CoAP as specified in this document applies unchanged
+to {{!RFC7030}} updated by THISRFC.
+Hence, all references to {{RFC7030}} in this document are assumed to indicate
+{{RFC7030}} updated by THISRFC.
+```
+
 ## Use of CSR templates {#csrtemplate}
 
 Alternatively to the unstructured inclusion of CSR attributes
