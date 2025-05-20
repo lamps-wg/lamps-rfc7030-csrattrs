@@ -230,7 +230,7 @@ RFC EDITOR: Please replace THISRFC with the RFC number for this document.
 </aside>
 
 ```
-EST over CoAP as specified in this document applies unchanged
+EST over CoAP as specified in {{!RFC9148}} applies unchanged
 to {{!RFC7030}} updated by THISRFC.
 Hence, all references to {{RFC7030}} in this document are assumed to indicate
 {{RFC7030}} updated by THISRFC.
