@@ -221,9 +221,9 @@ Many examples for this are given in {{examples}}.
 
 ## Update to RFC9148
 
-The updates to EST in this document equally apply when using
+The updates to EST in this THISRFC equally apply when using
 CoAP as a transport as described in {{!RFC9148}}.
-This document therefore adds the following paragraph after the second paragraph
+THISRFC therefore adds the following paragraph after the second paragraph
 of {{RFC9148, Section 1}}:
 
 <aside markdown="block">
