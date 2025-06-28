@@ -98,6 +98,7 @@ how the Certificate Signiing Request (CSR) Attributes Response can be used by an
 both CSR attribute Object IDs (OID) and also CSR attribute values,
 in particular X.509 extension values,
 that the server expects the client to include in subsequent CSR request.
+RFC9148 is derived from RFC7030, and it is also updated.
 
 RFC7030 (EST) is ambiguous in its specification of the CSR Attributes Response.
 This has resulted in implementation challenges and implementor confusion.
@@ -217,6 +218,24 @@ Otherwise, it MUST contain suitable parameters for the given key type,
 such as a singleton set containing the OID of an EC curve such as `secp384r1`
 or containing an integer value for the RSA key size such as 4096.
 Many examples for this are given in {{examples}}.
+
+## Update to RFC9148
+
+The updates to EST in this THISRFC equally apply when using
+CoAP as a transport as described in {{!RFC9148}}.
+THISRFC therefore adds the following paragraph after the second paragraph
+of {{RFC9148, Section 1}}:
+
+<aside markdown="block">
+RFC EDITOR: Please replace THISRFC with the RFC number for this document.
+</aside>
+
+```
+EST over CoAP as specified in {{!RFC9148}} applies unchanged
+to {{!RFC7030}} updated by THISRFC.
+Hence, all references to {{RFC7030}} in {{!RFC9148}} are assumed to indicate
+{{RFC7030}} updated by THISRFC.
+```
 
 ## Use of CSR templates {#csrtemplate}
 
