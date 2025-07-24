@@ -470,8 +470,9 @@ The Base64:
 
 The CsrAttrs structure contains:
 
-1. The challengePassword attribute is included to indicate that the
-   CSR should include this value.
+1. The challengePassword OID 1.2.840.113549.1.9.7 is included to indicate that
+   the CSR should include the base64-encoded tls-unique value
+   as described in {{RFC7030, Section 3.5}}.
 
 2. An ecPublicKey OID is provided with the value secp384r1 to
    indicate what kind of public key should be submitted.
@@ -505,7 +506,7 @@ The Base64:
 
 The CsrAttrs structure contains:
 
-1. The challengePassword attribute is included to indicate that the CSR should include this value.
+1. The challengePassword attribute is included to indicate that the CSR should include the tls-unique value.
 
 2. An ecPublicKey OID is provided with the value secp521r1 to indicate what kind of public key should be submitted.
 
