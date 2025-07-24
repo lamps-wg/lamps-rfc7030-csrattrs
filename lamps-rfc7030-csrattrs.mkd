@@ -412,8 +412,9 @@ will be as follows:
 
 EST servers with legacy clients MAY continue to use the {{RFC7030}}-style unstructured list of attribute/value pairs,
 and MAY also include the template style described in {{csrtemplate}} for newer clients.
-Clients which understand both MUST use the template only, and
-ignore all other `CSRattrs` elements.
+Clients that understand both MUST use the template only, and
+ignore all other `CSRattrs` elements except for any present
+`challengePassword` OID indicating the inclusion of the tls-unique value.
 Older clients will ignore the new CertificationRequestInfoTemplate element.
 
 # Examples using the original RFC 7030 approach {#examples}
@@ -469,8 +470,9 @@ The Base64:
 
 The CsrAttrs structure contains:
 
-1. The challengePassword attribute is included to indicate that the
-   CSR should include this value.
+1. The challengePassword OID 1.2.840.113549.1.9.7 is included to indicate that
+   the CSR should include the base64-encoded tls-unique value
+   as described in {{RFC7030, Section 3.5}}.
 
 2. An ecPublicKey OID is provided with the value secp384r1 to
    indicate what kind of public key should be submitted.
@@ -504,7 +506,7 @@ The Base64:
 
 The CsrAttrs structure contains:
 
-1. The challengePassword attribute is included to indicate that the CSR should include this value.
+1. The challengePassword attribute is included to indicate that the CSR should include the tls-unique value.
 
 2. An ecPublicKey OID is provided with the value secp521r1 to indicate what kind of public key should be submitted.
 
